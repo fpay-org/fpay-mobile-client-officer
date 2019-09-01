@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'loginPage.dart';
 
 class StartApp extends StatelessWidget {
   @override
@@ -6,7 +7,14 @@ class StartApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Online fine payment mobile appliction",
-      home: Scaffold(
+      home: new Page());
+  }
+}
+
+class Page extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: Column(
@@ -20,16 +28,34 @@ class StartApp extends StatelessWidget {
                   fontSize: 30,
                 ),
               ),
-              const RaisedButton(
-                onPressed: null,
-                child: Text('Disabled Button', style: TextStyle(fontSize: 20)),
-              )
+              const SizedBox(height: 30),
+              RaisedButton(
+                onPressed: () {
+                  navigateToLoginPage(context);
+                },
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, top: 8, bottom: 8),
+                  child: const Text('Login', style: TextStyle(fontSize: 20)),
+                ),
+              ),
             ],
           ),
         ),
-      ),
-    );
+      );
   }
+
 }
 
 class Logo extends StatelessWidget {
@@ -46,4 +72,8 @@ class Logo extends StatelessWidget {
       margin: EdgeInsets.only(top: 200),
     );
   }
+}
+
+Future navigateToLoginPage(context) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
 }

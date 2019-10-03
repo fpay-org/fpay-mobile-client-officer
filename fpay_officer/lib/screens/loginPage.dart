@@ -1,16 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'regPage.dart';
+import '../user.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: true, title: "login", home: new Page());
+        debugShowCheckedModeBanner: true, 
+        title: "login", 
+        home: new Page()
+        );
   }
 }
 
-class Page extends StatelessWidget {
+class Page extends StatefulWidget{
+  @override
+  _PageState createState() => new _PageState();
+}
+
+
+
+class _PageState extends State<Page> {
+final myControllerId = TextEditingController();
+final myControllerPass = TextEditingController();
+
+@override
+void dispose(){
+  myControllerId.dispose();
+  myControllerPass.dispose();
+  super.dispose();
+}
+
+
+String url = '' //url goes here
+String userId;
+String password;
+Map<String, String> headers = {"Content-type":"application/json"};
+
+_verifyUser() async {
+  User newUser = new User(userId: userId,password: password);
+  Response response = await post(url,headers:headers,body:newUser);
+  int statusCode = response.statusCode;
+  if(statusCode==200){
+    navigateToRegPage(context);
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -28,6 +65,8 @@ class Page extends StatelessWidget {
                        style: new TextStyle(color: Colors.blue, fontSize: 25.0),),*/
                   new Padding(padding: EdgeInsets.only(top: 10.0)),
                   new TextFormField(
+                    controller: myControllerId,
+                    onSaved: (input) => userId = input,
                     decoration: new InputDecoration(
                       labelText: "User ID",
                       fillColor: Colors.white,
@@ -64,6 +103,8 @@ class Page extends StatelessWidget {
                   new Padding(
                       padding: EdgeInsets.only(left: 30.0, right: 30.0)),
                   new TextFormField(
+                    controller: myControllerPass,
+                    onSaved: (input) => password = input,
                     decoration: new InputDecoration(
                       labelText: "Password",
                       fillColor: Colors.white,
@@ -89,7 +130,8 @@ class Page extends StatelessWidget {
               )),
           RaisedButton(
             onPressed: () {
-              navigateToRegPage(context);
+              _verifyUser();
+              
             },
             textColor: Colors.white,
             child: const Text('Login', style: TextStyle(fontSize: 20)),
@@ -102,3 +144,4 @@ class Page extends StatelessWidget {
 Future navigateToRegPage(context) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => RegPage()));
 }
+

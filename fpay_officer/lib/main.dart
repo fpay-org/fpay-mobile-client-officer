@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'screens/startApp.dart';
+import 'package:FPay/fpay_officer_app.dart';
 
-void main(){
-  runApp(StartApp());
-}
+void main() => runApp(FPayOfficerApp());

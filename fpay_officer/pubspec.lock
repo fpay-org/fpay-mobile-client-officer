@@ -80,6 +80,13 @@ packages:
       url: "https://github.com/MarkOSullivan94/dart_config.git"
     source: git
     version: "0.5.0"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.3"
   fixnum:
     dependency: transitive
     description:
@@ -87,6 +94,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.9"
+  fluro:
+    dependency: "direct main"
+    description:
+      name: fluro
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -125,6 +139,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
+  logger:
+    dependency: "direct main"
+    description:
+      name: logger
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0+2"
   logging:
     dependency: transitive
     description:
@@ -202,6 +223,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3+4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -285,4 +313,5 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.4.0 <3.0.0"
+  dart: ">2.4.0 <3.0.0"
+  flutter: ">=1.5.0 <2.0.0"

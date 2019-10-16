@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'viewIssuedFines.dart';
+import 'issueFine.dart';
+import 'myProfile.dart';
+import 'settings.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -45,9 +49,8 @@ class _PageState extends State<Page> {
                 
                 GestureDetector(
               onTap: () {
-                //Insert event to be fired up when button is clicked here
-                //in this case, this increments our `countValue` variable by one.
-                setState(() => countValue += 1);
+
+                navigateToViewFinePage(context);
               },
               child: CircleAvatar(
                 backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -57,9 +60,7 @@ class _PageState extends State<Page> {
             ),
             GestureDetector(
               onTap: () {
-                //Insert event to be fired up when button is clicked here
-                //in this case, this increments our `countValue` variable by one.
-                setState(() => countValue += 1);
+                navigateToIssueFinePage(context);
               },
               child: CircleAvatar(
                 backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -77,7 +78,7 @@ class _PageState extends State<Page> {
               onTap: () {
                 //Insert event to be fired up when button is clicked here
                 //in this case, this increments our `countValue` variable by one.
-                setState(() => countValue += 1);
+                navigateToMyProfile(context);
               },
               child: CircleAvatar(
                 backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -89,7 +90,7 @@ class _PageState extends State<Page> {
               onTap: () {
                 //Insert event to be fired up when button is clicked here
                 //in this case, this increments our `countValue` variable by one.
-                setState(() => countValue += 1);
+                navigateToSettings(context);
               },
               child: CircleAvatar(
                 backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -104,4 +105,17 @@ class _PageState extends State<Page> {
           ],
         )));
   }
+}
+
+Future navigateToViewFinePage(context) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewIssuedFines()));
+}
+Future navigateToIssueFinePage(context) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => IssueFines()));
+}
+Future navigateToMyProfile(context) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
+}
+Future navigateToSettings(context) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
 }

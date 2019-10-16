@@ -7,8 +7,7 @@ class AuthService {
   final baseUrl = Config.baseUrl;
 
   Future login(String email, String password) {
-    return Dio().post('$baseUrl/user/login',
-        data: {"email": email, "password": password}).then((res) {
+    return Dio().post('$baseUrl/user/login',data: {"email": email, "password": password}).then((res){
       if (res.statusCode == 200) {
         return saveToken(res.data['token']);
       } else {

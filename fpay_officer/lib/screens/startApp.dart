@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'loginPage.dart';
+import 'auth/auth_screen.dart';
 
 class StartApp extends StatelessWidget {
   @override
@@ -75,5 +76,5 @@ class Logo extends StatelessWidget {
 }
 
 Future navigateToLoginPage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen()));
 }

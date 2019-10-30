@@ -2,7 +2,7 @@ import 'package:FPay/routes/application.dart';
 import 'package:FPay/screens/homePage.dart';
 import 'package:FPay/services/auth_service.dart';
 import 'package:flutter/material.dart';
-
+   
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -123,9 +123,9 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _handleLogin(String email, String password) {
-    AuthService().login(email, password).then((token) {
+    AuthService().login(email, password,context).then((token) {
       //Application.router.navigateTo(context, '/home', clearStack: true);
-      navigateHomePage(context);
+      //navigateHomePage(context);
     });
   }
 }

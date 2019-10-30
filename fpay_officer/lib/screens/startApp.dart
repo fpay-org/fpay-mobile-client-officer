@@ -78,3 +78,4 @@ class Logo extends StatelessWidget {
 Future navigateToLoginPage(context) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen()));
 }
+   

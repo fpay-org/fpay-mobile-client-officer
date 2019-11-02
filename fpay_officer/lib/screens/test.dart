@@ -44,8 +44,7 @@ class _PageState extends State<Page> {
               items: <String>['A', 'B', 'C', 'D'].map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
-                  child: new Text("y
-                  "),
+                  child: new Text("y"),
                 );
               }).toList(),
               onChanged: (_) {},

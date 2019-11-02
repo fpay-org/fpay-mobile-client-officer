@@ -12,14 +12,16 @@ class AuthService {
 
   Future<AuthScreen> login(String email, String password,BuildContext context) {
     return Dio().post('$baseUrl/user/login',
-        data: {"email": email, "password": password}).then((res) {
+        data: {"email": email, "password": password}).then((res) async {
       if (res.statusCode == 200) {
           navigateHomePage(context);
+          print(1564615646554545645);
 
         return saveToken(res.data['token']);
       } else {
-        _showErrorDialog(context);
+       // _showErrorDialog(context);
         Logger().e("Error on status code");
+        print(1564615646554545645);
       }
     }).catchError((error) => Logger().e(error));
   }
@@ -30,34 +32,13 @@ class AuthService {
     });
   }
 
-  void _showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Material Dialog'),
-            content: Text('This is the content of the material dialog'),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () {
-                   _dismissDialog(context);
-                  },
-                  child: Text('Close')),
-              FlatButton(
-                onPressed: () {
-                  print('HelloWorld!');
-                  _dismissDialog(context);
-                },
-                child: Text('Print HelloWorld!'),
-              )
-            ],
-          );
-        });
+  void logout(){
+    
   }
 
-  _dismissDialog(BuildContext context) {
-    Navigator.pop(context);
-}
+  
+
+
 }
 
 Future navigateHomePage(BuildContext context) async {

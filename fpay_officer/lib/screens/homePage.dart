@@ -3,6 +3,7 @@ import 'viewIssuedFines.dart';
 import 'issueFine.dart';
 import 'myProfile.dart';
 import 'settings.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -15,8 +16,6 @@ class HomePage extends StatelessWidget {
         ),
         home: Page());
   }
-
-  
 }
 
 class Page extends StatefulWidget {
@@ -31,6 +30,12 @@ class _PageState extends State<Page> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Homepage'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(MdiIcons.logout),
+              onPressed: () => _handleLogout(),
+            )
+          ],
         ),
         body: Center(
             child: Column(
@@ -38,86 +43,88 @@ class _PageState extends State<Page> {
           //mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Container(
-                  child: Text(
-                    "Select a task",
-                    style: TextStyle(
-                      fontSize: 50,
-                      color: Colors.brown
-                    ),),
+              child: Text(
+                "Select a task",
+                style: TextStyle(fontSize: 50, color: Colors.brown),
+              ),
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    navigateToViewFinePage(context);
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: ExactAssetImage('lib/images/officer.png'),
+                    minRadius: 50,
+                    maxRadius: 80,
+                  ),
                 ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                
                 GestureDetector(
-              onTap: () {
-
-                navigateToViewFinePage(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: ExactAssetImage('lib/images/officer.png'),
-                minRadius: 50,
-                maxRadius: 80,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                navigateToIssueFinePage(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: ExactAssetImage('lib/images/officer.png'),
-                minRadius: 50,
-                maxRadius: 80,
-              ),
-            )
+                  onTap: () {
+                    navigateToIssueFinePage(context);
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: ExactAssetImage('lib/images/officer.png'),
+                    minRadius: 50,
+                    maxRadius: 80,
+                  ),
+                )
               ],
             ),
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                
                 GestureDetector(
-              onTap: () {
-                //Insert event to be fired up when button is clicked here
-                //in this case, this increments our `countValue` variable by one.
-                navigateToMyProfile(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: ExactAssetImage('lib/images/officer.png'),
-                minRadius: 50,
-                maxRadius: 80,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                //Insert event to be fired up when button is clicked here
-                //in this case, this increments our `countValue` variable by one.
-                navigateToSettings(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: ExactAssetImage('lib/images/officer.png'),
-                minRadius: 50,
-                maxRadius: 80,
-              ),
-            )
+                  onTap: () {
+                    //Insert event to be fired up when button is clicked here
+                    //in this case, this increments our `countValue` variable by one.
+                    navigateToMyProfile(context);
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: ExactAssetImage('lib/images/officer.png'),
+                    minRadius: 50,
+                    maxRadius: 80,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    //Insert event to be fired up when button is clicked here
+                    //in this case, this increments our `countValue` variable by one.
+                    navigateToSettings(context);
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: ExactAssetImage('lib/images/officer.png'),
+                    minRadius: 50,
+                    maxRadius: 80,
+                  ),
+                )
               ],
             )
-            
-            
           ],
         )));
+  }
+
+  void _handleLogout() {
+    
   }
 }
 
 Future navigateToViewFinePage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewIssuedFines()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => ViewIssuedFines()));
 }
+
 Future navigateToIssueFinePage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => IssueFines()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => IssueFines()));
 }
+
 Future navigateToMyProfile(context) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
 }
+
 Future navigateToSettings(context) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
 }

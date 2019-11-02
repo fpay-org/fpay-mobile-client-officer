@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'loginPage.dart';
+//import 'loginPage.dart';
 import 'auth/auth_screen.dart';
 
 class StartApp extends StatelessWidget {

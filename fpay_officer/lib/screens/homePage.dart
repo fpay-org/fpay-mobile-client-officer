@@ -9,6 +9,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        routes: {
+          '/issueFine': (BuildContext) => new IssueFines(),
+          '/viewFine': (BuildContext) => new ViewIssuedFines(),
+          '/profile': (BuildContext) => new MyProfile(),
+          '/settings': (BuildContext) => new Settings(),
+        },
         debugShowCheckedModeBanner: false,
         title: 'ListViews',
         theme: ThemeData(
@@ -30,6 +36,10 @@ class _PageState extends State<Page> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Homepage'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: ()=> Navigator.pop(context,false),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(MdiIcons.logout),
@@ -53,7 +63,8 @@ class _PageState extends State<Page> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    navigateToViewFinePage(context);
+                    //navigateToViewFinePage(context);
+                    Navigator.pushNamed(context, '/viewFine');
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -63,7 +74,8 @@ class _PageState extends State<Page> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    navigateToIssueFinePage(context);
+                    //navigateToIssueFinePage(context);
+                    Navigator.pushNamed(context, '/issueFine');
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -80,7 +92,8 @@ class _PageState extends State<Page> {
                   onTap: () {
                     //Insert event to be fired up when button is clicked here
                     //in this case, this increments our `countValue` variable by one.
-                    navigateToMyProfile(context);
+                    //navigateToMyProfile(context);
+                    Navigator.pushNamed(context, '/profile');
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -92,7 +105,8 @@ class _PageState extends State<Page> {
                   onTap: () {
                     //Insert event to be fired up when button is clicked here
                     //in this case, this increments our `countValue` variable by one.
-                    navigateToSettings(context);
+                    //navigateToSettings(context);
+                    Navigator.pushNamed(context, '/settings');
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -106,25 +120,6 @@ class _PageState extends State<Page> {
         )));
   }
 
-  void _handleLogout() {
-    
-  }
+  void _handleLogout() {}
 }
 
-Future navigateToViewFinePage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => ViewIssuedFines()));
-}
-
-Future navigateToIssueFinePage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => IssueFines()));
-}
-
-Future navigateToMyProfile(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
-}
-
-Future navigateToSettings(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
-}

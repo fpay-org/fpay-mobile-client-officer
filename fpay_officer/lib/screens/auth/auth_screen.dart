@@ -4,12 +4,28 @@ import 'package:FPay/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends StatelessWidget {
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        routes: {
+          //'/issueFine': (BuildContext) => new IssueFines(),
+        },
+        debugShowCheckedModeBanner: false,
+        title: 'ListViews',
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+        ),
+        home: Page());
+  }
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class Page extends StatefulWidget {
+  @override
+  _PageState createState() => new _PageState();
+}
+
+class _PageState extends State<Page> {
   String _email, _password;
 
   @override
@@ -127,9 +143,10 @@ class _AuthScreenState extends State<AuthScreen> {
     AuthService().login(email, password, context).then((token) {
       //Application.router.navigateTo(context, '/home', clearStack: true);
       //navigateHomePage(context);
-      if (token == 401) {
-        _showErrorDialog(context);
-        navigateHomePage(context);
+      if (token == 200) {
+        //   _showErrorDialog(context);
+        //   navigateHomePage(context);
+
       }
     });
   }

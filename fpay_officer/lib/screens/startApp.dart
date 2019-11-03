@@ -6,6 +6,9 @@ class StartApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/login': (BuildContext) => new AuthScreen(),
+      },
       debugShowCheckedModeBanner: false,
       title: "Online fine payment mobile appliction",
       home: new Page());
@@ -32,7 +35,7 @@ class Page extends StatelessWidget{
               const SizedBox(height: 30),
               RaisedButton(
                 onPressed: () {
-                  navigateToLoginPage(context);
+                  Navigator.pushNamed(context, '/login');
                 },
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(0.0),
@@ -75,7 +78,4 @@ class Logo extends StatelessWidget {
   }
 }
 
-Future navigateToLoginPage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen()));
-}
    

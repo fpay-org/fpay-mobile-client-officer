@@ -10,16 +10,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService {
   final baseUrl = Config.baseUrl;
 
-  Future<AuthScreen> login(String email, String password,BuildContext context) {
+  Future<AuthScreen> login(
+    
+      String email, String password, BuildContext context) {
     return Dio().post('$baseUrl/user/login',
-        data: {"email": email, "password": password}).then((res) async {
+        data: {"email": email, "password": password}).then((res) {
+          //print(1564615646554545645);
       if (res.statusCode == 200) {
-          navigateHomePage(context);
-          print(1564615646554545645);
-
+        //print(1564615646554545645);
+        navigateHomePage(context);
+        
         return saveToken(res.data['token']);
-      } else {
-       // _showErrorDialog(context);
+      } 
+      else {
+        // _showErrorDialog(context);
         Logger().e("Error on status code");
         print(1564615646554545645);
       }
@@ -32,16 +36,9 @@ class AuthService {
     });
   }
 
-  void logout(){
-    
-  }
-
-  
-
-
+  void logout() {}
 }
 
 Future navigateHomePage(BuildContext context) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
 }
-

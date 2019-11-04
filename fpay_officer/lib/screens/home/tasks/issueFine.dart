@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class IssueFines extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Issue a new fine",
-      home: new Page(),
-    );
-  }
-}
+// class IssueFines extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: "Issue a new fine",
+//       home: new Page(),
+//     );
+//   }
+// }
 
-class Page extends StatelessWidget {
+class IssueFines extends StatelessWidget {
   final _formKey = GlobalKey();
   //final _user = User();
   @override

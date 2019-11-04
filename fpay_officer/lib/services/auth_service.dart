@@ -1,7 +1,6 @@
 import 'package:FPay/config/config.dart';
 import 'package:FPay/routes/application.dart';
 import 'package:FPay/screens/auth/auth_screen.dart';
-import 'package:FPay/screens/homePage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -18,7 +17,7 @@ class AuthService {
           //print(1564615646554545645);
       if (res.statusCode == 200) {
         //print(1564615646554545645);
-        navigateHomePage(context);
+Application.router.navigateTo(context, '/home',replace: true);
         
         return saveToken(res.data['token']);
       } 
@@ -39,6 +38,4 @@ class AuthService {
   void logout() {}
 }
 
-Future navigateHomePage(BuildContext context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-}
+

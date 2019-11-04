@@ -1,5 +1,4 @@
 import 'package:FPay/routes/application.dart';
-import 'package:FPay/screens/homePage.dart';
 import 'package:FPay/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -152,9 +151,7 @@ class _PageState extends State<Page> {
   }
 }
 
-Future navigateHomePage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-}
+
 
 void _showErrorDialog(BuildContext context) {
   showDialog(

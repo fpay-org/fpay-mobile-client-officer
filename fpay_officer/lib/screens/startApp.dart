@@ -1,12 +1,14 @@
 import "package:flutter/material.dart";
 //import 'loginPage.dart';
 import 'auth/auth_screen.dart';
+import 'homePage.dart';
 
 class StartApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
+        //'/': (BuildContext) => new StartApp(),
         '/login': (BuildContext) => new AuthScreen(),
       },
       debugShowCheckedModeBanner: false,
@@ -36,6 +38,7 @@ class Page extends StatelessWidget{
               RaisedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/login');
+                  //Navigator.push(context,MaterialPageRoute(builder: (context)=>HomePage()));
                 },
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(0.0),

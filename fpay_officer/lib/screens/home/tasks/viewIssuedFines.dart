@@ -6,25 +6,25 @@ import 'myProfile.dart';
 import 'settings.dart';
 import 'package:flutter/material.dart';
 
-class ViewIssuedFines extends StatelessWidget {
+// class ViewIssuedFines extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         title: 'ListViews',
+//         theme: ThemeData(
+//           primarySwatch: Colors.teal,
+//         ),
+//         home: Page());
+//   }
+// }
+
+class ViewIssuedFines extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'ListViews',
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
-        ),
-        home: Page());
-  }
+  _ViewIssuedFinesState createState() => new _ViewIssuedFinesState();
 }
 
-class Page extends StatefulWidget {
-  @override
-  _PageState createState() => new _PageState();
-}
-
-class _PageState extends State<Page> {
+class _ViewIssuedFinesState extends State<ViewIssuedFines> {
   final _formKey = GlobalKey();
   final _user = User();
   @override

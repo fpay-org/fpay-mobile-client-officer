@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
-import 'homePage.dart';
 import '../user.dart';
 
 class LoginPage extends StatelessWidget {
@@ -44,7 +43,7 @@ _verifyUser() async {
   Response response = await post(url,headers:headers,body:newUser);
   int statusCode = response.statusCode;
   if(statusCode==200){
-    navigateToHomePage(context);
+    //navigateToHomePage(context);
   }
 }
 
@@ -141,7 +140,5 @@ _verifyUser() async {
   }
 }
 
-Future navigateToHomePage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-}
+
 

@@ -139,18 +139,14 @@ class _PageState extends State<Page> {
   }
 
   Future _handleLogin(String email, String password) async {
-    Logger().i("message");
-    Logger().i("bar");
+    Logger().i("very gon");
     await AuthService().login(email, password).then((res) async {
-      Logger().i("gon");
       Logger().i(res);
-      if (res){
-        Logger().i("very gon");
-        print("wal");
+      Logger().i("Result");
+      if (res) {
         Application.router.navigateTo(context, '/home');
-      }
-        
-      else {
+      } else {
+        Logger().i("baaad");
         showDialog(
             context: context,
             builder: (BuildContext context) {

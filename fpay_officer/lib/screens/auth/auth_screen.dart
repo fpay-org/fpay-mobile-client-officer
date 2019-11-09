@@ -139,19 +139,30 @@ class _PageState extends State<Page> {
   }
 
   void _handleLogin(String email, String password) {
-    AuthService().login(email, password, context).then((token) {
-      //Application.router.navigateTo(context, '/home', clearStack: true);
-      //navigateHomePage(context);
-      if (token == 200) {
-        //   _showErrorDialog(context);
-        //   navigateHomePage(context);
-
+    AuthService().login(email, password).then((res) {
+      if (res)
+        // TODO: Set path here
+        Application.router.navigateTo(context, '');
+      else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Invalid credentials"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Okay"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
       }
     });
   }
 }
-
-
 
 void _showErrorDialog(BuildContext context) {
   showDialog(

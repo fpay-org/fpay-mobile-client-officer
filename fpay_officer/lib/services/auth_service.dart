@@ -35,24 +35,28 @@ class AuthService {
 //     });
 //   }
 
-  Future<bool> login(String email, String password) {
-    Dio().post('$baseUrl/user/login',
+  Future<bool> login(String email, String password)  async => Dio().post('$baseUrl/user/login',
         data: {"email": email, "password": password}).then((res) {
       Logger().i("Result: $res");
 
       if (res.statusCode == 200) {
-        return _saveToken(res.data['token']).then((res) {
-          if (!!res) return true;
-          return false;
-        });
+        //print(4564564569999);
+        // return _saveToken(res.data['token']).then((token) {
+        //   if (token["message"]=="Auth Success") return true;
+        //   return false;
+        // });
+        //return _saveToken(res.data['token']).then((res){
+          //return res;
+        //});
+        return true;
       }
-
+      
       return false;
     });
-  }
 
   Future<bool> _saveToken(String token) {
     return SharedPreferences.getInstance().then((instance) {
+      print("share");
       return instance.setString("token", token);
     });
   }

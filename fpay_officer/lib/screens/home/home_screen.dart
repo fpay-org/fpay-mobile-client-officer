@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {
                     //navigateToIssueFinePage(context);
-                    Navigator.pushNamed(context, 'issueFine');
+                    Navigator.pushNamed(context, '/newfine');
                     //Navigator.push(context,MaterialPageRoute(builder: (context)=>IssueFines()));
                   },
                   child: CircleAvatar(
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                     //navigateToMyProfile(context);
                    // Navigator.pushNamed(context, 'profile');
                     //Navigator.push(context,MaterialPageRoute(builder: (context)=>MyProfile()));
-                    Application.router.navigateTo(context, '/home/tasks/newfine');
+                    Application.router.navigateTo(context, "/viewfine");
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),

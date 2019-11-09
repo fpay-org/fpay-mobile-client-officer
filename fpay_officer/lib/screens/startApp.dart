@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 //import 'loginPage.dart';
 import 'auth/auth_screen.dart';
-import 'homePage.dart';
 
 class StartApp extends StatelessWidget {
   @override

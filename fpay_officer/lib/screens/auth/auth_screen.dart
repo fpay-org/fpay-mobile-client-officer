@@ -138,11 +138,18 @@ class _PageState extends State<Page> {
     );
   }
 
-  void _handleLogin(String email, String password) {
-    AuthService().login(email, password).then((res) {
-      if (res)
-        // TODO: Set path here
-        Application.router.navigateTo(context, '');
+  Future _handleLogin(String email, String password) async {
+    Logger().i("message");
+    Logger().i("bar");
+    await AuthService().login(email, password).then((res) async {
+      Logger().i("gon");
+      Logger().i(res);
+      if (res){
+        Logger().i("very gon");
+        print("wal");
+        Application.router.navigateTo(context, '/home');
+      }
+        
       else {
         showDialog(
             context: context,

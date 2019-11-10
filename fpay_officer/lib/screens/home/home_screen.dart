@@ -1,54 +1,21 @@
 import 'package:FPay/routes/application.dart';
 import 'package:flutter/material.dart';
-// import 'viewIssuedFines.dart';
-// import 'issueFine.dart';
-// import 'myProfile.dart';
-// import 'settings.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-// class HomePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         routes: {
-//           'issueFine': (BuildContext) => new IssueFines(),
-//           'viewFine': (BuildContext) => new ViewIssuedFines(),
-//           'profile': (BuildContext) => new MyProfile(),
-//           'settings': (BuildContext) => new Settings(),
-//         },
-//         debugShowCheckedModeBanner: false,
-//         title: 'ListViews',
-//         theme: ThemeData(
-//           primarySwatch: Colors.teal,
-//         ),
-//         home: Page());
-//   }
-// }
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => new _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int countValue = 1;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Homepage'),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: ()=> Navigator.pop(context,true),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(MdiIcons.logout),
-              onPressed: () => _handleLogout(),
-            )
-          ],
-        ),
-        body: Center(
+class _HomePageState extends State<HomePage>{
+
+  int _selectedIndex = 0;
+ TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+ List<Widget> _widgetOptions = <Widget>[
+   
+  Center(
+    
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           //mainAxisSize: MainAxisSize.max,
@@ -64,10 +31,6 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    //navigateToViewFinePage(context);
-                   // Navigator.pushNamed(context, 'viewFine');
-                    //Navigator.push(context,MaterialPageRoute(builder: (context)=>ViewIssuedFines())); 
-                    //navigateto(context);
                     Application.router.navigateTo(context, '/viewfine',);
                   },
                   child: CircleAvatar(
@@ -78,9 +41,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //navigateToIssueFinePage(context);
-                    Navigator.pushNamed(context, '/newfine');
-                    //Navigator.push(context,MaterialPageRoute(builder: (context)=>IssueFines()));
+                    Application.router.navigateTo(context, '/newfine',);
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -95,10 +56,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    //navigateToMyProfile(context);
-                   // Navigator.pushNamed(context, 'profile');
-                    //Navigator.push(context,MaterialPageRoute(builder: (context)=>MyProfile()));
-                    Application.router.navigateTo(context, "/viewfine");
+                    Application.router.navigateTo(context, '/profile');
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -108,11 +66,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //Insert event to be fired up when button is clicked here
-                    //in this case, this increments our `countValue` variable by one.
-                    //navigateToSettings(context);
-                    //Navigator.pushNamed(context, 'settings');
-                    //Navigator.push(context,MaterialPageRoute(builder: (context)=>Settings()));
+                    Application.router.navigateTo(context, '/settings');
                   },
                   child: CircleAvatar(
                     backgroundImage: ExactAssetImage('lib/images/officer.png'),
@@ -123,12 +77,80 @@ class _HomePageState extends State<HomePage> {
               ],
             )
           ],
-        )));
-  }
+        )),
+  Text(
+     'Index 1: Business',
+     //style: optionStyle,
+  ),
+  Text(
+     'Index 2: School',
+     //style: optionStyle,
+  ),
+  Center(
+    child: Column(children: <Widget>[],),
+  )
+];
 
-  void _handleLogout() {}
+void _onItemTapped(int index) {
+  setState(() {
+    _selectedIndex = index;
+  });
 }
 
-// Future navigateto(BuildContext context) async {
-//   Navigator.push(context, MaterialPageRoute(builder: (context) => ViewIssuedFines()));
-// }
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Home Page'),
+    ),
+    body: Center(
+      child: _widgetOptions.elementAt(_selectedIndex),
+    ),
+    bottomNavigationBar: BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.directions_car),
+          title: Text('Tasks')
+          ,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.local_activity),
+          title: Text('Dashboard'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          title: Text('Profile'),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: _onItemTapped,
+    ),
+  );
+}
+
+
+}
+// class _HomePageState extends State<HomePage> {
+//   int countValue = 1;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: Text('Homepage'),
+//           leading: IconButton(
+//             icon: Icon(Icons.arrow_back),
+//             onPressed: ()=> Navigator.pop(context,true),
+//           ),
+//           actions: <Widget>[
+//             IconButton(
+//               icon: Icon(MdiIcons.logout),
+//               onPressed: () => _handleLogout(),
+//             )
+//           ],
+//         ),
+//         body: );
+//   }
+
+//   void _handleLogout() {}
+//  }

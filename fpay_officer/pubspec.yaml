@@ -27,6 +27,7 @@ dependencies:
   logger:
   shared_preferences:
   flutter_spinkit: "^2.1.0" 
+  flutter_multiselect: 0.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

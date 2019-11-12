@@ -1,6 +1,7 @@
 import 'package:FPay/routes/application.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flutter_multiselect/flutter_multiselect.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -75,90 +76,45 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 20,
                 ),
-                DropdownButton<String>(
-                  disabledHint: Text("Select the fine"),
-                  isExpanded: true,
-                  items: <String>['A', 'B', 'C', 'D'].map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text("y"),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
-                )
+                MultiSelect(
+                    autovalidate: false,
+                    titleText: "Select ",
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select one or more option(s)';
+                      }
+                    },
+                    errorText: 'Please select one or more option(s)',
+                    dataSource: [
+                      {
+                        "display": "Australia",
+                        "value": 1,
+                      },
+                      {
+                        "display": "Canada",
+                        "value": 2,
+                      },
+                      {
+                        "display": "India",
+                        "value": 3,
+                      },
+                      {
+                        "display": "United States",
+                        "value": 4,
+                      }
+                    ],
+                    textField: 'display',
+                    valueField: 'value',
+                    filterable: true,
+                    required: true,
+                    value: null,
+                    onSaved: (value) {
+                      print('The value is $value');
+                    })
               ],
             ),
           ),
         )))),
-    // Center(
-    //     child: Column(
-    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //   //mainAxisSize: MainAxisSize.max,
-    //   children: <Widget>[
-    //     Container(
-    //       child: Text(
-    //         "Select a task",
-    //         style: TextStyle(fontSize: 50, color: Colors.brown),
-    //       ),
-    //     ),
-    //     new Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: <Widget>[
-    //         GestureDetector(
-    //           onTap: () {
-    //             Application.router.navigateTo(
-    //               context,
-    //               '/viewfine',
-    //             );
-    //           },
-    //           child: CircleAvatar(
-    //             backgroundImage: ExactAssetImage('lib/images/officer.png'),
-    //             minRadius: 50,
-    //             maxRadius: 80,
-    //           ),
-    //         ),
-    //         GestureDetector(
-    //           onTap: () {
-    //             Application.router.navigateTo(
-    //               context,
-    //               '/newfine',
-    //             );
-    //           },
-    //           child: CircleAvatar(
-    //             backgroundImage: ExactAssetImage('lib/images/officer.png'),
-    //             minRadius: 50,
-    //             maxRadius: 80,
-    //           ),
-    //         )
-    //       ],
-    //     ),
-    //     new Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: <Widget>[
-    //         GestureDetector(
-    //           onTap: () {
-    //             Application.router.navigateTo(context, '/profile');
-    //           },
-    //           child: CircleAvatar(
-    //             backgroundImage: ExactAssetImage('lib/images/officer.png'),
-    //             minRadius: 50,
-    //             maxRadius: 80,
-    //           ),
-    //         ),
-    //         GestureDetector(
-    //           onTap: () {
-    //             Application.router.navigateTo(context, '/settings');
-    //           },
-    //           child: CircleAvatar(
-    //             backgroundImage: ExactAssetImage('lib/images/officer.png'),
-    //             minRadius: 50,
-    //             maxRadius: 80,
-    //           ),
-    //         )
-    //       ],
-    //     )
-    //   ],
-    // )),
     Scaffold(
         body: Container(
             child: new SingleChildScrollView(
@@ -215,9 +171,7 @@ class _HomePageState extends State<HomePage> {
             title: Text('New fine'),
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.ac_unit), 
-              title: Text('View Fines')
-          ),
+              icon: Icon(Icons.ac_unit), title: Text('View Fines')),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_activity),
             title: Text('Dashboard'),
@@ -234,26 +188,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-// class _HomePageState extends State<HomePage> {
-//   int countValue = 1;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Homepage'),
-//           leading: IconButton(
-//             icon: Icon(Icons.arrow_back),
-//             onPressed: ()=> Navigator.pop(context,true),
-//           ),
-//           actions: <Widget>[
-//             IconButton(
-//               icon: Icon(MdiIcons.logout),
-//               onPressed: () => _handleLogout(),
-//             )
-//           ],
-//         ),
-//         body: );
-//   }
 
-//   void _handleLogout() {}
-//  }
+void _handleLogout() {}

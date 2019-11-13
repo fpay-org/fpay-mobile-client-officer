@@ -13,7 +13,11 @@ class _AuthScreenState extends State<AuthScreen> {
   String _email, _password;
   static final _formKey = new GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  Future _handleLogin(String email,String password,BuildContext context,) async {
+  Future _handleLogin(
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
     final form = _formKey.currentState;
     // if (form.validate()) {
     //   await AuthService().login(email, password).then((res) async {
@@ -39,26 +43,26 @@ class _AuthScreenState extends State<AuthScreen> {
     //   });
     // }
     await AuthService().login(email, password).then((res) async {
-        if (res) {
-          Application.router.navigateTo(context, '/home');
-        } else {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Invalid credentials"),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text("Okay"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                );
-              });
-        }
-      });
+      if (res) {
+        Application.router.navigateTo(context, '/home');
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Invalid credentials"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Okay"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+    });
   }
 
   @override
@@ -80,8 +84,6 @@ class _AuthScreenState extends State<AuthScreen> {
                     _email = value;
                   });
                 },
-                //controller: myControllerPass,
-                //onSaved: (input) => password = input,
                 decoration: new InputDecoration(
                   labelText: "Email",
                   fillColor: Colors.white,
@@ -91,10 +93,12 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   //fillColor: Colors.green
                 ),
-                validator: (val) => !EmailValidator.Validate(val, true)
-                    ? 'Not a valid email.'
-                    : null,
-
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return 'Empty!!';
+                  }
+                  //return "";
+                },
                 keyboardType: TextInputType.text,
                 style: new TextStyle(
                   fontFamily: "Poppins",
@@ -125,6 +129,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   if (val.length == 0) {
                     return "Password cannot be empty";
                   }
+                  //return "";
                 },
                 keyboardType: TextInputType.text,
                 style: new TextStyle(
@@ -142,7 +147,10 @@ class _AuthScreenState extends State<AuthScreen> {
                   // }
 
                   // });
-                  _handleLogin(_email, _password, context);
+                  if (_formKey.currentState.validate()) {
+                    _handleLogin(_email, _password, context);
+                  }
+                  //_handleLogin(_email, _password, context);
                 },
                 textColor: Colors.white,
                 child: const Text('Login', style: TextStyle(fontSize: 20)),

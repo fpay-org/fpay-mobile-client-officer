@@ -10,7 +10,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 20), () async {
+    Future.delayed(Duration(seconds: 5), () async {
       Application.router.navigateTo(context, '/auth');
     });
     super.initState();

@@ -11,24 +11,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static String _officer_id;
+  static String _driver_id;
+  static String _witness_id;
+  static List _fines;
+  
+  static final _fineFormKey = new GlobalKey<FormState>();
   List<Widget> _widgetOptions = <Widget>[
     Scaffold(
         appBar: AppBar(
-          title: new Text("New Fine"),
+          title: Text("New Fine"),
         ),
         body: Container(
-            child: new SingleChildScrollView(
-                child: Builder(
-          builder: (context) => Form(
-            //key: _formKey,
-            child: new Column(
+            child: SingleChildScrollView(
+               child:Form(
+            key: _fineFormKey,
+            child: Column(
               children: <Widget>[
+
                 SizedBox(
                   height: 20,
-                ),
+                ),              
                 TextFormField(
                   decoration: new InputDecoration(
-                    labelText: "Fine Id",
+                    labelText: "Driver's Licenece Number",
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -36,14 +42,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                     //fillColor: Colors.green
                   ),
+                  onChanged: (value){
+                      _driver_id = value;  
+                  },
                   validator: (val) {
-                    if (val.length == 0) {
-                      return "Email cannot be empty";
-                    } else {
-                      return null;
+                    if (val.length == 8) {
+                      return "Invalid entry";
                     }
                   },
-                  keyboardType: TextInputType.emailAddress,
+                  //keyboardType: TextInputType.emailAddress,
                   style: new TextStyle(
                     fontFamily: "Poppins",
                   ),
@@ -53,19 +60,19 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextFormField(
                   decoration: new InputDecoration(
-                    labelText: "Enter Email",
+                    labelText: "Police officer ID Number(Witness)",
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
                       borderSide: new BorderSide(),
                     ),
-                    //fillColor: Colors.green
                   ),
+                  onChanged: (value){
+                      _witness_id = value;  
+                  },
                   validator: (val) {
                     if (val.length == 0) {
-                      return "Email cannot be empty";
-                    } else {
-                      return null;
+                      return "Invalid entry";
                     }
                   },
                   keyboardType: TextInputType.emailAddress,
@@ -87,19 +94,19 @@ class _HomePageState extends State<HomePage> {
                     errorText: 'Please select one or more option(s)',
                     dataSource: [
                       {
-                        "display": "Australia",
+                        "display": "Fine No 1",
                         "value": 1,
                       },
                       {
-                        "display": "Canada",
+                        "display": "Fine no 2",
                         "value": 2,
                       },
                       {
-                        "display": "India",
+                        "display": "Fine no 3",
                         "value": 3,
                       },
                       {
-                        "display": "United States",
+                        "display": "Fine no 4",
                         "value": 4,
                       }
                     ],
@@ -109,12 +116,25 @@ class _HomePageState extends State<HomePage> {
                     required: true,
                     value: null,
                     onSaved: (value) {
-                      print('The value is $value');
-                    })
+                      _fines = value;
+                    }),
+                    SizedBox(
+                  height: 50,
+                ),
+                    RaisedButton(
+                onPressed: () {
+                  if (_fineFormKey.currentState.validate()) {
+                    //function
+                  }
+                },
+                textColor: Colors.white,
+                child: const Text('Issue Fine', style: TextStyle(fontSize: 20)),
+                color: Colors.redAccent,
+              )
               ],
             ),
           ),
-        )))),
+        ))),
     Scaffold(
         body: Container(
             child: new SingleChildScrollView(

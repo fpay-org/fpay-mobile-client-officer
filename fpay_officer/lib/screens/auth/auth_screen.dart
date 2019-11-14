@@ -2,7 +2,7 @@ import 'package:FPay/routes/application.dart';
 import 'package:FPay/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:email_validator/email_validator.dart';
+
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -13,11 +13,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String _email, _password;
   static final _formKey = new GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  Future _handleLogin(
-    String email,
-    String password,
-    BuildContext context,
-  ) async {
+  Future _handleLogin(String email,String password,BuildContext context,) async {
     final form = _formKey.currentState;
     await AuthService().login(email, password).then((res) async {
       if (res) {

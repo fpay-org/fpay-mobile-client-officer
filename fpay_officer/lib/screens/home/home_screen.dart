@@ -1,4 +1,5 @@
 import 'package:FPay/routes/application.dart';
+import 'package:FPay/services/fine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
@@ -9,7 +10,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+
+  Future handleFineIssueed(String _officer_id,String _driver_id,String _witness_id,List _fines) async {
+    await FineService().isuseFine(_officer_id,_driver_id,_witness_id,_fines).then((res) async {
+      if (res) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Success"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Okay"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Error"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Okay"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+    });
+  }
+
+  int _selectedIndex = 2;
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static String _officer_id;
   static String _driver_id;
@@ -60,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextFormField(
                   decoration: new InputDecoration(
-                    labelText: "Police officer ID Number(Witness)",
+                    labelText: "Supporting Police officer ID Number(Witness)",
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -85,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 MultiSelect(
                     autovalidate: false,
-                    titleText: "Select ",
+                    titleText: "Fine list",
                     validator: (value) {
                       if (value == null) {
                         return 'Please select one or more option(s)';
@@ -207,6 +247,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+
 }
 
 void _handleLogout() {}

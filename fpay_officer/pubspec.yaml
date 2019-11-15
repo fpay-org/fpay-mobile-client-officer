@@ -29,6 +29,7 @@ dependencies:
   flutter_spinkit: "^2.1.0" 
   flutter_multiselect: 0.0.1
   intl: ^0.15.8
+  location: ^2.3.5
   geolocator: ^5.1.5
 
   # The following adds the Cupertino Icons font to your application.

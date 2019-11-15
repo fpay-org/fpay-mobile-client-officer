@@ -2,8 +2,10 @@ import 'package:FPay/config/config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart' as prefix0;
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 
 class FineService {
@@ -11,13 +13,34 @@ class FineService {
   var now = DateTime.now();
   String id = "456"; // get current user id
   var error;
+
   static Future<Position> getLocation() async {
-    Position location =  await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position location =  await Geolocator().getCurrentPosition(desiredAccuracy:prefix0.LocationAccuracy.high);
     return location;
   }
   Position location = getLocation() as Position;
-  
 
+
+
+// var location = new Location();
+
+// // Platform messages may fail, so we use a try/catch PlatformException.
+// Future<LocationData> locale() async {
+//     LocationData currentLocation;
+// try {
+//   currentLocation = await location.getLocation();
+// } on PlatformException catch (e) {
+//   if (e.code == 'PERMISSION_DENIED') {
+//     error = 'Permission denied';
+//   }
+//   currentLocation = null;
+// }
+
+// return currentLocation;
+
+// }
+
+  //LocationData currentLocation = locale() as LocationData;
   Future<bool> isuseFine(String _officer_id, String _driver_id,
           String _witness_id, List _fines) async =>
       Dio().post('$baseUrl/user/', data: {

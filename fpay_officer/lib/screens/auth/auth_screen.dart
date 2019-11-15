@@ -18,7 +18,7 @@ class _AuthScreenState extends State<AuthScreen> {
     await AuthService().login(email, password).then((res) async {
       if (res) {
         Application.router.navigateTo(context, '/home');
-      } else {
+      } else if(res == null) {
         showDialog(
             context: context,
             builder: (BuildContext context) {

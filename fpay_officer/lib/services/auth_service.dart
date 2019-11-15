@@ -16,12 +16,16 @@ class AuthService {
       Logger().i("Result: ${res.statusCode}");
 
       
-      try{if (res.statusCode == 200) {
-        
+      try{
+        if (res.statusCode == 200) {
         return await _saveToken(res.data['token']).then((res) {
           return res;
         });
-      }}
+      }
+        else{
+          return null;
+        }
+      }
       on DioError catch (e){
         print(e);
         return false;

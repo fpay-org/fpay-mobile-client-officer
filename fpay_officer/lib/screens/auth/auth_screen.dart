@@ -55,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomInset: false,
         body: Form(
           key: _formKey,
           child: Column(
@@ -63,10 +63,12 @@ class _AuthScreenState extends State<AuthScreen> {
               SizedBox(
                 height: 50,
               ),
-              Container(
-                width: 200,
-                height: 200,
-                child: Image.asset("lib/images/officer_login.png"),
+              Expanded(
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  child: Image.asset("lib/images/officer_login.png"),
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -137,6 +139,9 @@ class _AuthScreenState extends State<AuthScreen> {
                 textColor: Colors.white,
                 child: const Text('Login', style: TextStyle(fontSize: 20)),
                 color: Colors.lightBlue,
+              ),
+              Expanded(
+                child: Container(),
               )
             ],
           ),

@@ -10,14 +10,16 @@ class AuthService {
   final baseUrl = Config.baseUrl;
 
   Future<bool> login(String id, String password) {
-    Logger().i("Attempting to login as $id and $password");
-
-    return Dio().post('https://fpay-server.herokuapp.com/auth/officer/login',
-        data: {"officerID": id, "password": password}).then((res) async {
+    return Dio().post(
+      '$baseUrl/auth/officer/login',
+      data: {
+        "officerID": id,
+        "password": password,
+      },
+    ).then((res) async {
       if (res.statusCode == 200) {
         return await _saveToken(res.data['token']);
       }
-
       return false;
     }).catchError((err) => false);
   }

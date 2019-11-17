@@ -1,6 +1,7 @@
 import 'package:FPay/routes/application.dart';
 import 'package:FPay/services/fine_service.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
 
@@ -11,11 +12,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  Future handleFineIssueed(String _officer_id,String _driver_id,String _witness_id,List _fines) async {
+  static Future _getId() async {
+    
+    await FineService().getId().then((res) async {
+      if (res as bool) {
+        Logger().i("Result: ${res}");
+      } else if(res == null) {
+        Logger().i("NULL");
+      }
+    });
+
+    
+  }
+
+  static Future _handleFineIssueed(String _officer_id,String _driver_id,String _witness_id,List _fines) async {
     await FineService().isuseFine(_officer_id,_driver_id,_witness_id,_fines).then((res) async {
       if (res) {
         showDialog(
-            context: context,
+            context: null,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Success"),
@@ -31,7 +45,7 @@ class _HomePageState extends State<HomePage> {
             });
       } else {
         showDialog(
-            context: context,
+            context: null,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Error"),
@@ -60,7 +74,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _widgetOptions = <Widget>[
     Scaffold(
         appBar: AppBar(
-          title: Text("New Fine"),
+        title: Text("New Fine"),
         ),
         body: Container(
             child: SingleChildScrollView(
@@ -164,7 +178,10 @@ class _HomePageState extends State<HomePage> {
                     RaisedButton(
                 onPressed: () {
                   if (_fineFormKey.currentState.validate()) {
-                    //function
+                    Logger().i("Result");
+                    _getId();
+                    _handleFineIssueed(_officer_id,_driver_id,_witness_id,_fines);
+
                   }
                 },
                 textColor: Colors.white,

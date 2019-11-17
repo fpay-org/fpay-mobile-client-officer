@@ -7,18 +7,29 @@ import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FineService {
   final baseUrl = Config.baseUrl;
   var now = DateTime.now();
   String id = "456"; // get current user id
-  var error;
+  var error; 
+  
+  Future<String> getId() async{
+  String prefs = await SharedPreferences.getInstance().then((instance){
+    return instance.getString("token");
+  });
 
-  static Future<Position> getLocation() async {
-    Position location =  await Geolocator().getCurrentPosition(desiredAccuracy:prefix0.LocationAccuracy.high);
-    return location;
-  }
-  Position location = getLocation() as Position;
+    await Dio().get('$baseUrl/me/token=$prefs',).then((res) async {
+      if(res.statusCode==200)
+      return res;
+    });
+}
+  // static Future<Position> getLocation() async {
+  //   Position location =  await Geolocator().getCurrentPosition(desiredAccuracy:prefix0.LocationAccuracy.high);
+  //   return location;
+  // }
+  // var location = getLocation();
 
 
 
@@ -49,7 +60,7 @@ class FineService {
         "driver_id": _driver_id,
         "fine_list": _fines,
         "time_stamp:": now,
-        "location":location,
+        //"location":location,
       }).then((res) async {
         Logger().i("Result: ${res.statusCode}");
 

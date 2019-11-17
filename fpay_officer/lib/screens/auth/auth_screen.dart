@@ -1,5 +1,6 @@
 import 'package:FPay/routes/application.dart';
 import 'package:FPay/services/auth_service.dart';
+import 'package:FPay/services/fine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -10,12 +11,13 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  String _email, _password;
+  String _id, _password;
   static final _formKey = new GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  Future _handleLogin(String email,String password,BuildContext context,) async {
+
+  Future _handleLogin(String _id,String _password,BuildContext context,) async {
     final form = _formKey.currentState;
-    await AuthService().login(email, password).then((res) async {
+    await AuthService().login(_id,_password).then((res) async {
       if (res) {
         Application.router.navigateTo(context, '/home');
       } else if(res == null) {
@@ -36,6 +38,15 @@ class _AuthScreenState extends State<AuthScreen> {
             });
       }
     });
+    
+    
+  }
+
+  Future _handle() async {
+    Logger().i("Result:");
+    await FineService().getId().then((ret)async{
+        Logger().i("Result: ${ret}");
+    });
   }
 
   @override
@@ -48,17 +59,25 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Column(
             children: <Widget>[
               SizedBox(
+                height: 50,
+              ),
+              Container(
+                width: 200,
                 height: 200,
+                child: Image.asset("lib/images/officer_login.png"),
+              ),
+              SizedBox(
+                height: 20,
               ),
               TextFormField(
                 obscureText: false,
                 onChanged: (value) {
                   setState(() {
-                    _email = value;
+                    _id = value;
                   });
                 },
                 decoration: new InputDecoration(
-                  labelText: "Email",
+                  labelText: "Officer ID",
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
@@ -104,12 +123,13 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
               RaisedButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    _handleLogin(_email, _password, context);
+                    _handleLogin(_id, _password, context);
+                   //_handle();
                   }
                 },
                 textColor: Colors.white,

@@ -90,7 +90,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 validator: (val) {
                   if (val.isEmpty) {
-                    return 'Empty!!';
+                    return 'Id number cannot be empty';
+                  }
+                  else if(val.length != 6){
+                    return "Not a valid Id number";
                   }
                 },
                 keyboardType: TextInputType.text,
@@ -102,7 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 height: 20,
               ),
               TextFormField(
-                obscureText: false,
+                obscureText: true,
                 onChanged: (value) {
                   setState(() {
                     _password = value;

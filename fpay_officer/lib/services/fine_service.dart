@@ -15,15 +15,23 @@ class FineService {
   String id = "456"; // get current user id
   var error; 
   
-  Future<String> getId() async{
-  String prefs = await SharedPreferences.getInstance().then((instance){
-    return instance.getString("token");
-  });
+  //var logger = Logger();
+  
+  //logger.e("Logger is working!");
 
-    await Dio().get('$baseUrl/me/token=$prefs',).then((res) async {
-      if(res.statusCode==200)
-      return res;
-    });
+  Future getId() async{
+  String prefs = await SharedPreferences.getInstance().then((instance){
+    return instance.getString('token');
+  });
+    Logger().i('$prefs'); 
+    await Dio().get('$baseUrl/me/$prefs').then((res) async {
+      
+      if(res.statusCode==200){
+        Logger().i("$res");
+        return res;
+      }
+      return false;
+    }).catchError((err)=>false);
 }
   // static Future<Position> getLocation() async {
   //   Position location =  await Geolocator().getCurrentPosition(desiredAccuracy:prefix0.LocationAccuracy.high);

@@ -1,6 +1,7 @@
 import 'package:FPay/routes/application.dart';
 import 'package:FPay/services/fine_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   static Future _getId() async {
     
     await FineService().getId().then((res) async {
-      if (res as bool) {
+      if (res) {
         Logger().i("Result: ${res}");
       } else if(res == null) {
         Logger().i("NULL");
@@ -177,10 +178,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                     RaisedButton(
                 onPressed: () {
+                  //Logger().i("Result");
                   if (_fineFormKey.currentState.validate()) {
-                    Logger().i("Result");
+                    //Logger().i("Result");
                     _getId();
-                    _handleFineIssueed(_officer_id,_driver_id,_witness_id,_fines);
+                   // _handleFineIssueed(_officer_id,_driver_id,_witness_id,_fines);
 
                   }
                 },
@@ -223,6 +225,25 @@ class _HomePageState extends State<HomePage> {
     Scaffold(
       appBar: AppBar(
         title: new Text("Profile"),
+      ),
+      body: Column(
+        children: <Widget>[
+          prefix0.SizedBox(
+            height: 100,
+          ),Center(
+            child: RaisedButton(
+                onPressed: () {
+                    _handleLogout();
+                    //_handle();
+                  
+                },
+                textColor: Colors.white,
+                child: const Text('Logout', style: TextStyle(fontSize: 20)),
+                color: Colors.red,
+              ),
+          )
+          
+        ],
       ),
     )
   ];

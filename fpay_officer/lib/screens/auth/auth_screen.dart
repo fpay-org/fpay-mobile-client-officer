@@ -4,7 +4,6 @@ import 'package:FPay/services/fine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -15,12 +14,17 @@ class _AuthScreenState extends State<AuthScreen> {
   static final _formKey = new GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Future _handleLogin(String _id,String _password,BuildContext context,) async {
-    final form = _formKey.currentState;
-    await AuthService().login(_id,_password).then((res) async {
+  Future _handleLogin(
+    String _id,
+    String _password,
+    BuildContext context,
+  ) async {
+    // final form = _formKey.currentState;
+
+    AuthService().login(_id, _password).then((res) {
       if (res) {
         Application.router.navigateTo(context, '/home');
-      } else if(res == null) {
+      } else {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -38,14 +42,12 @@ class _AuthScreenState extends State<AuthScreen> {
             });
       }
     });
-    
-    
   }
 
   Future _handle() async {
     Logger().i("Result:");
-    await FineService().getId().then((ret)async{
-        Logger().i("Result: ${ret}");
+    await FineService().getId().then((ret) async {
+      Logger().i("Result: ${ret}");
     });
   }
 
@@ -129,7 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     _handleLogin(_id, _password, context);
-                   //_handle();
+                    //_handle();
                   }
                 },
                 textColor: Colors.white,

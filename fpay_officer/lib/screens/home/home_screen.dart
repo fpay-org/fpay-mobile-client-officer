@@ -13,20 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  static Future _getId() async {
-    
-    await FineService().getId().then((res) async {
-      if (res) {
-        Logger().i("Result: ${res}");
-      } else if(res == null) {
-        Logger().i("NULL");
-      }
-    });
-
-    
-  }
-
-  static Future _handleFineIssueed(String _officer_id,String _driver_id,String _witness_id,List _fines) async {
+  Future _handleFineIssueed(String _driver_id,String _witness_id,List _fines) async {
     await FineService().isuseFine(_officer_id,_driver_id,_witness_id,_fines).then((res) async {
       if (res) {
         showDialog(
@@ -64,13 +51,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+ 
+
   int _selectedIndex = 2;
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static String _officer_id;
-  static String _driver_id;
-  static String _witness_id;
-  static List _fines;
-  
+   String _officer_id;
+   String _driver_id;
+   String _witness_id;
+  List _fines;
+  static _HomePageState obj = _HomePageState();
   static final _fineFormKey = new GlobalKey<FormState>();
   List<Widget> _widgetOptions = <Widget>[
     Scaffold(
@@ -98,7 +87,8 @@ class _HomePageState extends State<HomePage> {
                     //fillColor: Colors.green
                   ),
                   onChanged: (value){
-                      _driver_id = value;  
+                    obj._driver_id = value;
+                      //_driver_id = value;  
                   },
                   validator: (val) {
                     if (val.length == 8) {
@@ -123,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onChanged: (value){
-                      _witness_id = value;  
+                      obj._witness_id = value;  
                   },
                   validator: (val) {
                     if (val.length == 0) {
@@ -171,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                     required: true,
                     value: null,
                     onSaved: (value) {
-                      _fines = value;
+                      obj._fines = value;
                     }),
                     SizedBox(
                   height: 50,
@@ -290,3 +280,21 @@ class _HomePageState extends State<HomePage> {
 }
 
 void _handleLogout() {}
+
+
+Future _getId() async {
+    Logger().i("got herer");
+    FineService().getId().then((res){
+      //Logger().i("got null");
+      if (res) {
+        Logger().i("$res");
+        //_handleFineIssueed(res, _driver_id, _witness_id, _fines)
+      } else if(res == false) {
+        Logger().i("NULL");
+      }
+    });
+
+    
+  }
+
+   

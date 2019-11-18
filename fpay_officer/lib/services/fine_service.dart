@@ -12,27 +12,73 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FineService {
   final baseUrl = Config.baseUrl;
   var now = DateTime.now();
-  String id = "456"; // get current user id
+  String officerid; // get current user id
   var error; 
   
   //var logger = Logger();
   
   //logger.e("Logger is working!");
 
-  Future getId() async{
-  String prefs = await SharedPreferences.getInstance().then((instance){
-    return instance.getString('token');
-  });
-    Logger().i('$prefs'); 
-    await Dio().get('$baseUrl/me/$prefs').then((res) async {
-      
-      if(res.statusCode==200){
+Future getId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  String token = prefs.getString("token");
+    return Dio().get(
+      '$baseUrl/me/$token',
+    ).then((res) async {
+      if (res.statusCode == 200) {
+        //Logger().i('$res.data["token"]');
+        //String toke = res.data['token'];
+        //final js = json.decode(res.data);
         Logger().i("$res");
-        return res;
+        //print(res);
+        officerid = res.data["data"]["officerID"];
+        Logger().i('id:$officerid');
+        //print(m);
+        //Logger().i('$token');
+        return true;
+        //return await _saveToken(token);
       }
       return false;
-    }).catchError((err)=>false);
-}
+    }).catchError((err) => false);
+  }
+
+//   Future getId() async{
+//     String id = "0";
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   String token = prefs.getString("token");
+//     Logger().i('$token'); 
+//     final res = await Dio().get('$baseUrl/me/$token');
+      
+//       if(res.statusCode == 200){
+//         Logger().i("$res");
+//         id = res.data["data"]["officerID"];
+//         Logger().i('id:$id');
+//          //await _saveID(id);
+//           return id;
+
+//          }
+//          return false;
+//         // if(id != null){
+//         //   Logger().i("id:$id");
+//         //   return id;
+//         // }
+//       //return false;
+//       ///Logger().i('$id');
+//       // if(id=="0")
+//       //   return true;
+//       // else
+//       //   return false;
+//     //}).catchError((err)=>false);
+// }
+
+Future<bool> _saveID(String id) async {
+    return await SharedPreferences.getInstance().then((instance) {
+      //Logger().i('$token');
+      print(id);
+      instance.setString("id", id);
+      return true;
+    }).catchError((err) => false);
+  }
   // static Future<Position> getLocation() async {
   //   Position location =  await Geolocator().getCurrentPosition(desiredAccuracy:prefix0.LocationAccuracy.high);
   //   return location;
@@ -63,7 +109,7 @@ class FineService {
   Future<bool> isuseFine(String _officer_id, String _driver_id,
           String _witness_id, List _fines) async =>
       Dio().post('$baseUrl/user/', data: {
-        "main_officer_id": id,//get current user id
+        "main_officer_id": officerid,//get current user id
         "witness_officer_id": _officer_id,
         "driver_id": _driver_id,
         "fine_list": _fines,

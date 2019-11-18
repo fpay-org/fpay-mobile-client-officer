@@ -33,6 +33,17 @@ class AuthService {
     }).catchError((err) => false);
   }
 
+  Future<bool> logout()  async {
+    //BuildContext context;
+    await SharedPreferences.getInstance().then((prefs){
+          prefs.remove("token");
+          //Application.router.navigateTo(context,'/',clearStack: true);
+          
+    });
+Logger().i("logout");
+    return true;
+  }
+
   Future<bool> _saveToken(String token) async {
     return await SharedPreferences.getInstance().then((instance) {
       //Logger().i('$token');
@@ -41,6 +52,4 @@ class AuthService {
       return true;
     }).catchError((err) => false);
   }
-
-  void logout() {}
 }

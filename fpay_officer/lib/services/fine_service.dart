@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart' as prefix0;
+import 'package:location/location.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
@@ -104,17 +105,29 @@ Future<bool> _saveID(String id) async {
 // return currentLocation;
 
 // }
+Position _currentPosition;
+
+_getCurrentLocation(){
+Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+geolocator.getCurrentPosition(desiredAccuracy: prefix0.LocationAccuracy.best)
+.then((Position position){
+    _currentPosition = position;
+}).catchError((e){
+  print(e);
+});
+}
+
 
   //LocationData currentLocation = locale() as LocationData;
-  Future<bool> isuseFine(String _officer_id, String _driver_id,
-          String _witness_id, List _fines) async =>
-      Dio().post('$baseUrl/user/', data: {
+  Future<bool> isuseFine(String _officer_id, String _driver_id,String _witness_id, List _fines) async {
+  _getCurrentLocation();
+      return Dio().post('$baseUrl/user/', data: {
         "main_officer_id": officerid,//get current user id
         "witness_officer_id": _officer_id,
         "driver_id": _driver_id,
         "fine_list": _fines,
         "time_stamp:": now,
-        //"location":location,
+        "location":_currentPosition,
       }).then((res) async {
         Logger().i("Result: ${res.statusCode}");
 
@@ -127,4 +140,27 @@ Future<bool> _saveID(String id) async {
           return false;
         }
       });
+
+      return Dio().post(
+      '$baseUrl/auth/officer/',
+      data: {
+        //"main_officer_id": officerid,
+        //"wit"
+        //"password": password,
+      },
+    ).then((res) async {
+      if (res.statusCode == 200) {
+        //Logger().i('$res.data["token"]');
+        //String toke = res.data['token'];
+        //final js = json.decode(res.data);
+        print(res);
+        String token = res.data["data"]["token"];
+        //print(m);
+        //Logger().i('$token');
+        //return await _saveToken(token);
+        //return await _saveToken(token);
+      }
+      return false;
+    }).catchError((err) => false);
+}
 }

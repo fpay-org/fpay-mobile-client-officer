@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
+import 'package:dropdownfield/dropdownfield.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,19 +20,21 @@ class NewFine extends StatefulWidget {
 }
 
 class _NewFineState extends State<NewFine> {
-  static final _fineFormKey = new GlobalKey<FormState>();
-  static String _officer_id = "";
-  static String _driver_id = "";
-  static String _witness_id = "";
-  static List _fines = [];
-
+  final _fineFormKey = new GlobalKey<FormState>();
+  String _officer_id;
+  String _driver_id;
+  String _witness_id;
+  List<int> _fines;
+  //List<String> fines = ["mdkalf", "fjdkj"];
+  var penalty;
   Future _getId() async {
     Logger().i("got herer");
     FineService().getId().then((res) {
-      //Logger().i("got null");
+      Logger().i("got null");
       if (res) {
+        Logger().i("Came here");
         Logger().i("$res");
-        _handleFineIssueed(_driver_id, _witness_id, _fines);
+        //_handleFineIssueed(_driver_id, _witness_id, _fines);
       } else if (res == false) {
         Logger().i("NULL");
       }
@@ -41,7 +44,7 @@ class _NewFineState extends State<NewFine> {
   Future _handleFineIssueed(
       String _driver_id, String _witness_id, List _fines) async {
     await FineService()
-        .isuseFine(_officer_id, _driver_id, _witness_id, _fines)
+        .isuseFine(_driver_id, _witness_id, _fines)
         .then((res) async {
       if (res) {
         showDialog(
@@ -89,7 +92,7 @@ class _NewFineState extends State<NewFine> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 20,
+              height: 40,
             ),
             TextFormField(
               decoration: new InputDecoration(
@@ -105,8 +108,11 @@ class _NewFineState extends State<NewFine> {
                 _driver_id = value;
               },
               validator: (val) {
-                if (val.length == 8) {
-                  return "Invalid entry";
+                if (val.length != 8) {
+                  return "Invalid driver's licence number";
+                }
+                if (val.length == 0) {
+                  return "Driver's licence number cannot be null";
                 }
               },
               //keyboardType: TextInputType.emailAddress,
@@ -131,7 +137,10 @@ class _NewFineState extends State<NewFine> {
               },
               validator: (val) {
                 if (val.length == 0) {
-                  return "Invalid entry";
+                  return "Officer ID number cannot be null";
+                }
+                if (val.length != 6) {
+                  return "Invalid officer ID number";
                 }
               },
               keyboardType: TextInputType.emailAddress,
@@ -143,28 +152,32 @@ class _NewFineState extends State<NewFine> {
               height: 20,
             ),
             MultiSelect(
-                autovalidate: false,
-                titleText: "Fine list",
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select one or more option(s)';
-                  }
-                },
-                errorText: 'Please select one or more option(s)',
-                dataSource: [
-                  {"display": "Fine No 1", "index": 1, "value": 5000},
-                  {"display": "Fine no 2", "index": 2, "value": 2500},
-                  {"display": "Fine no 3", "index": 3, "value": 1000},
-                  {"display": "Fine no 4", "index": 4, "value": 500}
-                ],
-                textField: 'display',
-                valueField: 'index',
-                filterable: true,
-                required: true,
-                value: null,
-                onSaved: (value) {
-                  _fines = value;
-                }),
+              autovalidate: false,
+              titleText: "Fine list",
+              validator: (value) {
+                if (value == null) {
+                  Logger().i('$value');
+                  return 'Please select one or more option(s)';
+                }
+              },
+              errorText: 'Please select one or more option(s)',
+              dataSource: [
+                {"display": "Fine No 1", "index": 1, "value": 5000},
+                {"display": "Fine no 2", "index": 2, "value": 2500},
+                {"display": "Fine no 3", "index": 3, "value": 1000},
+                {"display": "Fine no 4", "index": 4, "value": 500}
+              ],
+              textField: 'display',
+              valueField: 'index',
+              filterable: true,
+              required: true,
+              value: null,
+              change: (values) {
+                Logger().i('gooooooo');
+                _fines = values;
+                print(_fines);
+              },
+            ),
             SizedBox(
               height: 50,
             ),
@@ -174,7 +187,7 @@ class _NewFineState extends State<NewFine> {
                 if (_fineFormKey.currentState.validate()) {
                   //Logger().i("Result");
                   _getId();
-                  _handleFineIssueed(_driver_id, _witness_id, _fines);
+                  _handleFineIssueed(_driver_id, _witness_id, penalty);
                 }
               },
               textColor: Colors.white,

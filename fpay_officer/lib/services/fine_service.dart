@@ -12,10 +12,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FineService {
   final baseUrl = Config.baseUrl;
-  var now = DateTime.now();
+  DateTime now = DateTime.now();
   String officerid; // get current user id
-  var error; 
-  
+  //var error; 
+  int value;
   //var logger = Logger();
   
   //logger.e("Logger is working!");
@@ -23,9 +23,11 @@ class FineService {
 Future getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString("token");
+  Logger().i('$token');
     return Dio().get(
       '$baseUrl/me/$token',
     ).then((res) async {
+      
       if (res.statusCode == 200) {
         //Logger().i('$res.data["token"]');
         //String toke = res.data['token'];
@@ -39,7 +41,9 @@ Future getId() async {
         return true;
         //return await _saveToken(token);
       }
+      Logger().i('puk');
       return false;
+      
     }).catchError((err) => false);
   }
 
@@ -105,62 +109,58 @@ Future<bool> _saveID(String id) async {
 // return currentLocation;
 
 // }
-Position _currentPosition;
 
-_getCurrentLocation(){
-Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-geolocator.getCurrentPosition(desiredAccuracy: prefix0.LocationAccuracy.best)
-.then((Position position){
-    _currentPosition = position;
-}).catchError((e){
-  print(e);
-});
+
+Future<Position> _getCurrentLocation()async {
+return await Geolocator().getCurrentPosition(desiredAccuracy: prefix0.LocationAccuracy.high);
+
 }
 
 
   //LocationData currentLocation = locale() as LocationData;
-  Future<bool> isuseFine(String _officer_id, String _driver_id,String _witness_id, List _fines) async {
-  _getCurrentLocation();
-      return Dio().post('$baseUrl/user/', data: {
-        "main_officer_id": officerid,//get current user id
-        "witness_officer_id": _officer_id,
-        "driver_id": _driver_id,
+  Future<bool> isuseFine(String _driver_id,String _witness_id, List _fines) async {
+  Position _currentPosition = await _getCurrentLocation();
+  
+  String lat = _currentPosition.latitude.toString();
+  String long = _currentPosition.longitude.toString();
+  List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+  Placemark place = placemark[0];
+  String address = "${place.locality},${place.postalCode},${place.country}";
+  Logger().i('${address}');
+  Logger().i('$lat');
+  value = 0;
+  Logger().i('fines:$_fines');
+  List<int> penalties = [];
+  for(var i = 0;i<_fines.length;i++){
+    value = value + _fines[i]["value"];
+    penalties[i] = _fines[i]["index"];
+  }
+  Logger().i('$value');
+  Logger().i('$penalties');
+  if(_witness_id == officerid){
+    return false;
+  }
+      return Dio().post('$baseUrl/user/', 
+      // headers:{
+        //add token here
+      // },
+      data: {
+        "value":value,
+        "penalies": penalties,
+        "officer": officerid,//get current user id
+        "secondary_officer": _witness_id,
+        "driver": _driver_id,
         "fine_list": _fines,
         "time_stamp:": now,
-        "location":_currentPosition,
-      }).then((res) async {
+        "location":[lat,long],
+        "address":address,
+      },
+      ).then((res) async {
         Logger().i("Result: ${res.statusCode}");
-
-        try {
           if (res.statusCode == 200) {
             //code here
           }
-        } on DioError catch (e) {
-          print(e);
           return false;
-        }
-      });
-
-      return Dio().post(
-      '$baseUrl/auth/officer/',
-      data: {
-        //"main_officer_id": officerid,
-        //"wit"
-        //"password": password,
-      },
-    ).then((res) async {
-      if (res.statusCode == 200) {
-        //Logger().i('$res.data["token"]');
-        //String toke = res.data['token'];
-        //final js = json.decode(res.data);
-        print(res);
-        String token = res.data["data"]["token"];
-        //print(m);
-        //Logger().i('$token');
-        //return await _saveToken(token);
-        //return await _saveToken(token);
+        }).catchError((err)=>false);
       }
-      return false;
-    }).catchError((err) => false);
-}
 }

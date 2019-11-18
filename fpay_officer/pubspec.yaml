@@ -27,10 +27,11 @@ dependencies:
   logger:
   shared_preferences: ^0.5.4+5
   flutter_spinkit: "^2.1.0" 
-  flutter_multiselect: 0.0.1
+  flutter_multiselect: 0.4.0
   intl: ^0.15.8
   location: ^2.3.5
   geolocator: ^5.1.5
+  dropdownfield: ^1.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

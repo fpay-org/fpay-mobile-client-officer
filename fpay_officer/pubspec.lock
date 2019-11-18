@@ -87,6 +87,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.3"
+  dropdownfield:
+    dependency: "direct main"
+    description:
+      name: dropdownfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   fixnum:
     dependency: transitive
     description:
@@ -119,7 +126,7 @@ packages:
       name: flutter_multiselect
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.4.0"
   flutter_spinkit:
     dependency: "direct main"
     description:

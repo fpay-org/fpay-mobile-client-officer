@@ -19,15 +19,9 @@ class AuthService {
       },
     ).then((res) async {
       if (res.statusCode == 200) {
-        //Logger().i('$res.data["token"]');
-        //String toke = res.data['token'];
-        //final js = json.decode(res.data);
         print(res);
         String token = res.data["data"]["token"];
-        //print(m);
-        //Logger().i('$token');
         return await _saveToken(token);
-        //return await _saveToken(token);
       }
       return false;
     }).catchError((err) => false);

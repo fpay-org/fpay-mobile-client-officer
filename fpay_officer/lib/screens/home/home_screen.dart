@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +25,14 @@ class _NewFineState extends State<NewFine> {
   String _officer_id;
   String _driver_id;
   String _witness_id;
-  List<int> _fines;
+  List _fines;
+  String fines;
+  @override
+  void initState(){
+    super.initState();
+    _fines = [];
+    fines = '';
+  }
   //List<String> fines = ["mdkalf", "fjdkj"];
   var penalty;
   Future _getId() async {
@@ -151,31 +159,83 @@ class _NewFineState extends State<NewFine> {
             SizedBox(
               height: 20,
             ),
-            MultiSelect(
+      //       Container(
+      //   padding: new EdgeInsets.all(32.0),
+      //   child: new Center(
+      //     child: new Column(
+      //       children: <Widget>[
+      //         new Checkbox(value: _value1, onChanged: _value1Changed),
+      //         new CheckboxListTile(
+      //             value: _value2,
+      //             onChanged: _value2Changed,
+      //             title: new Text('Hello World'),
+      //             controlAffinity: ListTileControlAffinity.leading,
+      //             subtitle: new Text('Subtitle'),
+      //             secondary: new Icon(Icons.archive),
+      //             activeColor: Colors.red,
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+            // MultiSelect(
+            //   autovalidate: false,
+            //   titleText: "Fine list",
+            //   validator: (value) {
+            //     if (value == null) {
+            //       Logger().i('$value');
+            //       return 'Please select one or more option(s)';
+            //     }
+            //   },
+            //   errorText: 'Please select one or more option(s)',
+            //   dataSource: [
+            //     {"display": "Fine No 1", "index": 1, "value": 5000},
+            //     {"display": "Fine no 2", "index": 2, "value": 2500},
+            //     {"display": "Fine no 3", "index": 3, "value": 1000},
+            //     {"display": "Fine no 4", "index": 4, "value": 500}
+            //   ],
+            //   textField: 'display',
+            //   valueField: 'index',
+            //   filterable: true,
+            //   required: true,
+            //   value: null,
+            //   onSaved: (values) {
+            //     Logger().i('$values');
+            //     _fines = values;
+            //     print(_fines);
+            //   },
+              
+            // ),
+            MultiSelectFormField(
               autovalidate: false,
-              titleText: "Fine list",
-              validator: (value) {
-                if (value == null) {
-                  Logger().i('$value');
-                  return 'Please select one or more option(s)';
+              titleText: 'Fines',
+              validator: (value){
+                if(value==null || value.length == 0){
+                  return "please select one or more options";
                 }
               },
-              errorText: 'Please select one or more option(s)',
               dataSource: [
-                {"display": "Fine No 1", "index": 1, "value": 5000},
-                {"display": "Fine no 2", "index": 2, "value": 2500},
-                {"display": "Fine no 3", "index": 3, "value": 1000},
-                {"display": "Fine no 4", "index": 4, "value": 500}
+                {"display": "Fine No 1", "index": 1, },
+                {"display": "Fine no 2", "index": 2, },
+                {"display": "Fine no 3", "index": 3, },
+                {"display": "Fine no 4", "index": 4, }
               ],
               textField: 'display',
               valueField: 'index',
-              filterable: true,
-              required: true,
-              value: null,
-              change: (values) {
-                Logger().i('gooooooo');
-                _fines = values;
-                print(_fines);
+              okButtonLabel: 'Add',
+              cancelButtonLabel: 'Cancel',
+              hintText: 'please choose one or more',
+              value: _fines,
+              onSaved: (val){
+                if(val==null){
+                  Logger().i('val');
+                  return;
+                }
+                
+                setState(() {
+                  _fines = val;
+                  Logger().i('$val');
+                });
               },
             ),
             SizedBox(
@@ -187,7 +247,7 @@ class _NewFineState extends State<NewFine> {
                 if (_fineFormKey.currentState.validate()) {
                   //Logger().i("Result");
                   _getId();
-                  _handleFineIssueed(_driver_id, _witness_id, penalty);
+                  _handleFineIssueed(_driver_id, _witness_id, _fines);
                 }
               },
               textColor: Colors.white,

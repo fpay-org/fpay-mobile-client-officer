@@ -130,13 +130,9 @@ return await Geolocator().getCurrentPosition(desiredAccuracy: prefix0.LocationAc
   Logger().i('$lat');
   value = 0;
   Logger().i('fines:$_fines');
-  List<int> penalties = [];
-  for(var i = 0;i<_fines.length;i++){
-    value = value + _fines[i]["value"];
-    penalties[i] = _fines[i]["index"];
-  }
+  
   Logger().i('$value');
-  Logger().i('$penalties');
+  
   if(_witness_id == officerid){
     return false;
   }
@@ -146,7 +142,7 @@ return await Geolocator().getCurrentPosition(desiredAccuracy: prefix0.LocationAc
       // },
       data: {
         "value":value,
-        "penalies": penalties,
+        "penalies": _fines,
         "officer": officerid,//get current user id
         "secondary_officer": _witness_id,
         "driver": _driver_id,

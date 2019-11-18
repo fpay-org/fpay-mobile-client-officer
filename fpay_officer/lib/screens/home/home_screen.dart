@@ -12,9 +12,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  Future _handleFineIssueed(String _driver_id,String _witness_id,List _fines) async {
-    await FineService().isuseFine(_officer_id,_driver_id,_witness_id,_fines).then((res) async {
+  Future _handleFineIssueed(
+      String _driver_id, String _witness_id, List _fines) async {
+    await FineService()
+        .isuseFine(_officer_id, _driver_id, _witness_id, _fines)
+        .then((res) async {
       if (res) {
         showDialog(
             context: null,
@@ -51,31 +53,28 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
- 
-
   int _selectedIndex = 2;
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-   String _officer_id;
-   String _driver_id;
-   String _witness_id;
-  List _fines;
+  String _officer_id = "";
+  String _driver_id = "";
+  String _witness_id = "";
+  List _fines = [];
   static _HomePageState obj = _HomePageState();
   static final _fineFormKey = new GlobalKey<FormState>();
   List<Widget> _widgetOptions = <Widget>[
     Scaffold(
         appBar: AppBar(
-        title: Text("New Fine"),
+          title: Text("New Fine"),
         ),
         body: Container(
             child: SingleChildScrollView(
-               child:Form(
+          child: Form(
             key: _fineFormKey,
             child: Column(
               children: <Widget>[
-
                 SizedBox(
                   height: 20,
-                ),              
+                ),
                 TextFormField(
                   decoration: new InputDecoration(
                     labelText: "Driver's Licenece Number",
@@ -86,9 +85,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     //fillColor: Colors.green
                   ),
-                  onChanged: (value){
+                  onChanged: (value) {
                     obj._driver_id = value;
-                      //_driver_id = value;  
+                    //_driver_id = value;
                   },
                   validator: (val) {
                     if (val.length == 8) {
@@ -112,8 +111,8 @@ class _HomePageState extends State<HomePage> {
                       borderSide: new BorderSide(),
                     ),
                   ),
-                  onChanged: (value){
-                      obj._witness_id = value;  
+                  onChanged: (value) {
+                   // _witness_id = value;
                   },
                   validator: (val) {
                     if (val.length == 0) {
@@ -163,23 +162,24 @@ class _HomePageState extends State<HomePage> {
                     onSaved: (value) {
                       obj._fines = value;
                     }),
-                    SizedBox(
+                SizedBox(
                   height: 50,
                 ),
-                    RaisedButton(
-                onPressed: () {
-                  //Logger().i("Result");
-                  if (_fineFormKey.currentState.validate()) {
+                RaisedButton(
+                  onPressed: () {
                     //Logger().i("Result");
-                    _getId();
-                   // _handleFineIssueed(_officer_id,_driver_id,_witness_id,_fines);
+                    if (_fineFormKey.currentState.validate()) {
+                      //Logger().i("Result");
+                      _getId();
+                      // _handleFineIssueed(_officer_id,_driver_id,_witness_id,_fines);
 
-                  }
-                },
-                textColor: Colors.white,
-                child: const Text('Issue Fine', style: TextStyle(fontSize: 20)),
-                color: Colors.redAccent,
-              )
+                    }
+                  },
+                  textColor: Colors.white,
+                  child:
+                      const Text('Issue Fine', style: TextStyle(fontSize: 20)),
+                  color: Colors.redAccent,
+                )
               ],
             ),
           ),
@@ -220,19 +220,18 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           prefix0.SizedBox(
             height: 100,
-          ),Center(
+          ),
+          Center(
             child: RaisedButton(
-                onPressed: () {
-                    _handleLogout();
-                    //_handle();
-                  
-                },
-                textColor: Colors.white,
-                child: const Text('Logout', style: TextStyle(fontSize: 20)),
-                color: Colors.red,
-              ),
+              onPressed: () {
+                _handleLogout();
+                //_handle();
+              },
+              textColor: Colors.white,
+              child: const Text('Logout', style: TextStyle(fontSize: 20)),
+              color: Colors.red,
+            ),
           )
-          
         ],
       ),
     )
@@ -275,26 +274,19 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }
 
 void _handleLogout() {}
 
-
 Future _getId() async {
-    Logger().i("got herer");
-    FineService().getId().then((res){
-      //Logger().i("got null");
-      if (res) {
-        Logger().i("$res");
-        //_handleFineIssueed(res, _driver_id, _witness_id, _fines)
-      } else if(res == false) {
-        Logger().i("NULL");
-      }
-    });
-
-    
-  }
-
-   
+  Logger().i("got herer");
+  FineService().getId().then((res) {
+    //Logger().i("got null");
+    if (res) {
+      Logger().i("$res");
+      //_handleFineIssueed(res, _driver_id, _witness_id, _fines)
+    } else if (res == false) {
+      Logger().i("NULL");
+    }
+  });
+}

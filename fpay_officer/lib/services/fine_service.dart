@@ -154,7 +154,7 @@ return await Geolocator().getCurrentPosition(desiredAccuracy: prefix0.LocationAc
       ).then((res) async {
         Logger().i("Result: ${res.statusCode}");
           if (res.statusCode == 200) {
-            //code here
+            return true;
           }
           return false;
         }).catchError((err)=>false);

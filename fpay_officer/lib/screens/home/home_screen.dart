@@ -1,14 +1,17 @@
 import 'package:FPay/routes/application.dart';
-import 'package:FPay/screens/home/tasks/issueFine.dart';
 import 'package:FPay/services/auth_service.dart';
 import 'package:FPay/services/fine_service.dart';
-import 'package:flutter/material.dart';
+import 'package:beauty_textfield/beauty_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_multiselect/flutter_multiselect.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:image_picker/image_picker.dart';
+//import 'package:camera/camera.dart';
+import 'dart:async';
+import 'dart:io';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,17 +25,19 @@ class NewFine extends StatefulWidget {
 
 class _NewFineState extends State<NewFine> {
   final _fineFormKey = new GlobalKey<FormState>();
-  String _officer_id;
-  String _driver_id;
-  String _witness_id;
+  String _officerId;
+  String _driverId;
+  String _witnessId;
+  String _vehicleNo;
   List _fines;
   String fines;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _fines = [];
     fines = '';
   }
+
   //List<String> fines = ["mdkalf", "fjdkj"];
   var penalty;
   Future _getId() async {
@@ -49,14 +54,14 @@ class _NewFineState extends State<NewFine> {
     });
   }
 
-  Future _handleFineIssueed(
-      String _driver_id, String _witness_id, List _fines) async {
+  Future _handleFineIssueed(String _driverId, String _vehicleNo,
+      String witnessId, List _fines) async {
     await FineService()
-        .isuseFine(_driver_id, _witness_id, _fines)
+        .isuseFine(_driverId, _vehicleNo, witnessId, _fines)
         .then((res) async {
       if (res) {
         showDialog(
-            context: null,
+            context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Success"),
@@ -72,7 +77,7 @@ class _NewFineState extends State<NewFine> {
             });
       } else {
         showDialog(
-            context: null,
+            context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Error"),
@@ -113,7 +118,7 @@ class _NewFineState extends State<NewFine> {
                 //fillColor: Colors.green
               ),
               onChanged: (value) {
-                _driver_id = value;
+                _driverId = value;
               },
               validator: (val) {
                 if (val.length != 8) {
@@ -133,6 +138,28 @@ class _NewFineState extends State<NewFine> {
             ),
             TextFormField(
               decoration: new InputDecoration(
+                labelText: "Vehicle Number",
+                fillColor: Colors.white,
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: new BorderSide(),
+                ),
+                //fillColor: Colors.green
+              ),
+              onChanged: (value) {
+                _vehicleNo = value;
+              },
+              validator: (val) {},
+              //keyboardType: TextInputType.emailAddress,
+              style: new TextStyle(
+                fontFamily: "Poppins",
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              decoration: new InputDecoration(
                 labelText: "Supporting Police officer ID Number(Witness)",
                 fillColor: Colors.white,
                 border: new OutlineInputBorder(
@@ -141,7 +168,7 @@ class _NewFineState extends State<NewFine> {
                 ),
               ),
               onChanged: (value) {
-                _witness_id = value;
+                _witnessId = value;
               },
               validator: (val) {
                 if (val.length == 0) {
@@ -159,25 +186,25 @@ class _NewFineState extends State<NewFine> {
             SizedBox(
               height: 20,
             ),
-      //       Container(
-      //   padding: new EdgeInsets.all(32.0),
-      //   child: new Center(
-      //     child: new Column(
-      //       children: <Widget>[
-      //         new Checkbox(value: _value1, onChanged: _value1Changed),
-      //         new CheckboxListTile(
-      //             value: _value2,
-      //             onChanged: _value2Changed,
-      //             title: new Text('Hello World'),
-      //             controlAffinity: ListTileControlAffinity.leading,
-      //             subtitle: new Text('Subtitle'),
-      //             secondary: new Icon(Icons.archive),
-      //             activeColor: Colors.red,
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
+            //       Container(
+            //   padding: new EdgeInsets.all(32.0),
+            //   child: new Center(
+            //     child: new Column(
+            //       children: <Widget>[
+            //         new Checkbox(value: _value1, onChanged: _value1Changed),
+            //         new CheckboxListTile(
+            //             value: _value2,
+            //             onChanged: _value2Changed,
+            //             title: new Text('Hello World'),
+            //             controlAffinity: ListTileControlAffinity.leading,
+            //             subtitle: new Text('Subtitle'),
+            //             secondary: new Icon(Icons.archive),
+            //             activeColor: Colors.red,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             // MultiSelect(
             //   autovalidate: false,
             //   titleText: "Fine list",
@@ -204,21 +231,33 @@ class _NewFineState extends State<NewFine> {
             //     _fines = values;
             //     print(_fines);
             //   },
-              
+
             // ),
             MultiSelectFormField(
               autovalidate: false,
               titleText: 'Fines',
-              validator: (value){
-                if(value==null || value.length == 0){
+              validator: (value) {
+                if (value == null || value.length == 0) {
                   return "please select one or more options";
                 }
               },
               dataSource: [
-                {"display": "Fine No 1", "index": 1, },
-                {"display": "Fine no 2", "index": 2, },
-                {"display": "Fine no 3", "index": 3, },
-                {"display": "Fine no 4", "index": 4, }
+                {
+                  "display": "Fine No 1",
+                  "index": 1,
+                },
+                {
+                  "display": "Fine no 2",
+                  "index": 2,
+                },
+                {
+                  "display": "Fine no 3",
+                  "index": 3,
+                },
+                {
+                  "display": "Fine no 4",
+                  "index": 4,
+                }
               ],
               textField: 'display',
               valueField: 'index',
@@ -226,12 +265,12 @@ class _NewFineState extends State<NewFine> {
               cancelButtonLabel: 'Cancel',
               hintText: 'please choose one or more',
               value: _fines,
-              onSaved: (val){
-                if(val==null){
+              onSaved: (val) {
+                if (val == null) {
                   Logger().i('val');
                   return;
                 }
-                
+
                 setState(() {
                   _fines = val;
                   Logger().i('$val');
@@ -241,13 +280,35 @@ class _NewFineState extends State<NewFine> {
             SizedBox(
               height: 50,
             ),
+            TextFormField(
+              decoration: new InputDecoration(
+                labelText: "Upload a photo of the supporting officer",
+                fillColor: Colors.white,
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: new BorderSide(),
+                ),
+              ),
+              validator: (val) {
+                if (val.length == 0) {
+                  return "Officer ID number cannot be null";
+                }
+                if (val.length != 6) {
+                  return "Invalid officer ID number";
+                }
+              },
+              keyboardType: TextInputType.emailAddress,
+              style: new TextStyle(
+                fontFamily: "Poppins",
+              ),
+            ),
             RaisedButton(
               onPressed: () {
                 //Logger().i("Result");
                 if (_fineFormKey.currentState.validate()) {
                   //Logger().i("Result");
                   _getId();
-                  _handleFineIssueed(_driver_id, _witness_id, _fines);
+                  _handleFineIssueed(_driverId, _vehicleNo, _witnessId, _fines);
                 }
               },
               textColor: Colors.white,
@@ -302,12 +363,71 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  final _dashboardFormKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Index 2: Dashboard',
-      //style: optionStyle,
-    );
+    return Scaffold(
+        body: Container(
+            child: SingleChildScrollView(
+      child: Form(
+        key: _dashboardFormKey,
+        child: Column(
+          children: <Widget>[
+            BeautyTextfield(
+              width: double.maxFinite,
+              height: 200,
+              duration: Duration(milliseconds: 300),
+              inputType: TextInputType.text,
+              prefixIcon: Icon(Icons.person_outline),
+              //suffixIcon: Icon(Icons.remove_red_eye),
+              placeholder: "What is happening",
+              onTap: () {
+                print('Click');
+              },
+              onChanged: (text) {
+                print(text);
+              },
+              onSubmitted: (data) {
+                print(data.length);
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 120.0,
+              width: 120.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  //image: _image,
+                  fit: BoxFit.fill,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+                onPressed: () {
+                  getImage();
+                },
+                textColor: Colors.white,
+                child: const Text('Add Photo', style: TextStyle(fontSize: 20)),
+                color: Colors.brown)
+          ],
+        ),
+      ),
+    )));
   }
 }
 
@@ -368,7 +488,7 @@ class _ProfileState extends State<Profile> {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   //static _HomePageState obj = _HomePageState();

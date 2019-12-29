@@ -15,7 +15,7 @@ import 'dart:io';
 
 class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => new _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class NewFine extends StatefulWidget {
@@ -51,6 +51,15 @@ class _NewFineState extends State<NewFine> {
       } else if (res == false) {
         Logger().i("NULL");
       }
+    });
+  }
+
+  File _image;
+
+  Future getPhoto() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = image;
     });
   }
 
@@ -280,28 +289,19 @@ class _NewFineState extends State<NewFine> {
             SizedBox(
               height: 50,
             ),
-            TextFormField(
-              decoration: new InputDecoration(
-                labelText: "Upload a photo of the supporting officer",
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-              ),
-              validator: (val) {
-                if (val.length == 0) {
-                  return "Officer ID number cannot be null";
-                }
-                if (val.length != 6) {
-                  return "Invalid officer ID number";
-                }
-              },
-              keyboardType: TextInputType.emailAddress,
-              style: new TextStyle(
-                fontFamily: "Poppins",
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text("Add supporting officer's photo"),
+                IconButton(
+                    icon: Icon(Icons.camera_alt),
+                    tooltip: "Add a photo",
+                    onPressed: () {
+                      getPhoto();
+                    }),
+              ],
             ),
+
             RaisedButton(
               onPressed: () {
                 //Logger().i("Result");
@@ -375,8 +375,8 @@ class _DashBoardState extends State<DashBoard> {
   final _dashboardFormKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
+    return Container(
+        child: Container(
             child: SingleChildScrollView(
       child: Form(
         key: _dashboardFormKey,
@@ -385,7 +385,7 @@ class _DashBoardState extends State<DashBoard> {
             BeautyTextfield(
               width: double.maxFinite,
               height: 200,
-              duration: Duration(milliseconds: 300),
+              //duration: Duration(milliseconds: 300),
               inputType: TextInputType.text,
               prefixIcon: Icon(Icons.person_outline),
               //suffixIcon: Icon(Icons.remove_red_eye),
@@ -403,27 +403,29 @@ class _DashBoardState extends State<DashBoard> {
             SizedBox(
               height: 10,
             ),
-            Container(
-              height: 120.0,
-              width: 120.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  //image: _image,
-                  fit: BoxFit.fill,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.photo),
+                        tooltip: "Add a photo",
+                        onPressed: () {
+                          setState(() {
+                            getImage();
+                          });
+                        }),
+                    Text("Add a photo"),
+                  ],
                 ),
-                shape: BoxShape.circle,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            RaisedButton(
-                onPressed: () {
-                  getImage();
-                },
-                textColor: Colors.white,
-                child: const Text('Add Photo', style: TextStyle(fontSize: 20)),
-                color: Colors.brown)
+                RaisedButton(
+                  onPressed: () {},
+                  child: const Text('Publish Post',
+                      style: TextStyle(fontSize: 20)),
+                )
+              ],
+            )
           ],
         ),
       ),

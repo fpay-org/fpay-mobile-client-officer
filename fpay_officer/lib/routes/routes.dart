@@ -29,7 +29,5 @@ class Routes {
     router.define(profile,
         handler: profileHandler, transitionType: TransitionType.native);
 
-    router.define(settings,
-        handler: settingsHandler, transitionType: TransitionType.native);
   }
 }

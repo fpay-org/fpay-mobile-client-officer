@@ -39,7 +39,4 @@ var profileHandler = Handler(
   return MyProfile();
 });
 
-var settingsHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return Settings();
-});
+

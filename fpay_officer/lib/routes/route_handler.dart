@@ -1,4 +1,5 @@
 import 'package:FPay/screens/auth/auth_screen.dart';
+import 'package:FPay/screens/editdetails/edit.dart';
 import 'package:FPay/screens/home/home_screen.dart';
 import 'package:FPay/screens/home/tasks/issueFine.dart';
 import 'package:FPay/screens/home/tasks/myProfile.dart';
@@ -39,4 +40,7 @@ var profileHandler = Handler(
   return MyProfile();
 });
 
-
+var editHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return EditDetails();
+});

@@ -9,6 +9,7 @@ class Routes {
   static const newfine = '/newfine';
   static const profile = '/profile';
   static const settings = '/settings';
+  static const edit = '/edit';
 
   static void configureRouter(Router router) {
     router.define(splash,
@@ -28,6 +29,9 @@ class Routes {
 
     router.define(profile,
         handler: profileHandler, transitionType: TransitionType.native);
+
+    router.define(edit,
+        handler: editHandler, transitionType: TransitionType.native);
 
   }
 }

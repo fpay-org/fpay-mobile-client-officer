@@ -13,7 +13,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String _id, _password;
   static final _formKey = new GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+  bool isenabled = true;
   Future _handleLogin(
     String _id,
     String _password,
@@ -42,6 +42,7 @@ class _AuthScreenState extends State<AuthScreen> {
             });
       }
     });
+    isenabled = true;
   }
 
   Future _handle() async {
@@ -137,7 +138,13 @@ class _AuthScreenState extends State<AuthScreen> {
               RaisedButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    _handleLogin(_id, _password, context);
+                    if(isenabled){
+                      isenabled = false;
+                      _handleLogin(_id, _password, context);
+                    }
+                    else{
+                      return null;
+                    }
                     //_handle();
                   }
                 },

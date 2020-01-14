@@ -8,16 +8,23 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+String officer;
+
 class AuthService {
   final baseUrl = Config.baseUrl;
   Future<bool> login(String id, String password) {
-    return Dio().post(
-      '$baseUrl/auth/officer/login',
-      data: {
-        "officerID": id,
-        "password": password,
-      },
+    officer = id;
+    Logger().i('$id');
+    Logger().i('$password');
+    Logger().i( 'Uri $baseUrl/auth/officer/login?officer_id=$id&password=$password');
+    return Dio().get(
+      '$baseUrl/auth/officer/login?officer_id=$id&password=$password',
+      // data: {
+      //   "officerID": id, 
+      //   "password": password,
+      // },
     ).then((res) async {
+      Logger().i('$res');
       if (res.statusCode == 200) {
         print(res);
         String token = res.data["data"]["token"];
@@ -42,6 +49,7 @@ Logger().i("logout");
     return await SharedPreferences.getInstance().then((instance) {
       //Logger().i('$token');
       print(token);
+      instance.setString("officer", officer);
       instance.setString("token", token);
       return true;
     }).catchError((err) => false);

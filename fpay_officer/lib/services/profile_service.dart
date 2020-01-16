@@ -25,7 +25,21 @@ class Officer{
 class ProfService {
   final baseUrl = Config.baseUrl;
   
-  
+  Future<bool> editDetails(String officer,String new_password,String old_password,String email,String mobile_no,String nid) {
+    return Dio().post('$baseUrl/fines', data: {
+      "officer":officer,
+      
+    }).then((res) async {
+      if (res.statusCode == 201) {
+        Logger().i("${res.statusCode}");
+        return true;
+      }
+      return false;
+    }).catchError((err) {
+      Logger().i("$err");
+      return false;
+    });
+  }
  
   Future<Officer> getDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

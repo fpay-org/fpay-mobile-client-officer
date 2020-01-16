@@ -352,7 +352,6 @@ class _NewFineState extends State<NewFine> {
                       }
                     });
                     isEnabaled = true;
-                    
                   }
                 } else {
                   return null;
@@ -502,10 +501,8 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-    Future publishPost(String content,String officer) async {
-    await PostService()
-        .publish(content,officer)
-        .then((res) async {
+  Future publishPost(String content, String officer) async {
+    await PostService().publish(content, officer).then((res) async {
       if (res) {
         showDialog(
             context: context,
@@ -543,74 +540,251 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-
-
   final _dashboardFormKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Container(
-            child: SingleChildScrollView(
-      child: Form(
-        key: _dashboardFormKey,
-        child: Column(
-          children: <Widget>[
-            BeautyTextfield(
-              //isShadow: false,
-              width: double.maxFinite,
-              height: 200,
-              //duration: Duration(milliseconds: 300),
-              inputType: TextInputType.text,
-              prefixIcon: Icon(Icons.person_outline),
-              //suffixIcon: Icon(Icons.remove_red_eye),
-              placeholder: "What is happening",
-              onTap: () {
-                print('Click');
-              },
-              onChanged: (text) {
-                print(text);
-              },
-              onSubmitted: (data) {
-                print(data.length);
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.photo),
-                        tooltip: "Add a photo",
-                        onPressed: () {
-                          setState(() {
-                            getImage();
-                          });
-                        }),
-                    Text("Add a photo"),
-                  ],
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    //sendPhoto(_image);
-                    getId().then((officer) {
-                      if (officer != null) {
-                        publishPost(content,officer);
-                      }
-                    });
-                  },
-                  child: const Text('Publish Post',
-                      style: TextStyle(fontSize: 20)),
-                )
-              ],
-            )
-          ],
-        ),
+    // return Container(
+    //     child: Container(
+    //   child: Form(
+    //     key: _dashboardFormKey,
+    //     child: Column(
+    //       children: <Widget>[
+    //         BeautyTextfield(
+    //           //isShadow: false,
+    //           width: double.maxFinite,
+    //           height: 300,
+    //           //duration: Duration(milliseconds: 300),
+    //           inputType: TextInputType.text,
+    //           prefixIcon: Icon(Icons.person_outline),
+    //           //suffixIcon: Icon(Icons.remove_red_eye),
+    //           placeholder: "What is happening",
+    //           onTap: () {
+    //             print('Click');
+    //           },
+    //           onChanged: (text) {
+    //             print(text);
+    //           },
+    //           onSubmitted: (data) {
+    //             print(data.length);
+    //           },
+    //         ),
+    //         SizedBox(
+    //           height: 10,
+    //         ),
+    //         Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //           children: <Widget>[
+    //             Column(
+    //               children: <Widget>[
+    //                 IconButton(
+    //                     icon: Icon(Icons.photo),
+    //                     tooltip: "Add a photo",
+    //                     onPressed: () {
+    //                       setState(() {
+    //                         getImage();
+    //                       });
+    //                     }),
+    //                 Text("Add a photo"),
+    //               ],
+    //             ),
+    //             RaisedButton(
+    //               onPressed: () {
+    //                 //sendPhoto(_image);
+    //                 getId().then((officer) {
+    //                   if (officer != null) {
+    //                     publishPost(content, officer);
+    //                   }
+    //                 });
+    //               },
+    //               child: const Text('Publish Post',
+    //                   style: TextStyle(fontSize: 20)),
+    //             )
+    //           ],
+    //         ),
+    //         Divider(
+    //           color: Colors.black,
+    //           indent: 10,
+    //           endIndent: 10,
+    //           thickness: 1,
+    //         ),
+    //         SingleChildScrollView(
+    //           child: FutureBuilder(
+    //             future: FineService().getFines(),
+    //             builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //               if (snapshot.data == null) {
+    //                 Logger().i("snap");
+    //                 Logger().i("snap-null: ${snapshot.data}");
+    //                 return Container(
+    //                   child: Center(
+    //                     child: Text("Loading..."),
+    //                   ),
+    //                 );
+    //               } else {
+    //                 Logger().i("snapshotttttt: ${snapshot.data[0].fineId}");
+    //                 return ListView.builder(
+    //                   shrinkWrap: true,
+    //                   itemCount: snapshot.data.length,
+    //                   itemBuilder: (BuildContext context, int index) {
+    //                     return ListTile(
+    //                       title: Text(
+    //                         "Fine ID: ${snapshot.data[index].fineId}",
+    //                       ),
+    //                       subtitle: Text(
+    //                         "Value: ${snapshot.data[index].fineValue}",
+    //                       ),
+    //                       trailing: RaisedButton(
+    //                         onPressed: () {
+    //                           Application.router.navigateTo(context,
+    //                               '/pay/${snapshot.data[index].fineId}');
+    //                         },
+    //                         child: Text("Pay"),
+    //                         color: Colors.green,
+    //                       ),
+    //                     );
+    //                   },
+    //                 );
+    //               }
+    //             },
+
+    //             // Card(
+    //             //   Row(children: <Widget>[
+    //             //     Column(
+    //             //     mainAxisSize: MainAxisSize.min,
+    //             //     children: <Widget>[
+    //             //       const ListTile(
+    //             //         title: Text('Fine ID: 3265'),
+    //             //         title: Text("${snapshot.data[index].fineId}"
+    //             //       ),
+    //             //     ],),
+    //             //     RaisedButton(
+    //             //       onPressed: () {},
+    //             //     )
+
+    //             //   ],)
+    //             //   child: Column(
+    //             //     mainAxisSize: MainAxisSize.min,
+    //             //     children: <Widget>[
+    //             //       const ListTile(
+    //             //         title: Text('Fine ID: 3265'),
+    //             //         subtitle: Text('Fines: Crossing double line\novertaking on pedestrian crossing'),
+    //             //       ),
+    //             //     ],
+    //             //   ),
+    //             // )
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // ));
+    return Scaffold(
+        body: SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20),
+          BeautyTextfield(
+            //isShadow: false,
+            width: double.maxFinite,
+            height: 200,
+            //duration: Duration(milliseconds: 300),
+            inputType: TextInputType.text,
+            prefixIcon: Icon(Icons.person_outline),
+            //suffixIcon: Icon(Icons.remove_red_eye),
+            placeholder: "What is happening",
+            onTap: () {
+              print('Click');
+            },
+            onChanged: (text) {
+              print(text);
+            },
+            onSubmitted: (data) {
+              print(data.length);
+            },
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.photo),
+                      tooltip: "Add a photo",
+                      onPressed: () {
+                        setState(() {
+                          getImage();
+                        });
+                      }),
+                  Text("Add a photo"),
+                ],
+              ),
+              RaisedButton(
+                onPressed: () {
+                  //sendPhoto(_image);
+                  getId().then((officer) {
+                    if (officer != null) {
+                      publishPost(content, officer);
+                    }
+                  });
+                },
+                child:
+                    const Text('Publish Post', style: TextStyle(fontSize: 20)),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.black,
+            indent: 10,
+            endIndent: 10,
+            thickness: 1,
+          ),
+          FutureBuilder(
+              future: FineService().getFines(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  Logger().i("snap");
+                  Logger().i("snap-null: ${snapshot.data}");
+                  return Container(
+                    child: Center(
+                      child: Text("Loading..."),
+                    ),
+                  );
+                } else {
+                  Logger().i("snapshotttttt: ${snapshot.data[0].fineId}");
+                  // return ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: snapshot.data.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     return ListTile(
+                  //       title: Text(
+                  //         "Fine ID: ${snapshot.data[index].fineId}",
+                  //       ),
+                  //       subtitle: Text(
+                  //         "Value: ${snapshot.data[index].fineValue}",
+                  //       ),
+                  //       trailing: RaisedButton(
+                  //         onPressed: () {
+                  //           Application.router.navigateTo(
+                  //               context, '/pay/${snapshot.data[index].fineId}');
+                  //         },
+                  //         child: Text("Pay"),
+                  //         color: Colors.green,
+                  //       ),
+                  //     );
+                  //   },
+                  // );
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        
+                      ],
+                    ),
+                  );
+                }
+              })
+        ],
       ),
-    )));
+    ));
   }
 
   sendPhoto(File _image) async {

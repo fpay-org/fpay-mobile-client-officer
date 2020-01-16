@@ -1,3 +1,4 @@
+import 'package:FPay/routes/application.dart';
 import 'package:FPay/services/profile_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,36 +11,48 @@ class EditDetails extends StatefulWidget {
 
 class _EditDetailsState extends State<EditDetails> {
   Future<Officer> details;
+  bool isEnabled = true;
   @override
   initState() {
     super.initState();
     Logger().i("paa");
-    details = _handleDetails();
+    //details = _handleDetails();
     Logger().i("helloowwww$details");
     Logger().i("paa");
   }
 
-  Future<Officer> _handleDetails() async {
-    return await ProfService().getDetails();
+    Future editDetails(String officer,String new_password,String old_password,String email,String mobile_no,String nid) async {
+    // final form = _formKey.currentState;
+      ProfService().editDetails(officer,new_password,old_password,email,mobile_no,nid).then((res) {
+      if (res) {
+        Application.router.navigateTo(context, '/home');
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Invalid credentials"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Okay"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+    });
+    isEnabled = true;
   }
 
   static final _regFormKey = new GlobalKey<FormState>();
   String first_name, last_name, password, license_id, email;
   String mobile_no, nid;
-  String officer;
+  String officer,old_password;
 
-  // final TextEditingController _firstNameController = new TextEditingController();
-  // String fName = "sankha";
-  // final TextEditingController _lastNameController = new TextEditingController();
-  // String lName = "jayalath";
-  // final TextEditingController _emailController = new TextEditingController();
-  // String email_add = "sankha@rc";
-  // final TextEditingController _mobileController = new TextEditingController();
-  // String contact_no = "565153";
-  // final TextEditingController _officerIdController = new TextEditingController();
-  // String officer_no = "23231531";
-  // final TextEditingController _nicController = new TextEditingController();
-  // String nic = "jayalath";
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +65,9 @@ class _EditDetailsState extends State<EditDetails> {
                 if (snapshot.hasData) {
                   String last_name = snapshot.data.last_name;
                   String first_name = snapshot.data.first_name;
-                  String email = snapshot.data.email;
-                  String mobile_no = snapshot.data.mobile_no;
-                  String officer = snapshot.data.officer;
+                  //String email = snapshot.data.email;
+                  //String mobile_no = snapshot.data.mobile_no;
+                  String officer = snapshot.data.officer_id;
                   return Column(children: <Widget>[
                     SizedBox(
                       height: 40,
@@ -215,21 +228,23 @@ class _EditDetailsState extends State<EditDetails> {
                                 child: Container(
                                     width: 320,
                                     child: TextFormField(
+                                      initialValue: officer,
+                                      readOnly: true,
                                       obscureText: false,
                                       onChanged: (value) {
                                         setState(() {
-                                          license_id = value;
+                                          officer = value;
                                         });
                                       },
                                       validator: (val) {
                                         if (val.length == 0) {
-                                          return "License number cannot be empty";
-                                        } else if (val.length != 8) {
-                                          return "Invalid license number";
+                                          return "Officer id cannot be empty";
+                                        } else if (val.length != 6) {
+                                          return "Invalid officer id number";
                                         }
                                       },
                                       decoration: InputDecoration(
-                                        labelText: "Oficcer ID",
+                                        labelText: "Officer ID",
                                       ),
                                       keyboardType: TextInputType.text,
                                       style: new TextStyle(
@@ -243,6 +258,7 @@ class _EditDetailsState extends State<EditDetails> {
                                 child: Container(
                                     width: 320,
                                     child: TextFormField(
+                                      initialValue: null,
                                       obscureText: false,
                                       onChanged: (value) {
                                         setState(() {
@@ -293,7 +309,7 @@ class _EditDetailsState extends State<EditDetails> {
                                       },
                                       decoration: InputDecoration(
                                         labelText:
-                                            "Password (min 8 characters)",
+                                            "New Password (min 8 characters)",
                                         hintText:
                                             "one uppercase/lowercase/special character/number",
                                         hintStyle: TextStyle(fontSize: 13),
@@ -311,7 +327,7 @@ class _EditDetailsState extends State<EditDetails> {
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.green)),
                               onPressed: () {
-                                if (_regFormKey.currentState.validate()) {
+                                if (!_regFormKey.currentState.validate()) {
                                   return showDialog(
                                       context: context,
                                       builder: (context) {
@@ -320,12 +336,23 @@ class _EditDetailsState extends State<EditDetails> {
                                               'Enter your current password'),
                                           content: TextField(
                                             //controller: _textFieldController,
+                                            onChanged: (value) {
+                                        setState(() {
+                                          old_password = value;
+                                        });
+                                      },
                                             decoration: InputDecoration(
                                                 hintText: "Current password"),
                                           ),
                                           actions: <Widget>[
-                                            new FlatButton(
-                                              child: new Text('CANCEL'),
+                                            FlatButton(
+                                              child: Text('CONTINUE'),
+                                              onPressed: () {
+                                                
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text('CANCEL'),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
@@ -364,6 +391,6 @@ class _EditDetailsState extends State<EditDetails> {
       String contact_number,
       String license_number,
       String password) async {
-    final form = _regFormKey.currentState;
+        final form = _regFormKey.currentState;
   }
 }

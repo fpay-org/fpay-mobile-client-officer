@@ -9,7 +9,11 @@ class Officer{
   String first_name;
   String last_name;
   String officer_id;
-  Officer(this.first_name,this.last_name, this.officer_id);
+  String email;
+  String contact_number;
+  String nic;
+  String police_station;
+  Officer(this.first_name,this.last_name, this.officer_id,this.email,this.contact_number,this.nic,this.police_station);
 
   // factory Driver.fromJson(Map<String, dynamic> json) {
   //   return Driver(
@@ -24,10 +28,52 @@ class Officer{
 }
 class ProfService {
   final baseUrl = Config.baseUrl;
-  
-  Future<bool> editDetails(String officer,String new_password,String old_password,String email,String mobile_no,String nid) {
+
+
+  Future<bool> changePass(String officer,String current_password,String new_password){
+     Logger().i("$officer");
+    Logger().i("$current_password");
+    Logger().i("$new_password");
+
     return Dio().post('$baseUrl/fines', data: {
       "officer":officer,
+     // "",
+      
+    }).then((res) async {
+      if (res.statusCode == 201) {
+        Logger().i("${res.statusCode}");
+        return true;
+      }
+      return false;
+    }).catchError((err) {
+      Logger().i("$err");
+      return false;
+    });
+  }
+  
+  Future<bool> editDetails(String officer,String first_name,String last_name,String email,String contact_nummber,String nic,String police_station,String password,){
+
+
+    Logger().i("$officer");
+    Logger().i("$first_name");
+    Logger().i("$last_name");
+    Logger().i("$email");
+    Logger().i("$contact_nummber");
+    Logger().i("$nic");
+    Logger().i("$police_station");
+    Logger().i("$password");
+
+
+    return Dio().post('$baseUrl/fines', data: {
+      "officer":officer,
+      "first_name":first_name,
+      "last_name":last_name,
+      "email":email,
+      "contact_nummber":contact_nummber,
+      "nic":nic,
+      "police_station":police_station,
+      "password":password
+
       
     }).then((res) async {
       if (res.statusCode == 201) {
@@ -56,7 +102,7 @@ class ProfService {
         var f = res.data["data"];
         Logger().i("f: ${f["first_name"]}");
         //print(res);
-        officer  = Officer(f["first_name"],f["last_name"],f["officer_id"]);
+        officer  = Officer(f["first_name"],f["last_name"],f["officer_id"],f["email"],f["contact_number"],f["nic"],f["police_station"]);
         Logger().i("d: ${officer}");
         //driver.add(driver);
         //String token = res.data["data"]["token"];

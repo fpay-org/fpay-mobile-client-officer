@@ -105,14 +105,7 @@ class FineService {
 //     //}).catchError((err)=>false);
 // }
 
-  Future<bool> _saveID(String id) async {
-    return await SharedPreferences.getInstance().then((instance) {
-      //Logger().i('$token');
-      print(id);
-      instance.setString("id", id);
-      return true;
-    }).catchError((err) => false);
-  }
+  
   // static Future<Position> getLocation() async {
   //   Position location =  await Geolocator().getCurrentPosition(desiredAccuracy:prefix0.LocationAccuracy.high);
   //   return location;

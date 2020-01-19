@@ -931,6 +931,27 @@ class _ProfileState extends State<Profile> {
                       SizedBox(
                         height: _height / 25.0,
                       ),
+                      Text("Officer's Current Police station"),
+                      Text('${snapshot.data.police_station}', style: _style()),
+                      SizedBox(
+                        height: _height / 25.0,
+                      ),
+                      Text("Officer NIC"),
+                      Text('${snapshot.data.nic}', style: _style()),
+                      SizedBox(
+                        height: _height / 25.0,
+                      ),
+                      Text("Officer Email"),
+                      Text('${snapshot.data.email}', style: _style()),
+                      SizedBox(
+                        height: _height / 25.0,
+                      ),
+                      Text("Officer Mobile Number"),
+                      Text('${snapshot.data.contact_number}', style: _style()),
+                      SizedBox(
+                        height: _height / 25.0,
+                      ),
+                    
                       // Text("Email"),
                       // Text("cazci@gmail.com", style: _style()),
                       // SizedBox(
@@ -943,9 +964,7 @@ class _ProfileState extends State<Profile> {
                       // ),
                       // Text("Contact No"),
                       // Text('${snapshot.data.contact_number}', style: _style()),
-                      SizedBox(
-                        height: _height / 25.0,
-                      ),
+                     
                     ],
                   ),
                   Padding(

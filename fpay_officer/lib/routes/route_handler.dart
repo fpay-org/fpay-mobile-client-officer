@@ -1,4 +1,5 @@
 import 'package:FPay/screens/auth/auth_screen.dart';
+import 'package:FPay/screens/editdetails/change_pass.dart';
 import 'package:FPay/screens/editdetails/edit.dart';
 import 'package:FPay/screens/home/home_screen.dart';
 import 'package:FPay/screens/home/tasks/issueFine.dart';
@@ -43,4 +44,9 @@ var profileHandler = Handler(
 var editHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return EditDetails();
+});
+
+var changePassHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return ChangePass(params['officer'][0]);
 });

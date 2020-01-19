@@ -10,6 +10,8 @@ class Routes {
   static const profile = '/profile';
   static const settings = '/settings';
   static const edit = '/edit';
+  // static const pass = '/pass';
+  static const pass = '/pass/:officer';
 
   static void configureRouter(Router router) {
     router.define(splash,
@@ -32,6 +34,9 @@ class Routes {
 
     router.define(edit,
         handler: editHandler, transitionType: TransitionType.native);
+
+    router.define(pass,
+        handler: changePassHandler, transitionType: TransitionType.native);
 
   }
 }

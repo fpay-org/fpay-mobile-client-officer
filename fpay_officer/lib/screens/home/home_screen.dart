@@ -281,21 +281,139 @@ class _NewFineState extends State<NewFine> {
               },
               dataSource: [
                 {
-                  "display": "Fine No 1",
+                  "display": "Identification plates",
                   "index": "1",
                 },
                 {
-                  "display": "Fine no 2",
+                  "display": "Not carrying revenue licence",
                   "index": "2",
                 },
                 {
-                  "display": "Fine no 3",
+                  "display": "Contraventing revenue licence provisions",
                   "index": "3",
                 },
                 {
-                  "display": "Fine no 4",
+                  "display":
+                      "Driving emergency service vehicles & public service vehicle without driving licence",
                   "index": "4",
-                }
+                },
+                {
+                  "display":
+                      "Driving special purpose vehicles without a licence",
+                  "index": "5",
+                },
+                {
+                  "display":
+                      "Driving a vehicle loaded with chemicals/hazardous waste without a licence",
+                  "index": "6",
+                },
+                {
+                  "display":
+                      "Not having a licence to drive a specific class of vehicles",
+                  "index": "7",
+                },
+                {
+                  "display": "Not carrying a driving licence",
+                  "index": "8",
+                },
+                {
+                  "display": "Not having an instructor's licence",
+                  "index": "9",
+                },
+                {
+                  "display": "Contravening speed limit",
+                  "index": "10",
+                },
+                {
+                  "display": "Disobeying road rules",
+                  "index": "11",
+                },
+                {
+                  "display":
+                      "Activities obstructing control of the motor vehicle",
+                  "index": "12",
+                },
+                {
+                  "display": "Signals by driver",
+                  "index": "13",
+                },
+                {
+                  "display": "Reversing for a long distance",
+                  "index": "14",
+                },
+                {
+                  "display": "Sound or light warnings",
+                  "index": "15",
+                },
+                {
+                  "display": "Excessive emmision of smoke. etc",
+                  "index": "16",
+                },
+                {
+                  "display": "Riding on running boards",
+                  "index": "17",
+                },
+                {
+                  "display": "No of persons in front seats",
+                  "index": "18",
+                },
+                {
+                  "display": "",
+                  "index": "19",
+                },
+                {
+                  "display": "Not wearing protective helmets",
+                  "index": "20",
+                },
+                {
+                  "display": "Distribution of advertisements",
+                  "index": "21",
+                },
+                {
+                  "display": "Excessive use of noice",
+                  "index": "22",
+                },
+                {
+                  "display":
+                      "Disobeying directions & signals of police officers/Trafic wardens",
+                  "index": "23",
+                },
+                {
+                  "display": "non compliance with traffic signals",
+                  "index": "24",
+                },
+                {
+                  "display":
+                      "failure to take precautions when discharging fuel into tank",
+                  "index": "25",
+                },
+                {
+                  "display": "Halting or parking",
+                  "index": "26",
+                },
+                {
+                  "display": "Non use of precaution when parking",
+                  "index": "27",
+                },
+                {
+                  "display":
+                      "Excessive carriage of persons in motor car or private coach",
+                  "index": "28",
+                },
+                {
+                  "display": "Carriage of passengers in excess in buses",
+                  "index": "29",
+                },
+                {
+                  "display":
+                      "Carriage on lorry or motor tricycle van of goods in excess",
+                  "index": "30",
+                },
+                {
+                  "display":
+                      "Carriage on lorry or motor tricycle van of goods in excess",
+                  "index": "30",
+                },
               ],
               textField: 'display',
               valueField: 'index',
@@ -429,14 +547,14 @@ class _ViewFinesState extends State<ViewFines> {
                 subtitle: Text(
                   "Value: ${snapshot.data[index].fineValue}",
                 ),
-                trailing: RaisedButton(
-                  onPressed: () {
-                    Application.router.navigateTo(
-                        context, '/pay/${snapshot.data[index].fineId}');
-                  },
-                  child: Text("Pay"),
-                  color: Colors.green,
-                ),
+                // trailing: RaisedButton(
+                //   onPressed: () {
+                //     Application.router.navigateTo(
+                //         context, '/pay/${snapshot.data[index].fineId}');
+                //   },
+                //   child: Text("Pay"),
+                //   color: Colors.green,
+                // ),
               );
             },
           );
@@ -479,7 +597,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   File _image;
-  String content;
+  String content, title;
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
@@ -501,8 +619,8 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-  Future publishPost(String content, String officer) async {
-    await PostService().publish(content, officer).then((res) async {
+  Future publishPost(String officer, String content, String title) async {
+    await PostService().publishPost(officer, content, title).then((res) async {
       if (res) {
         showDialog(
             context: context,
@@ -543,6 +661,8 @@ class _DashBoardState extends State<DashBoard> {
   final _dashboardFormKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final String imgUrl =
+        'https://pixel.nymag.com/imgs/daily/selectall/2017/12/26/26-eric-schmidt.w700.h700.jpg';
     // return Container(
     //     child: Container(
     //   child: Form(
@@ -681,7 +801,29 @@ class _DashBoardState extends State<DashBoard> {
         body: SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          SizedBox(height: 30),
+          Text(
+            "Write post",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            textAlign: TextAlign.left,
+          ),
           SizedBox(height: 20),
+          BeautyTextfield(
+            //isShadow: false,
+            width: double.maxFinite,
+            height: 50,
+            //duration: Duration(milliseconds: 300),
+            inputType: TextInputType.text,
+            prefixIcon: Icon(Icons.work),
+            //suffixIcon: Icon(Icons.remove_red_eye),
+            placeholder: "Enter title",
+            onTap: () {
+              print('Click');
+            },
+            onChanged: (text) {
+              title = text;
+            },
+          ),
           BeautyTextfield(
             //isShadow: false,
             width: double.maxFinite,
@@ -695,10 +837,7 @@ class _DashBoardState extends State<DashBoard> {
               print('Click');
             },
             onChanged: (text) {
-              print(text);
-            },
-            onSubmitted: (data) {
-              print(data.length);
+              content = text;
             },
           ),
           SizedBox(height: 10),
@@ -723,7 +862,7 @@ class _DashBoardState extends State<DashBoard> {
                   //sendPhoto(_image);
                   getId().then((officer) {
                     if (officer != null) {
-                      publishPost(content, officer);
+                      publishPost(officer,content,title);
                     }
                   });
                 },
@@ -739,46 +878,64 @@ class _DashBoardState extends State<DashBoard> {
             thickness: 1,
           ),
           FutureBuilder(
-              future: FineService().getFines(),
+              future: PostService().getPosts(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
                   Logger().i("snap");
                   Logger().i("snap-null: ${snapshot.data}");
                   return Container(
                     child: Center(
-                      child: Text("Loading..."),
+                      child: Text("here..."),
                     ),
                   );
                 } else {
-                  Logger().i("snapshotttttt: ${snapshot.data[0].fineId}");
-                  // return ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemCount: snapshot.data.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return ListTile(
-                  //       title: Text(
-                  //         "Fine ID: ${snapshot.data[index].fineId}",
-                  //       ),
-                  //       subtitle: Text(
-                  //         "Value: ${snapshot.data[index].fineValue}",
-                  //       ),
-                  //       trailing: RaisedButton(
-                  //         onPressed: () {
-                  //           Application.router.navigateTo(
-                  //               context, '/pay/${snapshot.data[index].fineId}');
-                  //         },
-                  //         child: Text("Pay"),
-                  //         color: Colors.green,
-                  //       ),
-                  //     );
-                  //   },
-                  // );
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        
-                      ],
-                    ),
+                  Logger().i("snapshotttttt: ${snapshot.data[0].first_name}");
+
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      // return ListTile(
+                      //   leading: CircleAvatar(
+                      //     backgroundImage: NetworkImage(""),
+                      //   ),
+                      //   title: Text(
+                      //     "Fine ID: ${snapshot.data[index].fineId}",
+                      //   ),
+                      //   subtitle: Text(
+                      //     "Value: ${snapshot.data[index].fineValue}",
+                      //   ),
+                      //   trailing: RaisedButton(
+                      //     onPressed: () {
+                      //       Application.router.navigateTo(
+                      //           context, '/pay/${snapshot.data[index].fineId}');
+                      //     },
+                      //     child: Text("Pay"),
+                      //     color: Colors.green,
+                      //   ),
+                      // );
+                      return Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(imgUrl),
+                          ),
+                          title: Text("${snapshot.data[index].title}"),
+                          subtitle: Column(
+                            children: <Widget>[
+                              Text("${snapshot.data[index].content}",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(fontSize: 10),),
+                              Text("By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name} at 2017-02-14 at 9.30 am",
+                              style: TextStyle(fontSize: 8),)
+                            ],
+                          ),
+                          //Text(),
+                          trailing: Icon(Icons.more_vert),
+                          isThreeLine: true,
+                        ),
+                      );
+                    },
                   );
                 }
               })
@@ -951,7 +1108,7 @@ class _ProfileState extends State<Profile> {
                       SizedBox(
                         height: _height / 25.0,
                       ),
-                    
+
                       // Text("Email"),
                       // Text("cazci@gmail.com", style: _style()),
                       // SizedBox(
@@ -964,7 +1121,6 @@ class _ProfileState extends State<Profile> {
                       // ),
                       // Text("Contact No"),
                       // Text('${snapshot.data.contact_number}', style: _style()),
-                     
                     ],
                   ),
                   Padding(

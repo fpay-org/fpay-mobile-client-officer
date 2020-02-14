@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+
 class EditDetails extends StatefulWidget {
   @override
   _EditDetailsState createState() => _EditDetailsState();
@@ -401,7 +402,7 @@ class _EditDetailsState extends State<EditDetails> {
                               onPressed: () {
                                 print(email);
                                 Logger().i("SEXY", emailController.text);
-                                if (!_regFormKey.currentState.validate()) {
+                                if (_regFormKey.currentState.validate()) {
                                   showDialogBox(emailController.text, contactController.text);
                                 }
                               },

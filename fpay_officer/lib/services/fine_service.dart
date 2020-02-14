@@ -148,7 +148,7 @@ class FineService {
     String long = _currentPosition.longitude.toString();
     //List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(lat,long);
     List<Placemark> placemark =
-        await Geolocator().placemarkFromCoordinates( _currentPosition.latitude, _currentPosition.longitude);
+        await Geolocator().placemarkFromCoordinates( 52.2165157, 6.9437819);
     Placemark place = placemark[0];
     String address = "${place.locality},${place.postalCode},${place.country}";
     Logger().i('${address}');
@@ -192,7 +192,7 @@ class FineService {
     //   });
       
     return Dio().post('$baseUrl/fines', data: {
-      "total_value": 999,
+      "total_value": 17000,
       "currency": "lkr",
       "penalties": penalties,
       "driver_nid": driver_nid,

@@ -64,19 +64,19 @@ class ProfService {
     Logger().i("$password");
 
 
-    return Dio().post('$baseUrl/fines', data: {
+    return Dio().post('$baseUrl/officer/222222', data: {
       "officer":officer,
       "first_name":first_name,
       "last_name":last_name,
       "email":email,
-      "contact_nummber":contact_nummber,
+      "contact_number":contact_nummber,
       "nic":nic,
       "police_station":police_station,
       "password":password
 
       
     }).then((res) async {
-      if (res.statusCode == 201) {
+      if (res.statusCode == 202) {
         Logger().i("${res.statusCode}");
         return true;
       }

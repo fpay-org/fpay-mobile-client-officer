@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:FPay/config/config.dart';
 import 'package:FPay/routes/application.dart';
 import 'package:FPay/screens/auth/auth_screen.dart';
+import 'package:FPay/services/pref_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -54,4 +55,13 @@ Logger().i("logout");
       return true;
     }).catchError((err) => false);
   }
+
+  Future<bool> isLoggedIn() {
+    return PrefService()
+        .getToken()
+        .then((token) => (token != null) ? true : false)
+        .catchError((error) => Logger().e(error));
+  }
+  
 }
+

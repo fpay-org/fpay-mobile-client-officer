@@ -1,4 +1,5 @@
 import 'package:FPay/routes/application.dart';
+import 'package:FPay/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -11,7 +12,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 5), () async {
-      Application.router.navigateTo(context, '/auth');
+      AuthService().isLoggedIn().then((_) {
+        if (_)
+          Application.router.navigateTo(context, '/home', clearStack: true);
+        else
+          Application.router.navigateTo(context, '/auth', clearStack: true);
+      });
+      //Application.router.navigateTo(context, '/auth');
     });
     super.initState();
   }

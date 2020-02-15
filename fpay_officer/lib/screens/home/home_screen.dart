@@ -5,6 +5,7 @@ import 'package:FPay/services/fine_service.dart';
 import 'package:FPay/services/post_service.dart';
 import 'package:FPay/services/profile_service.dart';
 import 'package:beauty_textfield/beauty_textfield.dart';
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -862,7 +863,7 @@ class _DashBoardState extends State<DashBoard> {
                   //sendPhoto(_image);
                   getId().then((officer) {
                     if (officer != null) {
-                      publishPost(officer,content,title);
+                      publishPost(officer, content, title);
                     }
                   });
                 },
@@ -923,11 +924,15 @@ class _DashBoardState extends State<DashBoard> {
                           title: Text("${snapshot.data[index].title}"),
                           subtitle: Column(
                             children: <Widget>[
-                              Text("${snapshot.data[index].content}",
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(fontSize: 10),),
-                              Text("By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name} at 2017-02-14 at 9.30 am",
-                              style: TextStyle(fontSize: 8),)
+                              Text(
+                                "${snapshot.data[index].content}",
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(fontSize: 10),
+                              ),
+                              Text(
+                                "By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name} at 2017-02-14 at 9.30 am",
+                                style: TextStyle(fontSize: 8),
+                              )
                             ],
                           ),
                           //Text(),
@@ -944,26 +949,26 @@ class _DashBoardState extends State<DashBoard> {
     ));
   }
 
-  sendPhoto(File _image) async {
-    FormData data = FormData.fromMap({
-      "officer_image": [
-        await MultipartFile.fromFile(_image.path,
-            filename: "Sankhaabcdefghijklmnopqrst.jpg")
-      ]
-    });
-    Logger().i("${_image.path}");
-    return Dio()
-        .post('https://fpay-server.herokuapp.com/v1/fines/upload', data: data)
-        .then((res) async {
-      if (res.statusCode == 201) {
-        return true;
-      }
-      return false;
-    }).catchError((err) {
-      Logger().i("$err");
-      return false;
-    });
-  }
+  // sendPhoto(File _image) async {
+  //   FormData data = FormData.fromMap({
+  //     "officer_image": [
+  //       await MultipartFile.fromFile(_image.path,
+  //           filename: "Sankhaabcdefghijklmnopqrst.jpg")
+  //     ]
+  //   });
+  //   Logger().i("${_image.path}");
+  //   return Dio()
+  //       .post('https://fpay-server.herokuapp.com/v1/fines/upload', data: data)
+  //       .then((res) async {
+  //     if (res.statusCode == 201) {
+  //       return true;
+  //     }
+  //     return false;
+  //   }).catchError((err) {
+  //     Logger().i("$err");
+  //     return false;
+  //   });
+  // }
 }
 
 class Profile extends StatefulWidget {
@@ -1012,6 +1017,15 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  File _profilePhoto;
+  Future updatePhoto() async {
+    var profilePhoto = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _profilePhoto = profilePhoto;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -1045,14 +1059,36 @@ class _ProfileState extends State<Profile> {
             future: details,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                Logger().i('${snapshot.data.avatar_url}');
+                String avatar_url = snapshot.data.avatar_url;
                 return Column(children: <Widget>[
                   SizedBox(
                     height: _height / 12,
                   ),
+                  
                   CircleAvatar(
                     radius: _width < _height ? _width / 4 : _height / 4,
-                    backgroundImage: NetworkImage(imgUrl),
+                    backgroundImage: NetworkImage(avatar_url),
+                  //   child: _profilePhoto == null
+                  //       ? Text('No image selected.')
+                  //       : Image.file(_profilePhoto), 
                   ),
+                  ButtonTheme(
+                    height: 20,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.black)),
+                      onPressed: () {
+                        updatePhoto();
+                      },
+                      textColor: Colors.black,
+                      child: const Text('Change Photo',
+                          style: TextStyle(fontSize: 12)),
+                      color: Colors.white,
+                    ),
+                  ),
+
                   SizedBox(
                     height: _height / 25.0,
                   ),

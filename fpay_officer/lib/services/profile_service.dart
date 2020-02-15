@@ -13,7 +13,8 @@ class Officer{
   String contact_number;
   String nic;
   String police_station;
-  Officer(this.first_name,this.last_name, this.officer_id,this.email,this.contact_number,this.nic,this.police_station);
+  String avatar_url;
+  Officer(this.first_name,this.last_name, this.officer_id,this.email,this.contact_number,this.nic,this.police_station,this.avatar_url);
 
   // factory Driver.fromJson(Map<String, dynamic> json) {
   //   return Driver(
@@ -31,11 +32,11 @@ class ProfService {
 
 
   Future<bool> changePass(String officer,String current_password,String new_password){
-     Logger().i("$officer");
+    Logger().i("$officer");
     Logger().i("$current_password");
     Logger().i("$new_password");
 
-    return Dio().post('$baseUrl/fines', data: {
+    return Dio().post('$baseUrl/pass/$officer', data: {
       "officer":officer,
      // "",
       
@@ -64,7 +65,7 @@ class ProfService {
     Logger().i("$password");
 
 
-    return Dio().post('$baseUrl/officer/222222', data: {
+    return Dio().post('$baseUrl/officer/$officer', data: {
       "officer":officer,
       "first_name":first_name,
       "last_name":last_name,
@@ -100,9 +101,9 @@ class ProfService {
       if (res.statusCode == 200) {
         Logger().i("prof: ${res.data["data"]}");
         var f = res.data["data"];
-        Logger().i("f: ${f["first_name"]}");
+        Logger().i("f: ${f["avatar_url"]}");
         //print(res);
-        officer  = Officer(f["first_name"],f["last_name"],f["officer_id"],f["email"],f["contact_number"],f["nic"],f["police_station"]);
+        officer  = Officer(f["first_name"],f["last_name"],f["officer_id"],f["email"],f["contact_number"],f["nic"],f["police_station"],f["avatar_url"]);
         Logger().i("d: ${officer}");
         //driver.add(driver);
         //String token = res.data["data"]["token"];

@@ -38,7 +38,8 @@ class ProfService {
 
     return Dio().post('$baseUrl/pass/$officer', data: {
       "officer":officer,
-     // "",
+      "password":current_password,
+      "new_password":new_password
       
     }).then((res) async {
       if (res.statusCode == 201) {

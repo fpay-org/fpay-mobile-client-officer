@@ -7,6 +7,7 @@ import 'package:FPay/services/profile_service.dart';
 import 'package:beauty_textfield/beauty_textfield.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -156,7 +157,7 @@ class _NewFineState extends State<NewFine> {
                 //   return "Invalid driver's licence number";
                 // }
                 if (val.length == 0) {
-                  return "Driver's licence number cannot be null";
+                  return "Driver's licence number cannot be empty";
                 }
               },
               //keyboardType: TextInputType.emailAddress,
@@ -184,7 +185,7 @@ class _NewFineState extends State<NewFine> {
               },
               validator: (val) {
                 if (val.length == 0) {
-                  return "Vehicle number cannot be null";
+                  return "Vehicle number cannot be empty";
                 }
               },
               //keyboardType: TextInputType.emailAddress,
@@ -211,7 +212,7 @@ class _NewFineState extends State<NewFine> {
               },
               validator: (val) {
                 if (val.length == 0) {
-                  return "Officer ID number cannot be null";
+                  return "Officer ID number cannot be empty";
                 }
                 if (val.length != 6) {
                   return "Invalid officer ID number";
@@ -1025,6 +1026,42 @@ class _ProfileState extends State<Profile> {
       _profilePhoto = profilePhoto;
     });
   }
+    void _onAlertPress() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new CupertinoAlertDialog(
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Column(
+                  children: <Widget>[
+                    Image.asset(
+                      'assets/images/gallery.png',
+                      width: 50,
+                    ),
+                    Text('Gallery'),
+                  ],
+                ),
+                onPressed: (){}//getGalleryImage,
+              ),
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Column(
+                  children: <Widget>[
+                    Image.asset(
+                      'assets/images/take_picture.png',
+                      width: 50,
+                    ),
+                    Text('Take Photo'),
+                  ],
+                ),
+                onPressed: (){}//getCameraImage,
+              ),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1080,7 +1117,7 @@ class _ProfileState extends State<Profile> {
                           borderRadius: new BorderRadius.circular(18.0),
                           side: BorderSide(color: Colors.black)),
                       onPressed: () {
-                        updatePhoto();
+                        _onAlertPress();
                       },
                       textColor: Colors.black,
                       child: const Text('Change Photo',

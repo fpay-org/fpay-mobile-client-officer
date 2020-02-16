@@ -1,6 +1,7 @@
 //import 'dart:html';
 import 'dart:io';
 //import 'package:path/path.dart';
+import 'package:FPay/services/pref_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:FPay/config/config.dart';
 import 'package:dio/dio.dart';
@@ -71,6 +72,7 @@ class FineService {
   Future<String> getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String officer = prefs.getString("officer");
+    String secondaryOfficer = prefs.getString("officer");
     Logger().i('$officer');
     return officer;
     //return await _saveToken(token);
@@ -212,4 +214,33 @@ class FineService {
       return false;
     });
   }
+
+  Future<bool> isSession() {
+    return PrefService()
+        .getSession()
+        .then((token) => (token != null) ? true : false)
+        .catchError((error) => Logger().e(error));
+  }
+
+  Future<bool> setSessionToken(String officerId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isSession", true);
+    prefs.setString("secondaryOfficer", officerId);
+    return true;
+  }
+
+  Future<bool> endSession()  async {
+    //BuildContext context;
+    await SharedPreferences.getInstance().then((prefs){
+          prefs.remove("secondaryOfficer");
+          prefs.setBool("isSession", false);
+          
+          //Application.router.navigateTo(context,'/',clearStack: true);
+          
+    });
+    
+  Logger().i("logout");
+    return true;
+  }
 }
+  

@@ -13,7 +13,7 @@ String officer;
 
 class AuthService {
   final baseUrl = Config.baseUrl;
-  Future<bool> login(String id, String password) {
+  Future<bool> login(String id, String password){
     officer = id;
     Logger().i('$id');
     Logger().i('$password');
@@ -23,7 +23,7 @@ class AuthService {
       // data: {
       //   "officerID": id, 
       //   "password": password,
-      // },
+      // },  
     ).then((res) async {
       Logger().i('$res');
       if (res.statusCode == 200) {
@@ -39,10 +39,12 @@ class AuthService {
     //BuildContext context;
     await SharedPreferences.getInstance().then((prefs){
           prefs.remove("token");
+          
           //Application.router.navigateTo(context,'/',clearStack: true);
           
     });
-Logger().i("logout");
+    
+  Logger().i("logout");
     return true;
   }
 
@@ -55,8 +57,8 @@ Logger().i("logout");
       return true;
     }).catchError((err) => false);
   }
-
-  Future<bool> isLoggedIn() {
+  
+  Future<bool> isLoggedIn(){
     return PrefService()
         .getToken()
         .then((token) => (token != null) ? true : false)

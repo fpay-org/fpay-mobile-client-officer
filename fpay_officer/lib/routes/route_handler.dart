@@ -1,6 +1,8 @@
 import 'package:FPay/screens/auth/auth_screen.dart';
 import 'package:FPay/screens/editdetails/change_pass.dart';
 import 'package:FPay/screens/editdetails/edit.dart';
+import 'package:FPay/screens/home/fine_issue/fine.dart';
+import 'package:FPay/screens/home/fine_issue/session.dart';
 import 'package:FPay/screens/home/home_screen.dart';
 import 'package:FPay/screens/home/tasks/issueFine.dart';
 import 'package:FPay/screens/home/tasks/myProfile.dart';
@@ -49,4 +51,14 @@ var editHandler = Handler(
 var changePassHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return ChangePass(params['officer'][0]);
+});
+
+var createSessionHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return CreateSession();
+});
+
+var fineHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return Fine();
 });

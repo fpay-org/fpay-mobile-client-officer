@@ -32,7 +32,7 @@ class _NewFineState extends State<NewFine> {
   bool isEnabaled;
   final _fineFormKey = new GlobalKey<FormState>();
   //String officer,
-  String secondary_officer,
+  String secondary_officer, 
       vehicle_licence_number,
       officer_avatar_url,
       driver_nid;
@@ -44,6 +44,12 @@ class _NewFineState extends State<NewFine> {
   String officer;
   @override
   void initState() {
+    FineService().isSession().then((_) {
+        if (_)
+          Application.router.navigateTo(context, '/fine');
+        else
+          Application.router.navigateTo(context, '/session');
+      });
     super.initState();
     isEnabaled = true;
     penalties = [];

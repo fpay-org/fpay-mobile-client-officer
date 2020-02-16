@@ -13,7 +13,12 @@ class _AuthScreenState extends State<AuthScreen> {
   String _id, _password;
   static final _formKey = new GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  bool isenabled = true;
+  bool isenabled;
+  @override
+  void initState() {
+    super.initState();
+    isenabled = true;
+  }
   Future _handleLogin(
     String _id,
     String _password,
@@ -25,6 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (res) {
         Application.router.navigateTo(context, '/home');
       } else {
+        isenabled = true;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -42,7 +48,7 @@ class _AuthScreenState extends State<AuthScreen> {
             });
       }
     });
-    isenabled = true;
+    //isenabled = true;
   }
 
   Future _handle() async {
@@ -51,8 +57,6 @@ class _AuthScreenState extends State<AuthScreen> {
       Logger().i("Result: ${ret}");
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +98,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 validator: (val) {
                   if (val.isEmpty) {
                     return 'Id number cannot be empty';
-                  }
-                  else if(val.length != 6){
+                  } else if (val.length != 6) {
                     return "Not a valid Id number";
                   }
                 },
@@ -138,11 +141,10 @@ class _AuthScreenState extends State<AuthScreen> {
               RaisedButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    if(isenabled){
+                    if (isenabled) {
                       isenabled = false;
                       _handleLogin(_id, _password, context);
-                    }
-                    else{
+                    } else {
                       return null;
                     }
                     //_handle();

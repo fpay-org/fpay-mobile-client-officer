@@ -11,16 +11,17 @@ class EditDetails extends StatefulWidget {
 }
 
 class _EditDetailsState extends State<EditDetails> {
+
   Future<Officer> details;
   //Officer data;
-  bool isEnabled = true;
+  bool isEnabled;
   final emailController = TextEditingController();
   final contactController = TextEditingController();
   String init_email;
   @override
   initState() {
     super.initState();
-
+    isEnabled = true;
     details = ProfService().getDetails();
 
     details.then((goo) {
@@ -82,8 +83,10 @@ class _EditDetailsState extends State<EditDetails> {
             police_station, password)
         .then((res) {
       if (res) {
+        isEnabled = true;
         Application.router.navigateTo(context, '/home');
       } else {
+        isEnabled = true;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -101,7 +104,6 @@ class _EditDetailsState extends State<EditDetails> {
             });
       }
     });
-    isEnabled = true;
   }
 
   static final _regFormKey = new GlobalKey<FormState>();
@@ -400,11 +402,18 @@ class _EditDetailsState extends State<EditDetails> {
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.green)),
                               onPressed: () {
-                                print(email);
+                                if(isEnabled){
+                                  isEnabled = false;
+                                  print(email);
                                 Logger().i("SEXY", emailController.text);
                                 if (_regFormKey.currentState.validate()) {
                                   showDialogBox(emailController.text, contactController.text);
                                 }
+                                }
+                                else{
+                                  return null;
+                                }
+                                
                               },
                               textColor: Colors.white,
                               child: const Text('Update Details',
@@ -416,7 +425,10 @@ class _EditDetailsState extends State<EditDetails> {
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.orange)),
                               onPressed: () {
-                                Application.router.navigateTo(context, '/pass/$officer');
+                                if(isEnabled){
+                                  Application.router.navigateTo(context, '/pass/$officer');
+                                }
+                                
                               },
                               textColor: Colors.white,
                               child: const Text('Change Password',

@@ -67,10 +67,10 @@ class _NewFineState extends State<NewFine> {
     });
   }
 
-  File image;
+  Future<File> image;
   String image_path;
   Future getPhoto() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       image = image;
       image_path = image.path;
@@ -89,6 +89,7 @@ class _NewFineState extends State<NewFine> {
             secondary_officer, penalties, image_path)
         .then((res) async {
       if (res) {
+        isEnabaled = true;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -106,6 +107,7 @@ class _NewFineState extends State<NewFine> {
               );
             });
       } else {
+        isEnabaled = true;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -123,6 +125,32 @@ class _NewFineState extends State<NewFine> {
             });
       }
     });
+  }
+
+  Widget showImage() {
+    return FutureBuilder<File>(
+      future: image,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return Image.file(
+            snapshot.data,
+            width: 300,
+            height: 300,
+          );
+        } else if (snapshot.error != null) {
+          return const Text(
+            'Error Picking Image',
+            textAlign: TextAlign.center,
+          );
+        } else {
+          return const Text(
+            'No Image Selected',
+            textAlign: TextAlign.center,
+          );
+        }
+      },
+    );
   }
 
   @override
@@ -443,6 +471,7 @@ class _NewFineState extends State<NewFine> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text("Add supporting officer's photo"),
+                //showImage(),
                 IconButton(
                     icon: Icon(Icons.camera_alt),
                     tooltip: "Add a photo",
@@ -457,21 +486,24 @@ class _NewFineState extends State<NewFine> {
                 if (isEnabaled) {
                   isEnabaled = false;
                   if (_fineFormKey.currentState.validate()) {
-                    //Logger().i("Result");
-                    Logger().i('mklanfddknaknkl:::::');
+                    if (isEnabaled) {
+                      //Logger().i("Result");
+                      Logger().i('mklanfddknaknkl:::::');
+                      isEnabaled = false;
+                      _getId().then((officer) {
+                        if (officer != null) {
+                          _handleFineIssueed(
+                              officer,
+                              driver_nid,
+                              vehicle_licence_number,
+                              secondary_officer,
+                              penalties,
+                              image_path);
+                        }
+                      });
+                    }
 
-                    _getId().then((officer) {
-                      if (officer != null) {
-                        _handleFineIssueed(
-                            officer,
-                            driver_nid,
-                            vehicle_licence_number,
-                            secondary_officer,
-                            penalties,
-                            image_path);
-                      }
-                    });
-                    isEnabaled = true;
+                    //isEnabaled = true;
                   }
                 } else {
                   return null;
@@ -598,6 +630,13 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  bool isEnabled;
+  @override
+  void initState() {
+    super.initState();
+    isEnabled = true;
+  }
+
   File _image;
   String content, title;
   Future getImage() async {
@@ -640,6 +679,7 @@ class _DashBoardState extends State<DashBoard> {
                 ],
               );
             });
+        isEnabled = true;
       } else {
         showDialog(
             context: context,
@@ -656,6 +696,7 @@ class _DashBoardState extends State<DashBoard> {
                 ],
               );
             });
+        isEnabled = true;
       }
     });
   }
@@ -861,12 +902,17 @@ class _DashBoardState extends State<DashBoard> {
               ),
               RaisedButton(
                 onPressed: () {
+                  if (isEnabled) {
+                    getId().then((officer) {
+                      if (officer != null) {
+                        isEnabled = false;
+                        publishPost(officer, content, title);
+                      }
+                    });
+                  } else {
+                    return null;
+                  }
                   //sendPhoto(_image);
-                  getId().then((officer) {
-                    if (officer != null) {
-                      publishPost(officer, content, title);
-                    }
-                  });
                 },
                 child:
                     const Text('Publish Post', style: TextStyle(fontSize: 20)),
@@ -979,9 +1025,10 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Future<Officer> details;
-
+  bool isEnabled;
   @override
   initState() {
+    isEnabled = true;
     super.initState();
     Logger().i("paa");
     details = _handleDetails();
@@ -1026,38 +1073,39 @@ class _ProfileState extends State<Profile> {
       _profilePhoto = profilePhoto;
     });
   }
-    void _onAlertPress() async {
+
+  void _onAlertPress() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return new CupertinoAlertDialog(
             actions: [
               CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Column(
-                  children: <Widget>[
-                    Image.asset(
-                      'assets/images/gallery.png',
-                      width: 50,
-                    ),
-                    Text('Gallery'),
-                  ],
-                ),
-                onPressed: (){}//getGalleryImage,
-              ),
+                  isDefaultAction: true,
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/gallery.png',
+                        width: 50,
+                      ),
+                      Text('Gallery'),
+                    ],
+                  ),
+                  onPressed: () {} //getGalleryImage,
+                  ),
               CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Column(
-                  children: <Widget>[
-                    Image.asset(
-                      'assets/images/take_picture.png',
-                      width: 50,
-                    ),
-                    Text('Take Photo'),
-                  ],
-                ),
-                onPressed: (){}//getCameraImage,
-              ),
+                  isDefaultAction: true,
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/take_picture.png',
+                        width: 50,
+                      ),
+                      Text('Take Photo'),
+                    ],
+                  ),
+                  onPressed: () {} //getCameraImage,
+                  ),
             ],
           );
         });
@@ -1102,13 +1150,13 @@ class _ProfileState extends State<Profile> {
                   SizedBox(
                     height: _height / 12,
                   ),
-                  
+
                   CircleAvatar(
                     radius: _width < _height ? _width / 4 : _height / 4,
                     backgroundImage: NetworkImage(avatar_url),
-                  //   child: _profilePhoto == null
-                  //       ? Text('No image selected.')
-                  //       : Image.file(_profilePhoto), 
+                    //   child: _profilePhoto == null
+                    //       ? Text('No image selected.')
+                    //       : Image.file(_profilePhoto),
                   ),
                   ButtonTheme(
                     height: 20,
@@ -1204,7 +1252,13 @@ class _ProfileState extends State<Profile> {
                       children: <Widget>[
                         RaisedButton(
                           onPressed: () {
-                            _handleLogout(context);
+                            if (isEnabled) {
+                              _handleLogout(context);
+                            }
+                            else{
+                              return null;
+                            }
+
                             //_handle();
                           },
                           textColor: Colors.white,
@@ -1214,7 +1268,11 @@ class _ProfileState extends State<Profile> {
                         ),
                         RaisedButton(
                           onPressed: () {
-                            Application.router.navigateTo(context, "/edit");
+                            if (isEnabled) {
+                              Application.router.navigateTo(context, "/edit");
+                            } else {
+                              return null;
+                            }
                           },
                           textColor: Colors.white,
                           child: const Text('Edit Details',

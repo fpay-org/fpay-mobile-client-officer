@@ -10,14 +10,22 @@ class ChangePass extends StatefulWidget {
 }
 
 class _ChangePassState extends State<ChangePass> {
-  bool isenabled = true;
+  bool isEnabled;
+
+  @override
+  void initState() {
+    super.initState();
+    isEnabled = true;
+  }
    Future changePassword(String officer,String current_pass,String new_pass) async {
     // final form = _formKey.currentState;
 
     ProfService().changePass(officer,current_pass,new_pass).then((res) {
       if (res) {
+        isEnabled = true;
         Application.router.navigateTo(context, '/home');
       } else {
+        isEnabled = true;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -35,7 +43,7 @@ class _ChangePassState extends State<ChangePass> {
             });
       }
     });
-    isenabled = true;
+    
   }
 
   static final _passFormKey = new GlobalKey<FormState>();
@@ -151,9 +159,14 @@ class _ChangePassState extends State<ChangePass> {
                     borderRadius: new BorderRadius.circular(18.0),
                     side: BorderSide(color: Colors.red)),
                 onPressed: () {
-                  if (_passFormKey.currentState.validate()) {
+                  if(isEnabled){
+                    if (_passFormKey.currentState.validate()) {
                     changePassword(officer,current_pass,new_pass);
                   }
+                  }else{
+                    return null;
+                  }
+                  
                 },
                 textColor: Colors.white,
                 child: const Text('Change Password',

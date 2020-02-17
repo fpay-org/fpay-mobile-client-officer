@@ -4,6 +4,22 @@ import 'package:FPay/services/fine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+class OfficerIDValidator {
+  static String validate(String value) {
+    if (value.isEmpty) {
+      return 'Id number cannot be empty';
+    } else if (value.length != 6) {
+      return "Not a valid Id number";
+    }
+  }
+}
+
+class PasswordValidator {
+  static String validate(String value) {
+    return (value.isEmpty) ? 'Password cannot be empty' : null;
+  }
+}
+
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -19,6 +35,7 @@ class _AuthScreenState extends State<AuthScreen> {
     super.initState();
     isenabled = true;
   }
+
   Future _handleLogin(
     String _id,
     String _password,
@@ -28,7 +45,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     AuthService().login(_id, _password).then((res) {
       if (res) {
-        Application.router.navigateTo(context, '/home',clearStack: true);
+        Application.router.navigateTo(context, '/home', clearStack: true);
       } else {
         isenabled = true;
         showDialog(
@@ -95,13 +112,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     borderSide: new BorderSide(),
                   ),
                 ),
-                validator: (val) {
-                  if (val.isEmpty) {
-                    return 'Id number cannot be empty';
-                  } else if (val.length != 6) {
-                    return "Not a valid Id number";
-                  }
-                },
+                validator: OfficerIDValidator.validate,
                 keyboardType: TextInputType.text,
                 style: new TextStyle(
                   fontFamily: "Poppins",
@@ -125,11 +136,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     borderSide: new BorderSide(),
                   ),
                 ),
-                validator: (val) {
-                  if (val.length == 0) {
-                    return "Password cannot be empty";
-                  }
-                },
+                validator:PasswordValidator.validate,
                 keyboardType: TextInputType.text,
                 style: new TextStyle(
                   fontFamily: "Poppins",

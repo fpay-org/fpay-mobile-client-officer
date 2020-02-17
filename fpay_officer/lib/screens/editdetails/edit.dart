@@ -84,7 +84,7 @@ class _EditDetailsState extends State<EditDetails> {
         .then((res) {
       if (res) {
         isEnabled = true;
-        Application.router.navigateTo(context, '/home');
+        Application.router.navigateTo(context, '/home',clearStack: true);
       } else {
         isEnabled = true;
         showDialog(

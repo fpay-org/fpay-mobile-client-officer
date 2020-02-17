@@ -32,7 +32,7 @@ class _NewFineState extends State<NewFine> {
   bool isEnabaled;
   final _fineFormKey = new GlobalKey<FormState>();
   //String officer,
-  String secondary_officer, 
+  String secondary_officer,
       vehicle_licence_number,
       officer_avatar_url,
       driver_nid;
@@ -44,12 +44,6 @@ class _NewFineState extends State<NewFine> {
   String officer;
   @override
   void initState() {
-    FineService().isSession().then((_) {
-        if (_)
-          Application.router.navigateTo(context, '/fine');
-        else
-          Application.router.navigateTo(context, '/session');
-      });
     super.initState();
     isEnabaled = true;
     penalties = [];
@@ -59,7 +53,7 @@ class _NewFineState extends State<NewFine> {
 
   //List<String> fines = ["mdkalf", "fjdkj"];
   var penalty;
-  Future<String> _getId() async {
+  Future<List> _getId() async {
     Logger().i("got herer");
     return FineService().getId().then((res) {
       if (res != null) {
@@ -106,7 +100,7 @@ class _NewFineState extends State<NewFine> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home');
+                      Application.router.navigateTo(context, '/home',clearStack: true);
                     },
                   )
                 ],
@@ -161,370 +155,400 @@ class _NewFineState extends State<NewFine> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Container(
-            child: SingleChildScrollView(
-      child: Form(
-        key: _fineFormKey,
-        child: Column(
-          children: <Widget>[
+    return Scaffold(
+      body: Center(
+        child:Column(children: <Widget>[
+            FineImage(),
             SizedBox(
-              height: 40,
+              height:50
             ),
-            TextFormField(
-              decoration: new InputDecoration(
-                labelText: "Driver's Licenece Number",
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-                //fillColor: Colors.green
-              ),
-              onChanged: (value) {
-                setState(() {
-                  driver_nid = value;
-                });
-              },
-              validator: (val) {
-                // if (val.length != 8) {
-                //   return "Invalid driver's licence number";
-                // }
-                if (val.length == 0) {
-                  return "Driver's licence number cannot be empty";
-                }
-              },
-              //keyboardType: TextInputType.emailAddress,
-              style: new TextStyle(
-                fontFamily: "Poppins",
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              decoration: new InputDecoration(
-                labelText: "Vehicle Number",
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-                //fillColor: Colors.green
-              ),
-              onChanged: (value) {
-                setState(() {
-                  vehicle_licence_number = value;
-                });
-              },
-              validator: (val) {
-                if (val.length == 0) {
-                  return "Vehicle number cannot be empty";
-                }
-              },
-              //keyboardType: TextInputType.emailAddress,
-              style: new TextStyle(
-                fontFamily: "Poppins",
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              decoration: new InputDecoration(
-                labelText: "Supporting Police officer ID Number(Witness)",
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  secondary_officer = value;
-                });
-              },
-              validator: (val) {
-                if (val.length == 0) {
-                  return "Officer ID number cannot be empty";
-                }
-                if (val.length != 6) {
-                  return "Invalid officer ID number";
-                }
-              },
-              keyboardType: TextInputType.emailAddress,
-              style: new TextStyle(
-                fontFamily: "Poppins",
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            //       Container(
-            //   padding: new EdgeInsets.all(32.0),
-            //   child: new Center(
-            //     child: new Column(
-            //       children: <Widget>[
-            //         new Checkbox(value: _value1, onChanged: _value1Changed),
-            //         new CheckboxListTile(
-            //             value: _value2,
-            //             onChanged: _value2Changed,
-            //             title: new Text('Hello World'),
-            //             controlAffinity: ListTileControlAffinity.leading,
-            //             subtitle: new Text('Subtitle'),
-            //             secondary: new Icon(Icons.archive),
-            //             activeColor: Colors.red,
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            // MultiSelect(
-            //   autovalidate: false,
-            //   titleText: "Fine list",
-            //   validator: (value) {
-            //     if (value == null) {
-            //       Logger().i('$value');
-            //       return 'Please select one or more option(s)';
-            //     }
-            //   },
-            //   errorText: 'Please select one or more option(s)',
-            //   dataSource: [
-            //     {"display": "Fine No 1", "index": 1, "value": 5000},
-            //     {"display": "Fine no 2", "index": 2, "value": 2500},
-            //     {"display": "Fine no 3", "index": 3, "value": 1000},
-            //     {"display": "Fine no 4", "index": 4, "value": 500}
-            //   ],
-            //   textField: 'display',
-            //   valueField: 'index',
-            //   filterable: true,
-            //   required: true,
-            //   value: null,
-            //   onSaved: (values) {
-            //     Logger().i('$values');
-            //     _fines = values;
-            //     print(_fines);
-            //   },
-
-            // ),
-            MultiSelectFormField(
-              autovalidate: false,
-              titleText: 'Fines',
-              validator: (value) {
-                if (value == null || value.length == 0) {
-                  return "please select one or more options";
-                }
-              },
-              dataSource: [
-                {
-                  "display": "Identification plates",
-                  "index": "1",
-                },
-                {
-                  "display": "Not carrying revenue licence",
-                  "index": "2",
-                },
-                {
-                  "display": "Contraventing revenue licence provisions",
-                  "index": "3",
-                },
-                {
-                  "display":
-                      "Driving emergency service vehicles & public service vehicle without driving licence",
-                  "index": "4",
-                },
-                {
-                  "display":
-                      "Driving special purpose vehicles without a licence",
-                  "index": "5",
-                },
-                {
-                  "display":
-                      "Driving a vehicle loaded with chemicals/hazardous waste without a licence",
-                  "index": "6",
-                },
-                {
-                  "display":
-                      "Not having a licence to drive a specific class of vehicles",
-                  "index": "7",
-                },
-                {
-                  "display": "Not carrying a driving licence",
-                  "index": "8",
-                },
-                {
-                  "display": "Not having an instructor's licence",
-                  "index": "9",
-                },
-                {
-                  "display": "Contravening speed limit",
-                  "index": "10",
-                },
-                {
-                  "display": "Disobeying road rules",
-                  "index": "11",
-                },
-                {
-                  "display":
-                      "Activities obstructing control of the motor vehicle",
-                  "index": "12",
-                },
-                {
-                  "display": "Signals by driver",
-                  "index": "13",
-                },
-                {
-                  "display": "Reversing for a long distance",
-                  "index": "14",
-                },
-                {
-                  "display": "Sound or light warnings",
-                  "index": "15",
-                },
-                {
-                  "display": "Excessive emmision of smoke. etc",
-                  "index": "16",
-                },
-                {
-                  "display": "Riding on running boards",
-                  "index": "17",
-                },
-                {
-                  "display": "No of persons in front seats",
-                  "index": "18",
-                },
-                {
-                  "display": "",
-                  "index": "19",
-                },
-                {
-                  "display": "Not wearing protective helmets",
-                  "index": "20",
-                },
-                {
-                  "display": "Distribution of advertisements",
-                  "index": "21",
-                },
-                {
-                  "display": "Excessive use of noice",
-                  "index": "22",
-                },
-                {
-                  "display":
-                      "Disobeying directions & signals of police officers/Trafic wardens",
-                  "index": "23",
-                },
-                {
-                  "display": "non compliance with traffic signals",
-                  "index": "24",
-                },
-                {
-                  "display":
-                      "failure to take precautions when discharging fuel into tank",
-                  "index": "25",
-                },
-                {
-                  "display": "Halting or parking",
-                  "index": "26",
-                },
-                {
-                  "display": "Non use of precaution when parking",
-                  "index": "27",
-                },
-                {
-                  "display":
-                      "Excessive carriage of persons in motor car or private coach",
-                  "index": "28",
-                },
-                {
-                  "display": "Carriage of passengers in excess in buses",
-                  "index": "29",
-                },
-                {
-                  "display":
-                      "Carriage on lorry or motor tricycle van of goods in excess",
-                  "index": "30",
-                },
-                {
-                  "display":
-                      "Carriage on lorry or motor tricycle van of goods in excess",
-                  "index": "30",
-                },
-              ],
-              textField: 'display',
-              valueField: 'index',
-              okButtonLabel: 'Add',
-              cancelButtonLabel: 'Cancel',
-              hintText: 'please choose one or more',
-              value: penalties,
-              onSaved: (val) {
-                if (val == null) {
-                  Logger().i('val');
-                  return;
-                }
-
-                setState(() {
-                  penalties = val;
-                  //penalties.map((_) => _.toString());
-                  Logger().i('$penalties');
-                });
-              },
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text("Add supporting officer's photo"),
-                //showImage(),
-                IconButton(
-                    icon: Icon(Icons.camera_alt),
-                    tooltip: "Add a photo",
-                    onPressed: () {
-                      getPhoto();
-                    }),
-              ],
-            ),
-
             RaisedButton(
-              onPressed: () async {
-                if (isEnabaled) {
-                  isEnabaled = false;
-                  if (_fineFormKey.currentState.validate()) {
-                    if (isEnabaled) {
-                      //Logger().i("Result");
-                      Logger().i('mklanfddknaknkl:::::');
-                      isEnabaled = false;
-                      _getId().then((officer) {
-                        if (officer != null) {
-                          _handleFineIssueed(
-                              officer,
-                              driver_nid,
-                              vehicle_licence_number,
-                              secondary_officer,
-                              penalties,
-                              image_path);
-                        }
-                      });
-                    }
-
-                    //isEnabaled = true;
-                  }
-                } else {
-                  return null;
-                }
-                //Logger().i("Result");
-              },
-              textColor: Colors.white,
-              child: const Text('Issue Fine', style: TextStyle(fontSize: 20)),
-              color: Colors.redAccent,
-            )
-          ],
+            onPressed: () {
+              FineService().isSession().then((_) {
+                if (_)
+                  Application.router.navigateTo(context, '/fine');
+                else
+                  Application.router.navigateTo(context, '/session');
+              });  
+            },
+            textColor: Colors.white,
+            child: const Text('Start issue a fine',
+                style: TextStyle(fontSize: 20)),
+            color: Colors.green,
+          ),
+          ],)
+          ,
         ),
-      ),
-    )));
+      );
+    
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //       child: Container(
+  //           child: SingleChildScrollView(
+  //     child: Form(
+  //       key: _fineFormKey,
+  //       child: Column(
+  //         children: <Widget>[
+  //           SizedBox(
+  //             height: 40,
+  //           ),
+  //           TextFormField(
+  //             decoration: new InputDecoration(
+  //               labelText: "Driver's Licenece Number",
+  //               fillColor: Colors.white,
+  //               border: new OutlineInputBorder(
+  //                 borderRadius: new BorderRadius.circular(25.0),
+  //                 borderSide: new BorderSide(),
+  //               ),
+  //               //fillColor: Colors.green
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 driver_nid = value;
+  //               });
+  //             },
+  //             validator: (val) {
+  //               // if (val.length != 8) {
+  //               //   return "Invalid driver's licence number";
+  //               // }
+  //               if (val.length == 0) {
+  //                 return "Driver's licence number cannot be empty";
+  //               }
+  //             },
+  //             //keyboardType: TextInputType.emailAddress,
+  //             style: new TextStyle(
+  //               fontFamily: "Poppins",
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 20,
+  //           ),
+  //           TextFormField(
+  //             decoration: new InputDecoration(
+  //               labelText: "Vehicle Number",
+  //               fillColor: Colors.white,
+  //               border: new OutlineInputBorder(
+  //                 borderRadius: new BorderRadius.circular(25.0),
+  //                 borderSide: new BorderSide(),
+  //               ),
+  //               //fillColor: Colors.green
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 vehicle_licence_number = value;
+  //               });
+  //             },
+  //             validator: (val) {
+  //               if (val.length == 0) {
+  //                 return "Vehicle number cannot be empty";
+  //               }
+  //             },
+  //             //keyboardType: TextInputType.emailAddress,
+  //             style: new TextStyle(
+  //               fontFamily: "Poppins",
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 20,
+  //           ),
+  //           TextFormField(
+  //             decoration: new InputDecoration(
+  //               labelText: "Supporting Police officer ID Number(Witness)",
+  //               fillColor: Colors.white,
+  //               border: new OutlineInputBorder(
+  //                 borderRadius: new BorderRadius.circular(25.0),
+  //                 borderSide: new BorderSide(),
+  //               ),
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 secondary_officer = value;
+  //               });
+  //             },
+  //             validator: (val) {
+  //               if (val.length == 0) {
+  //                 return "Officer ID number cannot be empty";
+  //               }
+  //               if (val.length != 6) {
+  //                 return "Invalid officer ID number";
+  //               }
+  //             },
+  //             keyboardType: TextInputType.emailAddress,
+  //             style: new TextStyle(
+  //               fontFamily: "Poppins",
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 20,
+  //           ),
+  //           //       Container(
+  //           //   padding: new EdgeInsets.all(32.0),
+  //           //   child: new Center(
+  //           //     child: new Column(
+  //           //       children: <Widget>[
+  //           //         new Checkbox(value: _value1, onChanged: _value1Changed),
+  //           //         new CheckboxListTile(
+  //           //             value: _value2,
+  //           //             onChanged: _value2Changed,
+  //           //             title: new Text('Hello World'),
+  //           //             controlAffinity: ListTileControlAffinity.leading,
+  //           //             subtitle: new Text('Subtitle'),
+  //           //             secondary: new Icon(Icons.archive),
+  //           //             activeColor: Colors.red,
+  //           //         ),
+  //           //       ],
+  //           //     ),
+  //           //   ),
+  //           // ),
+  //           // MultiSelect(
+  //           //   autovalidate: false,
+  //           //   titleText: "Fine list",
+  //           //   validator: (value) {
+  //           //     if (value == null) {
+  //           //       Logger().i('$value');
+  //           //       return 'Please select one or more option(s)';
+  //           //     }
+  //           //   },
+  //           //   errorText: 'Please select one or more option(s)',
+  //           //   dataSource: [
+  //           //     {"display": "Fine No 1", "index": 1, "value": 5000},
+  //           //     {"display": "Fine no 2", "index": 2, "value": 2500},
+  //           //     {"display": "Fine no 3", "index": 3, "value": 1000},
+  //           //     {"display": "Fine no 4", "index": 4, "value": 500}
+  //           //   ],
+  //           //   textField: 'display',
+  //           //   valueField: 'index',
+  //           //   filterable: true,
+  //           //   required: true,
+  //           //   value: null,
+  //           //   onSaved: (values) {
+  //           //     Logger().i('$values');
+  //           //     _fines = values;
+  //           //     print(_fines);
+  //           //   },
+
+  //           // ),
+  //           MultiSelectFormField(
+  //             autovalidate: false,
+  //             titleText: 'Fines',
+  //             validator: (value) {
+  //               if (value == null || value.length == 0) {
+  //                 return "please select one or more options";
+  //               }
+  //             },
+  //             dataSource: [
+  //               {
+  //                 "display": "Identification plates",
+  //                 "index": "1",
+  //               },
+  //               {
+  //                 "display": "Not carrying revenue licence",
+  //                 "index": "2",
+  //               },
+  //               {
+  //                 "display": "Contraventing revenue licence provisions",
+  //                 "index": "3",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Driving emergency service vehicles & public service vehicle without driving licence",
+  //                 "index": "4",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Driving special purpose vehicles without a licence",
+  //                 "index": "5",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Driving a vehicle loaded with chemicals/hazardous waste without a licence",
+  //                 "index": "6",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Not having a licence to drive a specific class of vehicles",
+  //                 "index": "7",
+  //               },
+  //               {
+  //                 "display": "Not carrying a driving licence",
+  //                 "index": "8",
+  //               },
+  //               {
+  //                 "display": "Not having an instructor's licence",
+  //                 "index": "9",
+  //               },
+  //               {
+  //                 "display": "Contravening speed limit",
+  //                 "index": "10",
+  //               },
+  //               {
+  //                 "display": "Disobeying road rules",
+  //                 "index": "11",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Activities obstructing control of the motor vehicle",
+  //                 "index": "12",
+  //               },
+  //               {
+  //                 "display": "Signals by driver",
+  //                 "index": "13",
+  //               },
+  //               {
+  //                 "display": "Reversing for a long distance",
+  //                 "index": "14",
+  //               },
+  //               {
+  //                 "display": "Sound or light warnings",
+  //                 "index": "15",
+  //               },
+  //               {
+  //                 "display": "Excessive emmision of smoke. etc",
+  //                 "index": "16",
+  //               },
+  //               {
+  //                 "display": "Riding on running boards",
+  //                 "index": "17",
+  //               },
+  //               {
+  //                 "display": "No of persons in front seats",
+  //                 "index": "18",
+  //               },
+  //               {
+  //                 "display": "",
+  //                 "index": "19",
+  //               },
+  //               {
+  //                 "display": "Not wearing protective helmets",
+  //                 "index": "20",
+  //               },
+  //               {
+  //                 "display": "Distribution of advertisements",
+  //                 "index": "21",
+  //               },
+  //               {
+  //                 "display": "Excessive use of noice",
+  //                 "index": "22",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Disobeying directions & signals of police officers/Trafic wardens",
+  //                 "index": "23",
+  //               },
+  //               {
+  //                 "display": "non compliance with traffic signals",
+  //                 "index": "24",
+  //               },
+  //               {
+  //                 "display":
+  //                     "failure to take precautions when discharging fuel into tank",
+  //                 "index": "25",
+  //               },
+  //               {
+  //                 "display": "Halting or parking",
+  //                 "index": "26",
+  //               },
+  //               {
+  //                 "display": "Non use of precaution when parking",
+  //                 "index": "27",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Excessive carriage of persons in motor car or private coach",
+  //                 "index": "28",
+  //               },
+  //               {
+  //                 "display": "Carriage of passengers in excess in buses",
+  //                 "index": "29",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Carriage on lorry or motor tricycle van of goods in excess",
+  //                 "index": "30",
+  //               },
+  //               {
+  //                 "display":
+  //                     "Carriage on lorry or motor tricycle van of goods in excess",
+  //                 "index": "30",
+  //               },
+  //             ],
+  //             textField: 'display',
+  //             valueField: 'index',
+  //             okButtonLabel: 'Add',
+  //             cancelButtonLabel: 'Cancel',
+  //             hintText: 'please choose one or more',
+  //             value: penalties,
+  //             onSaved: (val) {
+  //               if (val == null) {
+  //                 Logger().i('val');
+  //                 return;
+  //               }
+
+  //               setState(() {
+  //                 penalties = val;
+  //                 //penalties.map((_) => _.toString());
+  //                 Logger().i('$penalties');
+  //               });
+  //             },
+  //           ),
+  //           SizedBox(
+  //             height: 50,
+  //           ),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //             children: <Widget>[
+  //               Text("Add supporting officer's photo"),
+  //               //showImage(),
+  //               IconButton(
+  //                   icon: Icon(Icons.camera_alt),
+  //                   tooltip: "Add a photo",
+  //                   onPressed: () {
+  //                     getPhoto();
+  //                   }),
+  //             ],
+  //           ),
+
+  //           RaisedButton(
+  //             onPressed: () async {
+  //               if (isEnabaled) {
+  //                 isEnabaled = false;
+  //                 if (_fineFormKey.currentState.validate()) {
+  //                   if (isEnabaled) {
+  //                     //Logger().i("Result");
+  //                     Logger().i('mklanfddknaknkl:::::');
+  //                     isEnabaled = false;
+  //                     _getId().then((result) {
+  //                       if (result[0] != null && result[1] != null) {
+  //                         _handleFineIssueed(
+  //                             result[0],
+  //                             driver_nid,
+  //                             vehicle_licence_number,
+  //                             result[1],
+  //                             penalties,
+  //                             image_path);
+  //                       }
+  //                     });
+  //                   }
+
+  //                   //isEnabaled = true;
+  //                 }
+  //               } else {
+  //                 return null;
+  //               }
+  //               //Logger().i("Result");
+  //             },
+  //             textColor: Colors.white,
+  //             child: const Text('Issue Fine', style: TextStyle(fontSize: 20)),
+  //             color: Colors.redAccent,
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   )));
+  // }
 }
 
 class ViewFines extends StatefulWidget {
@@ -652,7 +676,7 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-  Future<String> getId() async {
+  Future<List> getId() async {
     Logger().i("got herer");
     return FineService().getId().then((res) {
       if (res != null) {
@@ -679,7 +703,7 @@ class _DashBoardState extends State<DashBoard> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home');
+                      Application.router.navigateTo(context, '/home',clearStack: true);
                     },
                   )
                 ],
@@ -857,6 +881,17 @@ class _DashBoardState extends State<DashBoard> {
             textAlign: TextAlign.left,
           ),
           SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+            "    Title",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            textAlign: TextAlign.left,
+          ), 
+          ),
+          
+
+          
           BeautyTextfield(
             //isShadow: false,
             width: double.maxFinite,
@@ -872,6 +907,14 @@ class _DashBoardState extends State<DashBoard> {
             onChanged: (text) {
               title = text;
             },
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+            "    Content",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            textAlign: TextAlign.left,
+          ), 
           ),
           BeautyTextfield(
             //isShadow: false,
@@ -909,10 +952,10 @@ class _DashBoardState extends State<DashBoard> {
               RaisedButton(
                 onPressed: () {
                   if (isEnabled) {
-                    getId().then((officer) {
-                      if (officer != null) {
+                    getId().then((result) {
+                      if (result[0] != null) {
                         isEnabled = false;
-                        publishPost(officer, content, title);
+                        publishPost(result[0], content, title);
                       }
                     });
                   } else {
@@ -1116,7 +1159,14 @@ class _ProfileState extends State<Profile> {
           );
         });
   }
+    File _image;
+    void _handleImageSelect() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
+    setState(() {
+      _image = image;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -1156,7 +1206,17 @@ class _ProfileState extends State<Profile> {
                   SizedBox(
                     height: _height / 12,
                   ),
-
+                  // CircleAvatar(
+                  //       backgroundColor: Color(0xaa000000),
+                  //       radius: 52.0,
+                  //       child: IconButton(
+                  //         icon: Icon(
+                  //           Icons.file_upload,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: _handleImageSelect,
+                  //       ),
+                  //     ),
                   CircleAvatar(
                     radius: _width < _height ? _width / 4 : _height / 4,
                     backgroundImage: NetworkImage(avatar_url),
@@ -1192,7 +1252,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: _height / 30, left: _width / 8, right: _width / 8),
+                        top: _height / 100, left: _width / 8, right: _width / 8),
                     // child:Text('Snowboarder, Superhero and writer.\nSometime I work at google as Executive Chairman ',
                     //   style: TextStyle(fontWeight: FontWeight.normal, fontSize: _width/25,color: Colors.white),textAlign: TextAlign.center,)
                   ),
@@ -1213,27 +1273,27 @@ class _ProfileState extends State<Profile> {
                       Text("Officer ID"),
                       Text('${snapshot.data.officer_id}', style: _style()),
                       SizedBox(
-                        height: _height / 25.0,
+                        height: _height / 30.0,
                       ),
                       Text("Officer's Current Police station"),
                       Text('${snapshot.data.police_station}', style: _style()),
                       SizedBox(
-                        height: _height / 25.0,
+                        height: _height / 30.0,
                       ),
                       Text("Officer NIC"),
                       Text('${snapshot.data.nic}', style: _style()),
                       SizedBox(
-                        height: _height / 25.0,
+                        height: _height / 30.0,
                       ),
                       Text("Officer Email"),
                       Text('${snapshot.data.email}', style: _style()),
                       SizedBox(
-                        height: _height / 25.0,
+                        height: _height / 30.0,
                       ),
                       Text("Officer Mobile Number"),
                       Text('${snapshot.data.contact_number}', style: _style()),
                       SizedBox(
-                        height: _height / 25.0,
+                        height: _height / 30.0,
                       ),
 
                       // Text("Email"),
@@ -1260,8 +1320,7 @@ class _ProfileState extends State<Profile> {
                           onPressed: () {
                             if (isEnabled) {
                               _handleLogout(context);
-                            }
-                            else{
+                            } else {
                               return null;
                             }
 
@@ -1349,6 +1408,22 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
+    );
+  }
+}
+
+class FineImage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    AssetImage assetImage = AssetImage('lib/images/fineissue.png');
+    Image image = Image(
+      image: assetImage,
+      width: 200,
+      height: 200,
+    );
+    return Container(
+      child: image,
+      margin: EdgeInsets.only(top: 200),
     );
   }
 }

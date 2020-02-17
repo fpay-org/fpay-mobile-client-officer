@@ -44,7 +44,7 @@ class _FineState extends State<Fine> {
 
   //List<String> fines = ["mdkalf", "fjdkj"];
   var penalty;
-  Future<String> _getId() async {
+  Future<List> _getId() async {
     Logger().i("got herer");
     return FineService().getId().then((res) {
       if (res != null) {
@@ -91,7 +91,7 @@ class _FineState extends State<Fine> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home');
+                      Application.router.navigateTo(context, '/home',clearStack: true);
                     },
                   )
                 ],
@@ -123,7 +123,7 @@ class _FineState extends State<Fine> {
       Logger().i("true");
       if (res) {
         isEnabaled = true;
-        Application.router.navigateTo(context, '/session');
+        Application.router.navigateTo(context, '/session',clearStack: true);
       } else {
         isEnabaled = true;
         showDialog(
@@ -183,6 +183,13 @@ class _FineState extends State<Fine> {
             SizedBox(
               height: 40,
             ),
+            Text(
+              "Fill in the details to issue a fine",
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+                      height: 5,
+                    ),
             TextFormField(
               decoration: new InputDecoration(
                 labelText: "Driver's Licenece Number",
@@ -242,33 +249,33 @@ class _FineState extends State<Fine> {
             SizedBox(
               height: 20,
             ),
-            TextFormField(
-              decoration: new InputDecoration(
-                labelText: "Supporting Police officer ID Number(Witness)",
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  borderSide: new BorderSide(),
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  secondary_officer = value;
-                });
-              },
-              validator: (val) {
-                if (val.length == 0) {
-                  return "Officer ID number cannot be empty";
-                }
-                if (val.length != 6) {
-                  return "Invalid officer ID number";
-                }
-              },
-              keyboardType: TextInputType.emailAddress,
-              style: new TextStyle(
-                fontFamily: "Poppins",
-              ),
-            ),
+            // TextFormField(
+            //   decoration: new InputDecoration(
+            //     labelText: "Supporting Police officer ID Number(Witness)",
+            //     fillColor: Colors.white,
+            //     border: new OutlineInputBorder(
+            //       borderRadius: new BorderRadius.circular(25.0),
+            //       borderSide: new BorderSide(),
+            //     ),
+            //   ),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       secondary_officer = value;
+            //     });
+            //   },
+            //   validator: (val) {
+            //     if (val.length == 0) {
+            //       return "Officer ID number cannot be empty";
+            //     }
+            //     if (val.length != 6) {
+            //       return "Invalid officer ID number";
+            //     }
+            //   },
+            //   keyboardType: TextInputType.emailAddress,
+            //   style: new TextStyle(
+            //     fontFamily: "Poppins",
+            //   ),
+            // ),
             SizedBox(
               height: 20,
             ),
@@ -508,13 +515,13 @@ class _FineState extends State<Fine> {
                       //Logger().i("Result");
                       Logger().i('mklanfddknaknkl:::::');
                       isEnabaled = false;
-                      _getId().then((officer) {
-                        if (officer != null) {
+                      _getId().then((result) {
+                        if (result[0] != null && result[1] != null) {
                           _handleFineIssueed(
-                              officer,
+                              result[0],
                               driver_nid,
                               vehicle_licence_number,
-                              secondary_officer,
+                              result[1],
                               penalties,
                               image_path);
                         }

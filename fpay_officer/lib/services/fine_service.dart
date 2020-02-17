@@ -69,12 +69,13 @@ class FineService {
     }).catchError((err) => false);
   }
 
-  Future<String> getId() async {
+  Future<List> getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String officer = prefs.getString("officer");
-    String secondaryOfficer = prefs.getString("officer");
+    var result  = new List();
+    result[0] = prefs.getString("officer");
+    result[1] = prefs.getString("officer");
     Logger().i('$officer');
-    return officer;
+    return result;
     //return await _saveToken(token);
   }
 

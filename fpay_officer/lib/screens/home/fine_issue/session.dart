@@ -32,7 +32,7 @@ class _CreateSessionState extends State<CreateSession> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home');
+                      Application.router.navigateTo(context, '/fine',replace: true);
                     },
                   )
                 ],

@@ -23,7 +23,7 @@ class _ChangePassState extends State<ChangePass> {
     ProfService().changePass(officer,current_pass,new_pass).then((res) {
       if (res) {
         isEnabled = true;
-        Application.router.navigateTo(context, '/home');
+        Application.router.navigateTo(context, '/home',clearStack: true);
       } else {
         isEnabled = true;
         showDialog(

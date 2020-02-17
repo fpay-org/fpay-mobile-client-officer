@@ -8,9 +8,7 @@ class FPayOfficerApp extends StatelessWidget {
     final router = Router();
     Routes.configureRouter(router);
     Application.router = router;
-    if(true){
-      print("dja vk");
-    }
+    
   }
 
   @override

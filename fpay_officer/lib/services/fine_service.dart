@@ -69,13 +69,17 @@ class FineService {
     }).catchError((err) => false);
   }
 
-  Future<List> getId() async {
+  Future<String> getId() async {
+    Logger().i('getId');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var result  = new List();
-    result[0] = prefs.getString("officer");
-    result[1] = prefs.getString("officer");
-    Logger().i('$officer');
-    return result;
+    String officer = prefs.getString("officer");
+    
+   
+    result.add(prefs.getString("officer"));
+    result.add(prefs.getString("secondaryOfficer"));
+    
+    return officer;
     //return await _saveToken(token);
   }
 
@@ -143,8 +147,10 @@ class FineService {
       String officer,
       String driver_nid,
       String vehicle_license_number,
-      String secondary_officer,
       List penalties,String iamge_path) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String secondary_officer = prefs.getString("secondaryOfficer");
+        Logger().i('$secondary_officer');
     Position _currentPosition = await _getCurrentLocation();
     Logger().i('start');
     String lat = _currentPosition.latitude.toString();
@@ -227,6 +233,7 @@ class FineService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isSession", true);
     prefs.setString("secondaryOfficer", officerId);
+    Logger().i("$officerId");
     return true;
   }
 

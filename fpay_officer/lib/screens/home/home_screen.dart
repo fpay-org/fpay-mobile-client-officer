@@ -53,7 +53,7 @@ class _NewFineState extends State<NewFine> {
 
   //List<String> fines = ["mdkalf", "fjdkj"];
   var penalty;
-  Future<List> _getId() async {
+  Future<String> _getId() async {
     Logger().i("got herer");
     return FineService().getId().then((res) {
       if (res != null) {
@@ -85,8 +85,7 @@ class _NewFineState extends State<NewFine> {
       List penalties,
       String image_path) async {
     await FineService()
-        .isuseFine(officer, driver_nid, vehicle_license_number,
-            secondary_officer, penalties, image_path)
+        .isuseFine(officer, driver_nid, vehicle_license_number, penalties, image_path)
         .then((res) async {
       if (res) {
         isEnabaled = true;
@@ -676,7 +675,7 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-  Future<List> getId() async {
+  Future<String> getId() async {
     Logger().i("got herer");
     return FineService().getId().then((res) {
       if (res != null) {

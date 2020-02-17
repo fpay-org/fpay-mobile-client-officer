@@ -85,7 +85,8 @@ class _NewFineState extends State<NewFine> {
       List penalties,
       String image_path) async {
     await FineService()
-        .isuseFine(officer, driver_nid, vehicle_license_number, penalties, image_path)
+        .isuseFine(
+            officer, driver_nid, vehicle_license_number, penalties, image_path)
         .then((res) async {
       if (res) {
         isEnabaled = true;
@@ -99,7 +100,8 @@ class _NewFineState extends State<NewFine> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home',clearStack: true);
+                      Application.router
+                          .navigateTo(context, '/home', clearStack: true);
                     },
                   )
                 ],
@@ -156,30 +158,28 @@ class _NewFineState extends State<NewFine> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child:Column(children: <Widget>[
+        child: Column(
+          children: <Widget>[
             FineImage(),
-            SizedBox(
-              height:50
-            ),
+            SizedBox(height: 50),
             RaisedButton(
-            onPressed: () {
-              FineService().isSession().then((_) {
-                if (_)
-                  Application.router.navigateTo(context, '/fine');
-                else
-                  Application.router.navigateTo(context, '/session');
-              });  
-            },
-            textColor: Colors.white,
-            child: const Text('Start issue a fine',
-                style: TextStyle(fontSize: 20)),
-            color: Colors.green,
-          ),
-          ],)
-          ,
+              onPressed: () {
+                FineService().isSession().then((_) {
+                  if (_)
+                    Application.router.navigateTo(context, '/fine');
+                  else
+                    Application.router.navigateTo(context, '/session');
+                });
+              },
+              textColor: Colors.white,
+              child: const Text('Start issue a fine',
+                  style: TextStyle(fontSize: 20)),
+              color: Colors.green,
+            ),
+          ],
         ),
-      );
-    
+      ),
+    );
   }
 
   // @override
@@ -702,7 +702,8 @@ class _DashBoardState extends State<DashBoard> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home',clearStack: true);
+                      Application.router
+                          .navigateTo(context, '/home', clearStack: true);
                     },
                   )
                 ],
@@ -883,14 +884,12 @@ class _DashBoardState extends State<DashBoard> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-            "    Title",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            textAlign: TextAlign.left,
-          ), 
+              "    Title",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              textAlign: TextAlign.left,
+            ),
           ),
-          
-
-          
           BeautyTextfield(
             //isShadow: false,
             width: double.maxFinite,
@@ -910,10 +909,11 @@ class _DashBoardState extends State<DashBoard> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-            "    Content",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            textAlign: TextAlign.left,
-          ), 
+              "    Content",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              textAlign: TextAlign.left,
+            ),
           ),
           BeautyTextfield(
             //isShadow: false,
@@ -1077,6 +1077,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  File _image;
+
   Future<Officer> details;
   bool isEnabled;
   @override
@@ -1124,6 +1126,7 @@ class _ProfileState extends State<Profile> {
 
     setState(() {
       _profilePhoto = profilePhoto;
+      Logger().wtf(_profilePhoto.path);
     });
   }
 
@@ -1137,23 +1140,23 @@ class _ProfileState extends State<Profile> {
                   isDefaultAction: true,
                   child: Column(
                     children: <Widget>[
-                      Image.asset(
-                        'assets/images/gallery.png',
-                        width: 50,
-                      ),
+                      // Image.asset(
+                      //   'assets/images/gallery.png',
+                      //   width: 50,
+                      // ),
                       Text('Gallery'),
                     ],
                   ),
-                  onPressed: () {} //getGalleryImage,
+                  onPressed: _updateFromGallery //getGalleryImage,
                   ),
               CupertinoDialogAction(
                   isDefaultAction: true,
                   child: Column(
                     children: <Widget>[
-                      Image.asset(
-                        'assets/images/take_picture.png',
-                        width: 50,
-                      ),
+                      // Image.asset(
+                      //   'assets/images/take_picture.png',
+                      //   width: 50,
+                      // ),
                       Text('Take Photo'),
                     ],
                   ),
@@ -1163,14 +1166,15 @@ class _ProfileState extends State<Profile> {
           );
         });
   }
-    File _image;
-    void _handleImageSelect() async {
+
+  void _handleImageSelect() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _image = image;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -1256,7 +1260,9 @@ class _ProfileState extends State<Profile> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: _height / 100, left: _width / 8, right: _width / 8),
+                        top: _height / 100,
+                        left: _width / 8,
+                        right: _width / 8),
                     // child:Text('Snowboarder, Superhero and writer.\nSometime I work at google as Executive Chairman ',
                     //   style: TextStyle(fontWeight: FontWeight.normal, fontSize: _width/25,color: Colors.white),textAlign: TextAlign.center,)
                   ),
@@ -1361,6 +1367,34 @@ class _ProfileState extends State<Profile> {
                 );
               }
             }));
+  }
+
+  void _updateFromGallery() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+      Logger().e(_image);
+    });
+
+    Navigator.pop(context);
+
+    _handleUpdate(_image);
+  }
+
+  void _handleUpdate(File image) {
+    ProfService().updateAvatar(image).then((_) {
+      if (_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("Success!"),
+            );
+          },
+        );
+      }
+    });
   }
 }
 

@@ -1021,22 +1021,32 @@ class _DashBoardState extends State<DashBoard> {
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(imgUrl),
                           ),
-                          title: Text("${snapshot.data[index].title}"),
+                          title: Align(
+                            alignment: Alignment.centerLeft,
+                            child:Text("${snapshot.data[index].title}")),
                           subtitle: Column(
                             children: <Widget>[
-                              Text(
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
                                 "${snapshot.data[index].content}",
                                 textAlign: TextAlign.justify,
+                                style: TextStyle(fontSize: 12),
+                              ) ,
+                              ),
+                              SizedBox(height: 5,),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                "By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name} at 2017-02-14 at 9.30 am",
                                 style: TextStyle(fontSize: 10),
                               ),
-                              Text(
-                                "By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name} at 2017-02-14 at 9.30 am",
-                                style: TextStyle(fontSize: 8),
                               )
+                              
                             ],
                           ),
                           //Text(),
-                          trailing: Icon(Icons.more_vert),
+                          //trailing: Icon(Icons.more_vert),
                           isThreeLine: true,
                         ),
                       );

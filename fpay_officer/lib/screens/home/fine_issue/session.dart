@@ -69,7 +69,9 @@ class _CreateSessionState extends State<CreateSession> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 50),
-              Text("Who are you with"),
+              Text("Who are you with",
+              style: TextStyle(fontSize: 15),),
+              SizedBox(height:50),
               TextFormField(
                 decoration: new InputDecoration(
                   labelText: "Supporting Police officer ID Number(Witness)",
@@ -112,7 +114,7 @@ class _CreateSessionState extends State<CreateSession> {
                   //Logger().i("Result");
                 },
                 textColor: Colors.white,
-                child: const Text('Create Sessionnnn',
+                child: const Text('Create Session',
                     style: TextStyle(fontSize: 20)),
                 color: Colors.green,
               )

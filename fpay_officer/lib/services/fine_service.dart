@@ -153,11 +153,10 @@ class FineService {
         Logger().i('$secondary_officer');
     Position _currentPosition = await _getCurrentLocation();
     Logger().i('start');
-    String lat = _currentPosition.latitude.toString();
-    String long = _currentPosition.longitude.toString();
-    //List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(lat,long);
-    List<Placemark> placemark =
-        await Geolocator().placemarkFromCoordinates( 52.2165157, 6.9437819);
+    double lat = _currentPosition.latitude;
+    double long = _currentPosition.longitude;
+    List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(lat,long);
+    //List<Placemark> placemark =await Geolocator().placemarkFromCoordinates( 52.2165157, 6.9437819);
     Placemark place = placemark[0];
     String address = "${place.locality},${place.postalCode},${place.country}";
     Logger().i('${address}');

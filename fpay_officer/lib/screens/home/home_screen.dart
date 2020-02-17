@@ -950,11 +950,16 @@ class _DashBoardState extends State<DashBoard> {
               ),
               RaisedButton(
                 onPressed: () {
+                  
                   if (isEnabled) {
+                    
+                    isEnabled = false;
                     getId().then((result) {
-                      if (result[0] != null) {
-                        isEnabled = false;
-                        publishPost(result[0], content, title);
+                      
+                      if (result != null) {
+                        
+                        
+                        publishPost(result, content, title);
                       }
                     });
                   } else {

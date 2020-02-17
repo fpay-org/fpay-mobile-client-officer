@@ -54,6 +54,7 @@ class PostService {
   }
 
   Future<bool> publishPost(String officer, String content , String title) async {
+    Logger().i("possst");
     Position _currentPosition = await _getCurrentLocation();
     Logger().i('start');
     String lat = _currentPosition.latitude.toString();

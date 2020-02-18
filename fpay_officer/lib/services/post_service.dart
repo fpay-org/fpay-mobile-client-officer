@@ -10,8 +10,11 @@ class Post {
   String content;
   String first_name;
   String last_name;
+  String location;
+  String date;
+  String time;
   //DateTime posted_at;
-  Post(this.title, this.content, this.first_name, this.last_name);
+  Post(this.title, this.content, this.first_name, this.last_name,this.location,this.date,this.time);
 }
 
 class PostService {
@@ -39,11 +42,14 @@ class PostService {
         //List<Fine> e_fines = [];
         for (int i = 0; i < length; i++) {
           var f = res.data["data"][i];
-          Logger().i("huk    ${f["_id"]}");
+          Logger().i("huk    ${f["posted_at"]}");
+          String date = f["posted_at"];
+          List dates = date.split('T');
+          List times = dates[1].split(".");
           Logger().i("here baby");
-          Post post = Post(f["title"], f["content"], f["first_name"],f["last_name"]); //need to add other parameters
+          Post post = Post(f["title"], f["content"], f["first_name"],f["last_name"],f["location"]["name"],dates[0],times[0]); //need to add other parameters
           posts.add(post);
-          Logger().i("safaf0{$posts.length}");
+          Logger().i("safaf0${posts.length}");
         }
 
         return posts;

@@ -607,10 +607,10 @@ class _ViewFinesState extends State<ViewFines> {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: Text(
-                  "Fine ID: ${snapshot.data[index].fineId}",
+                  "Fine Value: ${snapshot.data[index].fineValue}",
                 ),
                 subtitle: Text(
-                  "Value: ${snapshot.data[index].fineValue}\n${snapshot.data[index].location} , ${snapshot.data[index].date} , ${snapshot.data[index].time}",
+                  "location${snapshot.data[index].location} , \nDate and time: ${snapshot.data[index].date} , ${snapshot.data[index].time}",
                 ),
                 // trailing: RaisedButton(
                 //   onPressed: () {
@@ -1040,7 +1040,7 @@ class _DashBoardState extends State<DashBoard> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                "By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name} at 2017-02-14 at 9.30 am",
+                                "By ${snapshot.data[index].first_name} ${snapshot.data[index].last_name}",
                                 style: TextStyle(fontSize: 10),
                               ),
                               )

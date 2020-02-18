@@ -17,10 +17,10 @@ class _ChangePassState extends State<ChangePass> {
     super.initState();
     isEnabled = true;
   }
-   Future changePassword(String officer,String current_pass,String new_pass) async {
+   Future changePassword(String current_pass,String new_pass) async {
     // final form = _formKey.currentState;
 
-    ProfService().changePass(officer,current_pass,new_pass).then((res) {
+    ProfService().changePass(current_pass,new_pass).then((res) {
       if (res) {
         isEnabled = true;
         Application.router.navigateTo(context, '/home',clearStack: true);
@@ -161,7 +161,7 @@ class _ChangePassState extends State<ChangePass> {
                 onPressed: () {
                   if(isEnabled){
                     if (_passFormKey.currentState.validate()) {
-                    changePassword(officer,current_pass,new_pass);
+                    changePassword(current_pass,new_pass);
                   }
                   }else{
                     return null;

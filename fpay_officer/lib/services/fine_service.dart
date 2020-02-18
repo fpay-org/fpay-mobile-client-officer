@@ -20,7 +20,10 @@ class Fine{
   String fineId;
   int fineValue;
   bool isPaid;
-  Fine(this.fineId,this.fineValue,this.isPaid);
+  String location;
+  String date;
+  String time;
+  Fine(this.fineId,this.fineValue,this.isPaid,this.location,this.date,this.time);
   
 }
 
@@ -54,10 +57,16 @@ class FineService {
         //List<Fine> e_fines = [];
         for (int i = 0; i < length; i++) {
           var f = res.data["data"][i];
-          Logger().i("huk    ${f["_id"]}");
+          Logger().i("huk    ${f["issued_at"]}");
+          String date = f["issued_at"];
+          List dates = date.split('T'); 
+          Logger().i((f["issued_at"]));
+          
+          List times = dates[1].split(".");
+          Logger().i("${times[0]}");
           Logger().i("here");
           Fine fine = Fine(f["_id"], f["total_value"],
-              f["is_payed"]); //need to add other parameters
+              f["is_payed"],f["location"]["name"],dates[0],times[0]); //need to add other parameters
           fines.add(fine);
           Logger().i("safaf0{$fines.length}");
         }
@@ -150,7 +159,7 @@ class FineService {
       List penalties,String iamge_path) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String secondary_officer = prefs.getString("secondaryOfficer");
-        Logger().i('$secondary_officer');
+        Logger().i('$vehicle_license_number');
     Position _currentPosition = await _getCurrentLocation();
     Logger().i('start');
     double lat = _currentPosition.latitude;
@@ -166,12 +175,13 @@ class FineService {
     Logger().i('$driver_nid');
     Logger().i('$value');
     Logger().i('$officer');
+    Logger().i('$vehicle_license_number');
     //String penalties_string = penalties.toString();
     String penalties_string = penalties.join(',');
     Object location_string = {
        "name": address, "longitude": long, "latitude": lat
     }.toString();
-    Logger().i('fines:$penalties_string');
+    Logger().i('fines:$penalties');
     Logger().i('$location_string');
     if (secondary_officer == officer) {
       return false;
@@ -198,7 +208,7 @@ class FineService {
     //     Logger().i("$err");
     //     return false;
     //   });
-      
+      Logger().i('here\n$penalties\n$driver_nid\n$officer\n$secondary_officer\n$vehicle_license_number');
     return Dio().post('$baseUrl/fines', data: {
       "total_value": 17000,
       "currency": "lkr",

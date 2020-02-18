@@ -5,10 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 class OfficerIDValidator {
+  static bool isNumeric(String s) {
+  if(s == null) {
+    return false;
+  }
+  return double.parse(s, (e) => null) != null;
+}
   static String validate(String value) {
     if (value.isEmpty) {
       return 'Id number cannot be empty';
     } else if (value.length != 6) {
+      return "Not a valid Id number";
+    }
+    else if(!isNumeric(value)){
       return "Not a valid Id number";
     }
   }
@@ -16,7 +25,12 @@ class OfficerIDValidator {
 
 class PasswordValidator {
   static String validate(String value) {
-    return (value.isEmpty) ? 'Password cannot be empty' : null;
+    if (value.isEmpty) {
+      return 'password cannot be empty';
+    }
+    else if(value.length<8){
+      return "password too short";
+    }
   }
 }
 

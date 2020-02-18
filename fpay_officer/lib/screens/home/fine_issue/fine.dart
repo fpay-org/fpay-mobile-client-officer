@@ -516,7 +516,7 @@ class _FineState extends State<Fine> {
                   if (_fineFormKey.currentState.validate()) {
                      
                       //Logger().i("Result");
-                      Logger().i('mklanfddknaknkl:::::');
+                      Logger().i('$vehicle_licence_number');
     
                       _getId().then((result) {
                         if (result != null) {

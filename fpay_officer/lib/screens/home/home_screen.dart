@@ -587,6 +587,7 @@ class _ViewFinesState extends State<ViewFines> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+
       future: FineService().getFines(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.data == null) {
@@ -600,6 +601,7 @@ class _ViewFinesState extends State<ViewFines> {
         } else {
           Logger().i("snapshotttttt: ${snapshot.data[0].fineId}");
           return ListView.builder(
+            padding: EdgeInsets.only(top: 20),
             shrinkWrap: true,
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
@@ -608,7 +610,7 @@ class _ViewFinesState extends State<ViewFines> {
                   "Fine ID: ${snapshot.data[index].fineId}",
                 ),
                 subtitle: Text(
-                  "Value: ${snapshot.data[index].fineValue}",
+                  "Value: ${snapshot.data[index].fineValue}\n${snapshot.data[index].location} , ${snapshot.data[index].date} , ${snapshot.data[index].time}",
                 ),
                 // trailing: RaisedButton(
                 //   onPressed: () {

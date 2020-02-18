@@ -32,18 +32,20 @@ class Officer {
 class ProfService {
   final baseUrl = Config.baseUrl;
 
-  Future<bool> changePass(
-      String officer, String current_password, String new_password) {
-    Logger().i("$officer");
+  Future<bool> changePass(String current_password, String new_password) async {
+    
     Logger().i("$current_password");
     Logger().i("$new_password");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String officer = prefs.getString("officer");
+    Logger().i("$officer");
 
-    return Dio().post('$baseUrl/pass/$officer', data: {
-      "officer": officer,
+    return Dio().post('$baseUrl/officer/$officer/password-update', data: {
+      "officer_id": officer,
       "password": current_password,
       "new_password": new_password
     }).then((res) async {
-      if (res.statusCode == 201) {
+      if (res.statusCode == 202) {
         Logger().i("${res.statusCode}");
         return true;
       }

@@ -7,6 +7,15 @@ import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'dart:async';
 import 'dart:io';
 
+class OfficerIDValidator {
+  static bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.parse(s, (e) => null) != null;
+  }
+}
+
 class Fine extends StatefulWidget {
   @override
   _FineState createState() => _FineState();
@@ -15,35 +24,26 @@ class Fine extends StatefulWidget {
 class _FineState extends State<Fine> {
   bool isEnabaled;
   final _fineFormKey = new GlobalKey<FormState>();
-  //String officer,
+
   String secondary_officer,
       vehicle_licence_number,
       officer_avatar_url,
       driver_nid;
-  // String _driverId;
-  // String _witnessId;
-  // String _vehicleNo;
+
   List penalties;
   String fines;
   String officer;
 
   @override
   void initState() {
-        isEnabaled = true;
-        Logger().i("njdnvjkdnkn");
-    // FineService().isSession().then((_) {
-    //     if (_)
-    //       Application.router.navigateTo(context, '/home', clearStack: true);
-    //     else{}
-    //       //Application.router.navigateTo(context, '/auth', clearStack: true);
-    //   });
+    isEnabaled = true;
+    Logger().i("njdnvjkdnkn");
+
     super.initState();
     penalties = [];
     fines = '';
-    
   }
 
-  //List<String> fines = ["mdkalf", "fjdkj"];
   var penalty;
   Future<String> _getId() async {
     Logger().i("got herer");
@@ -53,14 +53,11 @@ class _FineState extends State<Fine> {
         Logger().i("Came here");
         Logger().i("$res");
         return res;
-        //_handleFineIssueed(_driver_id, _witness_id, _fines);
       } else if (res == null) {
         Logger().i("chora");
       }
     });
   }
-
-
 
   Future<File> image;
   String image_path;
@@ -72,14 +69,11 @@ class _FineState extends State<Fine> {
     });
   }
 
-  Future _handleFineIssueed(
-      String officer,
-      String driver_nid,
-      String vehicle_license_number,
-      List penalties,
-      String image_path) async {
+  Future _handleFineIssueed(String officer, String driver_nid,
+      String vehicle_license_number, List penalties, String image_path) async {
     await FineService()
-        .isuseFine(officer, driver_nid, vehicle_license_number,penalties,image_path)
+        .isuseFine(
+            officer, driver_nid, vehicle_license_number, penalties, image_path)
         .then((res) async {
       if (res) {
         isEnabaled = true;
@@ -93,7 +87,8 @@ class _FineState extends State<Fine> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/home',clearStack: true);
+                      Application.router
+                          .navigateTo(context, '/home', clearStack: true);
                     },
                   )
                 ],
@@ -125,7 +120,7 @@ class _FineState extends State<Fine> {
       Logger().i("true");
       if (res) {
         isEnabaled = true;
-        Application.router.navigateTo(context, '/session',clearStack: true);
+        Application.router.navigateTo(context, '/session', clearStack: true);
       } else {
         isEnabaled = true;
         showDialog(
@@ -147,32 +142,6 @@ class _FineState extends State<Fine> {
     });
   }
 
-  //  Widget showImage() {
-  //   return FutureBuilder<File>(
-  //     future: image,
-  //     builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.done &&
-  //           snapshot.data != null) {
-  //         return Image.file(
-  //           snapshot.data,
-  //           width: 300,
-  //           height: 300,
-  //         );
-  //       } else if (snapshot.error != null) {
-  //         return const Text(
-  //           'Error Picking Image',
-  //           textAlign: TextAlign.center,
-  //         );
-  //       } else {
-  //         return const Text(
-  //           'No Image Selected',
-  //           textAlign: TextAlign.center,
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,8 +159,8 @@ class _FineState extends State<Fine> {
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(
-                      height: 5,
-                    ),
+              height: 5,
+            ),
             TextFormField(
               decoration: new InputDecoration(
                 labelText: "Driver's NID",
@@ -200,7 +169,6 @@ class _FineState extends State<Fine> {
                   borderRadius: new BorderRadius.circular(25.0),
                   borderSide: new BorderSide(),
                 ),
-                //fillColor: Colors.green
               ),
               onChanged: (value) {
                 setState(() {
@@ -208,14 +176,12 @@ class _FineState extends State<Fine> {
                 });
               },
               validator: (val) {
-                // if (val.length != 8) {
-                //   return "Invalid driver's licence number";
-                // }
                 if (val.length == 0) {
-                  return "Driver's licence number cannot be empty";
+                  return "Driver's nid number cannot be empty";
+                } else if (val.length != 10 || val.length != 12) {
+                  return "Driver's nid number not valid";
                 }
               },
-              //keyboardType: TextInputType.emailAddress,
               style: new TextStyle(
                 fontFamily: "Poppins",
               ),
@@ -231,7 +197,6 @@ class _FineState extends State<Fine> {
                   borderRadius: new BorderRadius.circular(25.0),
                   borderSide: new BorderSide(),
                 ),
-                //fillColor: Colors.green
               ),
               onChanged: (value) {
                 setState(() {
@@ -243,7 +208,6 @@ class _FineState extends State<Fine> {
                   return "Vehicle number cannot be empty";
                 }
               },
-              //keyboardType: TextInputType.emailAddress,
               style: new TextStyle(
                 fontFamily: "Poppins",
               ),
@@ -251,83 +215,9 @@ class _FineState extends State<Fine> {
             SizedBox(
               height: 20,
             ),
-            // TextFormField(
-            //   decoration: new InputDecoration(
-            //     labelText: "Supporting Police officer ID Number(Witness)",
-            //     fillColor: Colors.white,
-            //     border: new OutlineInputBorder(
-            //       borderRadius: new BorderRadius.circular(25.0),
-            //       borderSide: new BorderSide(),
-            //     ),
-            //   ),
-            //   onChanged: (value) {
-            //     setState(() {
-            //       secondary_officer = value;
-            //     });
-            //   },
-            //   validator: (val) {
-            //     if (val.length == 0) {
-            //       return "Officer ID number cannot be empty";
-            //     }
-            //     if (val.length != 6) {
-            //       return "Invalid officer ID number";
-            //     }
-            //   },
-            //   keyboardType: TextInputType.emailAddress,
-            //   style: new TextStyle(
-            //     fontFamily: "Poppins",
-            //   ),
-            // ),
             SizedBox(
               height: 20,
             ),
-            //       Container(
-            //   padding: new EdgeInsets.all(32.0),
-            //   child: new Center(
-            //     child: new Column(
-            //       children: <Widget>[
-            //         new Checkbox(value: _value1, onChanged: _value1Changed),
-            //         new CheckboxListTile(
-            //             value: _value2,
-            //             onChanged: _value2Changed,
-            //             title: new Text('Hello World'),
-            //             controlAffinity: ListTileControlAffinity.leading,
-            //             subtitle: new Text('Subtitle'),
-            //             secondary: new Icon(Icons.archive),
-            //             activeColor: Colors.red,
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            // MultiSelect(
-            //   autovalidate: false,
-            //   titleText: "Fine list",
-            //   validator: (value) {
-            //     if (value == null) {
-            //       Logger().i('$value');
-            //       return 'Please select one or more option(s)';
-            //     }
-            //   },
-            //   errorText: 'Please select one or more option(s)',
-            //   dataSource: [
-            //     {"display": "Fine No 1", "index": 1, "value": 5000},
-            //     {"display": "Fine no 2", "index": 2, "value": 2500},
-            //     {"display": "Fine no 3", "index": 3, "value": 1000},
-            //     {"display": "Fine no 4", "index": 4, "value": 500}
-            //   ],
-            //   textField: 'display',
-            //   valueField: 'index',
-            //   filterable: true,
-            //   required: true,
-            //   value: null,
-            //   onSaved: (values) {
-            //     Logger().i('$values');
-            //     _fines = values;
-            //     print(_fines);
-            //   },
-
-            // ),
             MultiSelectFormField(
               autovalidate: false,
               titleText: 'Fines',
@@ -342,15 +232,18 @@ class _FineState extends State<Fine> {
                   "index": "1",
                 },
                 {
-                  "display": "Not carrying revenue licence(ආදායම් බලපත්‍රය රැගෙන නොයෑම)",
+                  "display":
+                      "Not carrying revenue licence(ආදායම් බලපත්‍රය රැගෙන නොයෑම)",
                   "index": "2",
                 },
                 {
-                  "display": "Contraventing revenue licence provisions(ආදායම් බලපත්‍ර ප්‍රතිපාදන උල්ලංගනය කිරීම)",
+                  "display":
+                      "Contraventing revenue licence provisions(ආදායම් බලපත්‍ර ප්‍රතිපාදන උල්ලංගනය කිරීම)",
                   "index": "3",
                 },
                 {
-                  "display":"Driving emergency service vehicles & public service vehicle without driving licence(රියදුරු බලපත්‍රයක් නොමැතිව හදිසි සේවා වාහන සහ රාජ්‍ය සේවා වාහන ධාවනය කිරීම)",
+                  "display":
+                      "Driving emergency service vehicles & public service vehicle without driving licence(රියදුරු බලපත්‍රයක් නොමැතිව හදිසි සේවා වාහන සහ රාජ්‍ය සේවා වාහන ධාවනය කිරීම)",
                   "index": "4",
                 },
                 {
@@ -369,15 +262,18 @@ class _FineState extends State<Fine> {
                   "index": "7",
                 },
                 {
-                  "display": "Not carrying a driving licence(රියදුරු බලපත්‍රයක් රැගෙන නොයෑම)",
+                  "display":
+                      "Not carrying a driving licence(රියදුරු බලපත්‍රයක් රැගෙන නොයෑම)",
                   "index": "8",
                 },
                 {
-                  "display": "Not having an instructor's licence(උපදේශක බලපත්‍රයක් නොමැති වීම)",
+                  "display":
+                      "Not having an instructor's licence(උපදේශක බලපත්‍රයක් නොමැති වීම)",
                   "index": "9",
                 },
                 {
-                  "display": "Contravening speed limit(වේග සීමාව උල්ලංගනය කිරීම)",
+                  "display":
+                      "Contravening speed limit(වේග සීමාව උල්ලංගනය කිරීම)",
                   "index": "10",
                 },
                 {
@@ -394,23 +290,28 @@ class _FineState extends State<Fine> {
                   "index": "13",
                 },
                 {
-                  "display": "Reversing for a long distance(දිගු දුරක් ආපසු හැරවීම)",
+                  "display":
+                      "Reversing for a long distance(දිගු දුරක් ආපසු හැරවීම)",
                   "index": "14",
                 },
                 {
-                  "display": "Sound or light warnings(ශබ්ද හෝ සැහැල්ලු අනතුරු ඇඟවීම්)",
+                  "display":
+                      "Sound or light warnings(ශබ්ද හෝ සැහැල්ලු අනතුරු ඇඟවීම්)",
                   "index": "15",
                 },
                 {
-                  "display": "Excessive emmision of smoke. etc(දුම අධික ලෙස පිට කිරීම. යනාදිය)",
+                  "display":
+                      "Excessive emmision of smoke. etc(දුම අධික ලෙස පිට කිරීම. යනාදිය)",
                   "index": "16",
                 },
                 {
-                  "display": "Riding on running boards(ධාවන පුවරු මත ධාවනය කිරීම)",
+                  "display":
+                      "Riding on running boards(ධාවන පුවරු මත ධාවනය කිරීම)",
                   "index": "17",
                 },
                 {
-                  "display": "No of persons in front seats(ඉදිරිපස ආසනවල සිටින පුද්ගලයින්ගේ ගණන)",
+                  "display":
+                      "No of persons in front seats(ඉදිරිපස ආසනවල සිටින පුද්ගලයින්ගේ ගණන)",
                   "index": "18",
                 },
                 {
@@ -418,15 +319,18 @@ class _FineState extends State<Fine> {
                   "index": "19",
                 },
                 {
-                  "display": "Not wearing protective helmets(ආරක්ෂිත හිස් ආවරණ පැළඳ නොසිටීම)",
+                  "display":
+                      "Not wearing protective helmets(ආරක්ෂිත හිස් ආවරණ පැළඳ නොසිටීම)",
                   "index": "20",
                 },
                 {
-                  "display": "Distribution of advertisements(දැන්වීම් බෙදා හැරීම)",
+                  "display":
+                      "Distribution of advertisements(දැන්වීම් බෙදා හැරීම)",
                   "index": "21",
                 },
                 {
-                  "display": "Excessive use of noice(ශබ්දය අධික ලෙස භාවිතා කිරීම)",
+                  "display":
+                      "Excessive use of noice(ශබ්දය අධික ලෙස භාවිතා කිරීම)",
                   "index": "22",
                 },
                 {
@@ -435,7 +339,8 @@ class _FineState extends State<Fine> {
                   "index": "23",
                 },
                 {
-                  "display": "non compliance with traffic signals(මාර්ග සංකේත වලට අනුකූල නොවීම)",
+                  "display":
+                      "non compliance with traffic signals(මාර්ග සංකේත වලට අනුකූල නොවීම)",
                   "index": "24",
                 },
                 {
@@ -448,7 +353,8 @@ class _FineState extends State<Fine> {
                   "index": "26",
                 },
                 {
-                  "display": "Non use of precaution when parking(වාහන නැවැත්වීමේදී පූර්වාරක්ෂාව භාවිතා නොකිරීම)",
+                  "display":
+                      "Non use of precaution when parking(වාහන නැවැත්වීමේදී පූර්වාරක්ෂාව භාවිතා නොකිරීම)",
                   "index": "27",
                 },
                 {
@@ -457,7 +363,8 @@ class _FineState extends State<Fine> {
                   "index": "28",
                 },
                 {
-                  "display": "Carriage of passengers in excess in buses(බස්රථවල අතිරික්ත මගීන් ප්‍රවාහනය කිරීම)",
+                  "display":
+                      "Carriage of passengers in excess in buses(බස්රථවල අතිරික්ත මගීන් ප්‍රවාහනය කිරීම)",
                   "index": "29",
                 },
                 {
@@ -485,8 +392,6 @@ class _FineState extends State<Fine> {
 
                 setState(() {
                   penalties = val;
-                  //penalties.map((_) => _.toString());
-                  Logger().i('$penalties');
                 });
               },
             ),
@@ -497,7 +402,6 @@ class _FineState extends State<Fine> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text("Add supporting officer's photo"),
-                //showImage(),
                 IconButton(
                     icon: Icon(Icons.camera_alt),
                     tooltip: "Add a photo",
@@ -506,36 +410,24 @@ class _FineState extends State<Fine> {
                     }),
               ],
             ),
-
             RaisedButton(
               onPressed: () async {
-                //Logger().i(':::::');
-                if (isEnabaled) {
-                  Logger().i(':::::');
-                  isEnabaled = false;
-                  if (_fineFormKey.currentState.validate()) {
-                     
-                      //Logger().i("Result");
-                      Logger().i('$vehicle_licence_number');
-    
-                      _getId().then((result) {
-                        if (result != null) {
-                          _handleFineIssueed(
-                              result,
-                              driver_nid,
-                              vehicle_licence_number,
-                              penalties,
-                              image_path);
-                        }
-                      });
-                    }
+                if (_fineFormKey.currentState.validate()) {
+                  if (isEnabaled) {
+                    isEnabaled = false;
 
-                    //isEnabaled = true;
-                  
+                    
+
+                    _getId().then((result) {
+                      if (result != null) {
+                        _handleFineIssueed(result, driver_nid,
+                            vehicle_licence_number, penalties, image_path);
+                      }
+                    });
+                  }
                 } else {
                   return null;
                 }
-                //Logger().i("Result");
               },
               textColor: Colors.white,
               child: const Text('Issue Fine', style: TextStyle(fontSize: 20)),

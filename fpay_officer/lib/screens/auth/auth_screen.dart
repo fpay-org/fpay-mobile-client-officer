@@ -6,18 +6,18 @@ import 'package:logger/logger.dart';
 
 class OfficerIDValidator {
   static bool isNumeric(String s) {
-  if(s == null) {
-    return false;
+    if (s == null) {
+      return false;
+    }
+    return double.parse(s, (e) => null) != null;
   }
-  return double.parse(s, (e) => null) != null;
-}
+
   static String validate(String value) {
     if (value.isEmpty) {
       return 'Id number cannot be empty';
     } else if (value.length != 6) {
       return "Not a valid Id number";
-    }
-    else if(!isNumeric(value)){
+    } else if (!isNumeric(value)) {
       return "Not a valid Id number";
     }
   }
@@ -27,8 +27,7 @@ class PasswordValidator {
   static String validate(String value) {
     if (value.isEmpty) {
       return 'password cannot be empty';
-    }
-    else if(value.length<8){
+    } else if (value.length < 8) {
       return "password too short";
     }
   }
@@ -55,8 +54,6 @@ class _AuthScreenState extends State<AuthScreen> {
     String _password,
     BuildContext context,
   ) async {
-    // final form = _formKey.currentState;
-
     AuthService().login(_id, _password).then((res) {
       if (res) {
         Application.router.navigateTo(context, '/home', clearStack: true);
@@ -84,16 +81,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future _handle() async {
     Logger().i("Result:");
-    await FineService().getId().then((ret) async {
-      Logger().i("Result: ${ret}");
-    });
+    await FineService().getId().then((ret) async {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        // resizeToAvoidBottomInset: false,
         body: Form(
           key: _formKey,
           child: Column(
@@ -150,7 +144,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     borderSide: new BorderSide(),
                   ),
                 ),
-                validator:PasswordValidator.validate,
+                validator: PasswordValidator.validate,
                 keyboardType: TextInputType.text,
                 style: new TextStyle(
                   fontFamily: "Poppins",
@@ -168,7 +162,6 @@ class _AuthScreenState extends State<AuthScreen> {
                     } else {
                       return null;
                     }
-                    //_handle();
                   }
                 },
                 textColor: Colors.white,

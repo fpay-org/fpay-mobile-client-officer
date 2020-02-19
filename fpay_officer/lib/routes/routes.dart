@@ -26,14 +26,14 @@ class Routes {
     router.define(home,
         handler: homeHandler, transitionType: TransitionType.native);
 
-    router.define(viewfine,
-        handler: viewfineHandler, transitionType: TransitionType.native);
+    // router.define(viewfine,
+    //     handler: viewfineHandler, transitionType: TransitionType.native);
 
-    router.define(newfine,
-        handler: newfineHandler, transitionType: TransitionType.native);
+    // router.define(newfine,
+    //     handler: newfineHandler, transitionType: TransitionType.native);
 
-    router.define(profile,
-        handler: profileHandler, transitionType: TransitionType.native);
+    // router.define(profile,
+    //     handler: profileHandler, transitionType: TransitionType.native);
 
     router.define(edit,
         handler: editHandler, transitionType: TransitionType.native);

@@ -4,14 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-
 class EditDetails extends StatefulWidget {
   @override
   _EditDetailsState createState() => _EditDetailsState();
 }
 
 class _EditDetailsState extends State<EditDetails> {
-
   Future<Officer> details;
   //Officer data;
   bool isEnabled;
@@ -41,7 +39,6 @@ class _EditDetailsState extends State<EditDetails> {
           return AlertDialog(
             title: Text('Enter your password'),
             content: TextField(
-              //controller: _textFieldController,
               onChanged: (value) {
                 setState(() {
                   password = value;
@@ -77,14 +74,13 @@ class _EditDetailsState extends State<EditDetails> {
       String nic,
       String police_station,
       String password) async {
-    // final form = _formKey.currentState;
     ProfService()
         .editDetails(officer, first_name, last_name, email, contact_number, nic,
             police_station, password)
         .then((res) {
       if (res) {
         isEnabled = true;
-        Application.router.navigateTo(context, '/home',clearStack: true);
+        Application.router.navigateTo(context, '/home', clearStack: true);
       } else {
         isEnabled = true;
         showDialog(
@@ -108,7 +104,7 @@ class _EditDetailsState extends State<EditDetails> {
 
   static final _regFormKey = new GlobalKey<FormState>();
   String first_name, last_name, password, license_id, email, nic;
-  String contact_number = "stupid";
+  String contact_number;
   String officer, police_station;
   String new_email, new_contact;
   @override
@@ -117,7 +113,6 @@ class _EditDetailsState extends State<EditDetails> {
         resizeToAvoidBottomPadding: false,
         body: SingleChildScrollView(
           child: FutureBuilder(
-              //future: ProfService().getDetails(),
               future: details,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -128,8 +123,6 @@ class _EditDetailsState extends State<EditDetails> {
                   officer = snapshot.data.officer_id;
                   police_station = snapshot.data.police_station;
                   nic = snapshot.data.nic;
-
-                  Logger().i('$last_name');
                   return Column(children: <Widget>[
                     SizedBox(
                       height: 40,
@@ -154,25 +147,8 @@ class _EditDetailsState extends State<EditDetails> {
                                     width: 320,
                                     child: TextFormField(
                                       obscureText: false,
-                                      //enabled: false,
                                       readOnly: true,
                                       initialValue: first_name,
-                                      // onChanged: (value) {
-                                      //   setState(() {
-                                      //     email = value;
-                                      //   });
-                                      // },
-                                      // validator: (val) {
-                                      //   bool emailValid = RegExp(
-                                      //           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      //       .hasMatch(val);
-                                      //   if (val.length == 0) {
-                                      //     return "Email cannot be empty";
-                                      //   }
-                                      //   if (!emailValid) {
-                                      //     return "Not a valid email";
-                                      //   }
-                                      // },
                                       decoration: InputDecoration(
                                         labelText: "First Name",
                                       ),
@@ -191,22 +167,6 @@ class _EditDetailsState extends State<EditDetails> {
                                       obscureText: false,
                                       initialValue: last_name,
                                       readOnly: true,
-                                      // onChanged: (value) {
-                                      //   setState(() {
-                                      //     email = value;
-                                      //   });
-                                      // },
-                                      // validator: (val) {
-                                      //   bool emailValid = RegExp(
-                                      //           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      //       .hasMatch(val);
-                                      //   if (val.length == 0) {
-                                      //     return "Email cannot be empty";
-                                      //   }
-                                      //   if (!emailValid) {
-                                      //     return "Not a valid email";
-                                      //   }
-                                      // },
                                       decoration: InputDecoration(
                                         labelText: "Last Name",
                                       ),
@@ -223,12 +183,10 @@ class _EditDetailsState extends State<EditDetails> {
                                     width: 320,
                                     child: TextFormField(
                                       controller: emailController,
-                                      //initialValue: emailController.text,
                                       obscureText: false,
                                       onChanged: (value) {
                                         setState(() {
                                           email = value;
-                                          //Logger().i("SEXY SANKHA", email);
                                         });
                                       },
                                       validator: (val) {
@@ -258,7 +216,6 @@ class _EditDetailsState extends State<EditDetails> {
                                     width: 320,
                                     child: TextFormField(
                                       controller: contactController,
-                                      //initialValue: contact_number,
                                       obscureText: false,
                                       onChanged: (value) {
                                         setState(() {
@@ -340,43 +297,6 @@ class _EditDetailsState extends State<EditDetails> {
                                         fontFamily: "Poppins",
                                       ),
                                     ))),
-
-                            // Center(
-                            //     child: Container(
-                            //         width: 320,
-                            //         child: TextFormField(
-                            //           obscureText: false,
-                            //           onChanged: (value) {
-                            //             setState(() {
-                            //               password = value;
-                            //             });
-                            //           },
-                            //           validator: (val) {
-                            //             String pattern =
-                            //                 r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                            //             RegExp regExp = new RegExp(pattern);
-                            //             bool validateStructure =
-                            //                 regExp.hasMatch(val);
-                            //             if (val.length == 0) {
-                            //               return "Password cannot be empty";
-                            //             } else if (val.length < 8) {
-                            //               return "Password too short";
-                            //             } else if (!validateStructure) {
-                            //               return "please follow the constraints";
-                            //             }
-                            //           },
-                            //           decoration: InputDecoration(
-                            //             labelText:
-                            //                 "New Password (min 8 characters)",
-                            //             hintText:
-                            //                 "one uppercase/lowercase/special character/number",
-                            //             hintStyle: TextStyle(fontSize: 13),
-                            //           ),
-                            //           keyboardType: TextInputType.text,
-                            //           style: new TextStyle(
-                            //             fontFamily: "Poppins",
-                            //           ),
-                            //         ))),
                             SizedBox(
                               height: 10,
                             ),
@@ -396,24 +316,22 @@ class _EditDetailsState extends State<EditDetails> {
                                         fontFamily: "Poppins",
                                       ),
                                     ))),
-
                             RaisedButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.green)),
                               onPressed: () {
-                                if(isEnabled){
+                                if (isEnabled) {
                                   isEnabled = false;
                                   print(email);
-                                Logger().i("SEXY", emailController.text);
-                                if (_regFormKey.currentState.validate()) {
-                                  showDialogBox(emailController.text, contactController.text);
-                                }
-                                }
-                                else{
+                                  Logger().i("SEXY", emailController.text);
+                                  if (_regFormKey.currentState.validate()) {
+                                    showDialogBox(emailController.text,
+                                        contactController.text);
+                                  }
+                                } else {
                                   return null;
                                 }
-                                
                               },
                               textColor: Colors.white,
                               child: const Text('Update Details',
@@ -425,10 +343,10 @@ class _EditDetailsState extends State<EditDetails> {
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.orange)),
                               onPressed: () {
-                                if(isEnabled){
-                                  Application.router.navigateTo(context, '/pass/$officer');
+                                if (isEnabled) {
+                                  Application.router
+                                      .navigateTo(context, '/pass/$officer');
                                 }
-                                
                               },
                               textColor: Colors.white,
                               child: const Text('Change Password',

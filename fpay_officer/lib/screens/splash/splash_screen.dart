@@ -12,6 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 5), () async {
+      //checking whether user is logged in using the token
       AuthService().isLoggedIn().then((_) {
         if (_)
           Application.router.navigateTo(context, '/home', clearStack: true);
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
           child: Column(
             children: <Widget>[
-              Logo(),
+              Logo(), //sing stateless widget classses to show images
               Text(
                 "Welcome to FPay",
                 textDirection: TextDirection.ltr,

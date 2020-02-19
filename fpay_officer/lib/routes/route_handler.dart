@@ -4,10 +4,10 @@ import 'package:FPay/screens/editdetails/edit.dart';
 import 'package:FPay/screens/home/fine_issue/fine.dart';
 import 'package:FPay/screens/home/fine_issue/session.dart';
 import 'package:FPay/screens/home/home_screen.dart';
-import 'package:FPay/screens/home/tasks/issueFine.dart';
-import 'package:FPay/screens/home/tasks/myProfile.dart';
-import 'package:FPay/screens/home/tasks/viewIssuedFines.dart';
-import 'package:FPay/screens/home/tasks/settings.dart';
+// import 'package:FPay/screens/home/tasks/issueFine.dart';
+// import 'package:FPay/screens/home/tasks/myProfile.dart';
+// import 'package:FPay/screens/home/tasks/viewIssuedFines.dart';
+// import 'package:FPay/screens/home/tasks/settings.dart';
 import 'package:FPay/screens/splash/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,20 +28,20 @@ var homeHandler = Handler(
   return HomePage();
 });
 
-var viewfineHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return ViewIssuedFines();
-});
+// var viewfineHandler = Handler(
+//     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+//   return ViewIssuedFines();
+// });
 
-var newfineHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return IssueFines();
-});
+// var newfineHandler = Handler(
+//     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+//   return IssueFines();
+// });
 
-var profileHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return MyProfile();
-});
+// var profileHandler = Handler(
+//     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+//   return MyProfile();
+// });
 
 var editHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {

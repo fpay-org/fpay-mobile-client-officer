@@ -32,7 +32,8 @@ class _CreateSessionState extends State<CreateSession> {
                     child: Text("Okay"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Application.router.navigateTo(context, '/fine',replace: true);
+                      Application.router
+                          .navigateTo(context, '/fine', replace: true);
                     },
                   )
                 ],
@@ -69,9 +70,11 @@ class _CreateSessionState extends State<CreateSession> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 50),
-              Text("Who are you with",
-              style: TextStyle(fontSize: 15),),
-              SizedBox(height:50),
+              Text(
+                "Who are you with",
+                style: TextStyle(fontSize: 15),
+              ),
+              SizedBox(height: 50),
               TextFormField(
                 decoration: new InputDecoration(
                   labelText: "Supporting Police officer ID Number(Witness)",
@@ -103,7 +106,6 @@ class _CreateSessionState extends State<CreateSession> {
               RaisedButton(
                 onPressed: () async {
                   if (isEnabaled) {
-                    Logger().i("SEXY");
                     isEnabaled = false;
                     if (_sessionFormKey.currentState.validate()) {
                       _handleSession(secondary_officer);
@@ -111,7 +113,6 @@ class _CreateSessionState extends State<CreateSession> {
                   } else {
                     return null;
                   }
-                  //Logger().i("Result");
                 },
                 textColor: Colors.white,
                 child: const Text('Create Session',

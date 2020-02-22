@@ -80,7 +80,6 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future _handle() async {
-    Logger().i("Result:");
     await FineService().getId().then((ret) async {});
   }
 

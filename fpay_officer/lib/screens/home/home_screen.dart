@@ -18,10 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+
 
 class NewFine extends StatefulWidget {
   @override
@@ -48,79 +45,8 @@ class _NewFineState extends State<NewFine> {
   }
 
   var penalty;
-  Future<String> _getId() async {
-    Logger().i("got herer");
-    return FineService().getId().then((res) {
-      if (res != null) {
-        Logger().i("Came here");
-        Logger().i("$res");
-        return res;
-      } else if (res == null) {
-        Logger().i("chora");
-      }
-    });
-  }
 
   Future<File> image;
-  String image_path;
-  Future getPhoto() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      image = image;
-      image_path = image.path;
-    });
-  }
-
-  Future _handleFineIssueed(
-      String officer,
-      String driver_nid,
-      String vehicle_license_number,
-      String secondary_officer,
-      List penalties,
-      String image_path) async {
-    await FineService()
-        .isuseFine(
-            officer, driver_nid, vehicle_license_number, penalties, image_path)
-        .then((res) async {
-      if (res) {
-        isEnabaled = true;
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Success"),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("Okay"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Application.router
-                          .navigateTo(context, '/home', clearStack: true);
-                    },
-                  )
-                ],
-              );
-            });
-      } else {
-        isEnabaled = true;
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Error"),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("Okay"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
-      }
-    });
-  }
 
   Widget showImage() {
     return FutureBuilder<File>(
@@ -239,15 +165,9 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   Future<String> getId() async {
-    Logger().i("got herer");
     return FineService().getId().then((res) {
       if (res != null) {
-        Logger().i("Came here");
-        Logger().i("$res");
         return res;
-        //_handleFineIssueed(_driver_id, _witness_id, _fines);
-      } else if (res == null) {
-        Logger().i("chora");
       }
     });
   }
@@ -294,7 +214,7 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
-  final _dashboardFormKey = new GlobalKey<FormState>();
+  //final _dashboardFormKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final String imgUrl =
@@ -566,7 +486,6 @@ class _ProfileState extends State<Profile> {
             future: details,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                Logger().i('${snapshot.data.avatar_url}');
                 String avatar_url = snapshot.data.avatar_url;
                 return Column(children: <Widget>[
                   SizedBox(
@@ -715,13 +634,36 @@ class _ProfileState extends State<Profile> {
   }
 }
 
+class FineImage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    AssetImage assetImage = AssetImage('lib/images/fineissue.png');
+    Image image = Image(
+      image: assetImage,
+      width: 200,
+      height: 200,
+    );
+    return Container(
+      child: image,
+      margin: EdgeInsets.only(top: 200),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+//MAIN HOMEPAGE CLASS
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  //static _HomePageState obj = _HomePageState();
+
 
   List<Widget> _widgetOptions = <Widget>[
+    //list of bottom navigation bar items
     NewFine(),
     ViewFines(),
     DashBoard(),
@@ -730,10 +672,11 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; //on strtup navigate yo view fines
     });
   }
-
+  
+//botttom navigation bar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -767,18 +710,4 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class FineImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    AssetImage assetImage = AssetImage('lib/images/fineissue.png');
-    Image image = Image(
-      image: assetImage,
-      width: 200,
-      height: 200,
-    );
-    return Container(
-      child: image,
-      margin: EdgeInsets.only(top: 200),
-    );
-  }
-}
+

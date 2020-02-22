@@ -54,6 +54,8 @@ class _SplashScreenState extends State<SplashScreen> {
       );
   }
 }
+
+//insert images as statlessss widget
 class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

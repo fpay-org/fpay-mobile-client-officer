@@ -37,7 +37,6 @@ class _FineState extends State<Fine> {
   @override
   void initState() {
     isEnabaled = true;
-    Logger().i("njdnvjkdnkn");
 
     super.initState();
     penalties = [];
@@ -46,15 +45,11 @@ class _FineState extends State<Fine> {
 
   var penalty;
   Future<String> _getId() async {
-    Logger().i("got herer");
     return FineService().getId().then((res) {
-      Logger().i("$res");
       if (res != null) {
-        Logger().i("Came here");
-        Logger().i("$res");
         return res;
       } else if (res == null) {
-        Logger().i("chora");
+      
       }
     });
   }
@@ -117,7 +112,7 @@ class _FineState extends State<Fine> {
 
   Future changeSession() async {
     await FineService().endSession().then((res) async {
-      Logger().i("true");
+    
       if (res) {
         isEnabaled = true;
         Application.router.navigateTo(context, '/session', clearStack: true);
@@ -386,7 +381,7 @@ class _FineState extends State<Fine> {
               value: penalties,
               onSaved: (val) {
                 if (val == null) {
-                  Logger().i('val');
+
                   return;
                 }
 
@@ -436,7 +431,7 @@ class _FineState extends State<Fine> {
             RaisedButton(
               onPressed: () {
                 if (isEnabaled) {
-                  Logger().i('fine issue start');
+    
                   changeSession();
                 } else {
                   return null;

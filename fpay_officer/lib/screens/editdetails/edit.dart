@@ -23,7 +23,7 @@ class _EditDetailsState extends State<EditDetails> {
     details = ProfService().getDetails();
 
     details.then((goo) {
-      Logger().i("is this good ${goo.email}");
+      
       emailController.text = goo.email;
       // init_email = goo.email;
       contactController.text = goo.contact_number;
@@ -221,8 +221,7 @@ class _EditDetailsState extends State<EditDetails> {
                                         setState(() {
                                           contact_number = value;
                                         });
-                                        Logger().i(
-                                            "New contact number", new_contact);
+                                        
                                       },
                                       validator: (val) {
                                         bool isNumeric(String s) {
@@ -324,7 +323,7 @@ class _EditDetailsState extends State<EditDetails> {
                                 if (isEnabled) {
                                   isEnabled = false;
                                   print(email);
-                                  Logger().i("SEXY", emailController.text);
+                                 
                                   if (_regFormKey.currentState.validate()) {
                                     showDialogBox(emailController.text,
                                         contactController.text);

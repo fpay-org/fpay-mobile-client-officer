@@ -1,4 +1,3 @@
-
 import 'package:FPay/routes/application.dart';
 import 'package:FPay/routes/routes.dart';
 import 'package:fluro/fluro.dart';
@@ -10,11 +9,9 @@ class FPayOfficerApp extends StatelessWidget {
     final router = Router();
     Routes.configureRouter(router);
     Application.router = router;
-    
   }
 
   @override
-
   Widget build(BuildContext context) {
     //main MaterialApp widget of the app
     return MaterialApp(
@@ -24,4 +21,3 @@ class FPayOfficerApp extends StatelessWidget {
     );
   }
 }
-  
